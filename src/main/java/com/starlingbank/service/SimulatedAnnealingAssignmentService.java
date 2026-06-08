@@ -18,11 +18,23 @@ public class SimulatedAnnealingAssignmentService implements AssignmentService {
     private static final double INITIAL_TEMPERATURE = 10_000.0;
     private static final double COOLING_RATE = 0.9999;
 
+    // Desk within this many coordinate units of the bounding-box perimeter → window seat
+    private static final double WINDOW_THRESHOLD = 200.0;
+    // Cost reduction for placing a window-preferring employee at a window desk.
+    // Kept small relative to the ~180-unit sibling clustering signal.
+    private static final double WINDOW_BONUS = 30.0;
+
     private final OrgChartService orgChartService;
+    private final int numRuns;
 
     @Inject
     public SimulatedAnnealingAssignmentService(OrgChartService orgChartService) {
+        this(orgChartService, NUM_RUNS);
+    }
+
+    SimulatedAnnealingAssignmentService(OrgChartService orgChartService, int numRuns) {
         this.orgChartService = orgChartService;
+        this.numRuns = numRuns;
     }
 
     @Override
@@ -32,14 +44,15 @@ public class SimulatedAnnealingAssignmentService implements AssignmentService {
 
         double[][] weightMatrix = buildWeightMatrix(bookings);
         double[][] distMatrix = buildDistMatrix(desks);
+        double[][] linearBonus = buildLinearBonus(bookings, desks);
 
         ExecutorService executor = Executors.newFixedThreadPool(NUM_THREADS);
-        List<Future<RunResult>> futures = new ArrayList<>(NUM_RUNS);
+        List<Future<RunResult>> futures = new ArrayList<>(numRuns);
 
-        for (int r = 0; r < NUM_RUNS; r++) {
+        for (int r = 0; r < numRuns; r++) {
             final int runId = r;
             futures.add(executor.submit(
-                    () -> runSA(runId, n, m, weightMatrix, distMatrix)));
+                    () -> runSA(runId, n, m, weightMatrix, distMatrix, linearBonus)));
         }
 
         RunResult best = null;
@@ -73,7 +86,7 @@ public class SimulatedAnnealingAssignmentService implements AssignmentService {
     // -------------------------------------------------------------------------
 
     private RunResult runSA(int runId, int n, int m,
-                            double[][] weightMatrix, double[][] distMatrix) {
+                            double[][] weightMatrix, double[][] distMatrix, double[][] linearBonus) {
         Random rng = new Random(System.nanoTime() + runId * 1_000_003L);
 
         // Random start: pick n distinct desk indices
@@ -82,7 +95,7 @@ public class SimulatedAnnealingAssignmentService implements AssignmentService {
         shuffleArray(available, rng);
         int[] deskForPerson = Arrays.copyOf(available, n);
 
-        double cost = computeCost(deskForPerson, weightMatrix, distMatrix);
+        double cost = computeCost(deskForPerson, weightMatrix, distMatrix, linearBonus);
         int[] bestAssignment = deskForPerson.clone();
         double bestCost = cost;
 
@@ -93,7 +106,7 @@ public class SimulatedAnnealingAssignmentService implements AssignmentService {
             int q;
             do { q = rng.nextInt(n); } while (q == p);
 
-            double delta = computeSwapDelta(p, q, deskForPerson, weightMatrix, distMatrix, n);
+            double delta = computeSwapDelta(p, q, deskForPerson, weightMatrix, distMatrix, linearBonus, n);
 
             if (delta < 0 || rng.nextDouble() < Math.exp(-delta / temperature)) {
                 // apply swap
@@ -115,7 +128,7 @@ public class SimulatedAnnealingAssignmentService implements AssignmentService {
     }
 
     private double computeSwapDelta(int p, int q, int[] deskForPerson,
-                                    double[][] weight, double[][] dist, int n) {
+                                    double[][] weight, double[][] dist, double[][] linear, int n) {
         int dp = deskForPerson[p];
         int dq = deskForPerson[q];
         double delta = 0.0;
@@ -129,17 +142,20 @@ public class SimulatedAnnealingAssignmentService implements AssignmentService {
             delta += wqk * (dist[dp][dk] - dist[dq][dk]);
         }
         // p-q pair: dist[dq][dp] == dist[dp][dq] (symmetric), so contributes 0
+        // Linear terms: p moves dp→dq, q moves dq→dp (cost -= bonus, so delta adds back old, subtracts new)
+        delta += linear[p][dp] - linear[p][dq] + linear[q][dq] - linear[q][dp];
         return delta;
     }
 
     private double computeCost(int[] deskForPerson,
-                               double[][] weight, double[][] dist) {
+                               double[][] weight, double[][] dist, double[][] linear) {
         int n = deskForPerson.length;
         double cost = 0.0;
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j < n; j++) {
                 cost += weight[i][j] * dist[deskForPerson[i]][deskForPerson[j]];
             }
+            cost -= linear[i][deskForPerson[i]];
         }
         return cost;
     }
@@ -240,6 +256,40 @@ public class SimulatedAnnealingAssignmentService implements AssignmentService {
         }
         if (lcaDepth < 0) return Integer.MAX_VALUE / 2;
         return (pathA.size() - 1 - lcaDepth) + (pathB.size() - 1 - lcaDepth);
+    }
+
+    // -------------------------------------------------------------------------
+    // Linear bonus matrix (window seat preference)
+    // -------------------------------------------------------------------------
+
+    private double[][] buildLinearBonus(List<BookingRequest> bookings, List<Desk> desks) {
+        int n = bookings.size();
+        int m = desks.size();
+
+        double minX = Double.MAX_VALUE, maxX = -Double.MAX_VALUE;
+        double minY = Double.MAX_VALUE, maxY = -Double.MAX_VALUE;
+        for (Desk d : desks) {
+            minX = Math.min(minX, d.getX()); maxX = Math.max(maxX, d.getX());
+            minY = Math.min(minY, d.getY()); maxY = Math.max(maxY, d.getY());
+        }
+
+        boolean[] isWindowDesk = new boolean[m];
+        for (int j = 0; j < m; j++) {
+            Desk d = desks.get(j);
+            double distToEdge = Math.min(
+                    Math.min(d.getX() - minX, maxX - d.getX()),
+                    Math.min(d.getY() - minY, maxY - d.getY()));
+            isWindowDesk[j] = distToEdge < WINDOW_THRESHOLD;
+        }
+
+        double[][] bonus = new double[n][m];
+        for (int i = 0; i < n; i++) {
+            if (!bookings.get(i).isWindowSeat()) continue;
+            for (int j = 0; j < m; j++) {
+                if (isWindowDesk[j]) bonus[i][j] = WINDOW_BONUS;
+            }
+        }
+        return bonus;
     }
 
     // -------------------------------------------------------------------------

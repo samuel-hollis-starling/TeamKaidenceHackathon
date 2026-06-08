@@ -82,7 +82,7 @@ class SimulatedAnnealingAssignmentServiceTest {
 
         Random rng = new Random(42);
         List<BookingRequest> bookings = selected.stream()
-                .map(id -> new BookingRequest(id, SocialPreference.NONE, rng.nextBoolean(), false))
+                .map(id -> new BookingRequest(id, SocialPreference.NONE, rng.nextDouble() < 0.05, false))
                 .collect(Collectors.toList());
 
         OrgChartService orgChartService = new OrgChartService() {
@@ -192,6 +192,80 @@ class SimulatedAnnealingAssignmentServiceTest {
         double ratio = siblingStats.getCount() > 0 && crossTeamStats.getCount() > 0
                 ? crossTeamStats.getAverage() / siblingStats.getAverage() : 0;
         System.out.printf("%n  Clustering ratio (cross/sibling): %.2fx  (>1 = siblings closer than strangers)%n", ratio);
+        System.out.println();
+    }
+
+    // ---------------------------------------------------------------------------
+    // Scaling experiment
+    // ---------------------------------------------------------------------------
+
+    @Test
+    void runsScalingExperiment() {
+        List<Desk> realDesks = desks.stream()
+                .filter(d -> d.getNeighborhood() != null && !d.getNeighborhood().equals("Desk Pods"))
+                .toList();
+
+        List<String> subtree = new ArrayList<>();
+        Deque<String> queue = new ArrayDeque<>(orgNodes.get(MARTIN_DOW_ID).getChildrenIds());
+        while (!queue.isEmpty()) {
+            String id = queue.poll();
+            subtree.add(id);
+            queue.addAll(orgNodes.get(id).getChildrenIds());
+        }
+        Collections.shuffle(subtree, new Random(42));
+        List<String> selected = subtree.subList(0, Math.min(realDesks.size(), subtree.size()));
+
+        Random rng = new Random(42);
+        List<BookingRequest> bookings = selected.stream()
+                .map(id -> new BookingRequest(id, SocialPreference.NONE, rng.nextDouble() < 0.05, false))
+                .collect(Collectors.toList());
+
+        OrgChartService orgChartService = new OrgChartService() {
+            @Override public Map<String, Employee> getEmployees() { return employees; }
+            @Override public Map<String, OrgNode> getOrgNodes() { return orgNodes; }
+        };
+
+        System.out.println();
+        System.out.println("── Scaling Experiment " + "─".repeat(58));
+        System.out.printf("  %-10s  %-10s  %-12s  %-12s  %-12s  %s%n",
+                "Runs", "Elapsed", "Sibling avg", "SameOrg avg", "Cross avg", "Ratio");
+        System.out.println("  " + "─".repeat(76));
+
+        for (int numRuns : new int[]{50, 100, 200, 300, 400, 500}) {
+            long start = System.currentTimeMillis();
+            AssignmentCollection result = new SimulatedAnnealingAssignmentService(orgChartService, numRuns)
+                    .assign(bookings, realDesks);
+            long elapsed = System.currentTimeMillis() - start;
+
+            Map<String, String> deskByEmployee = result.getDeskByEmployeeId();
+            DoubleSummaryStatistics siblingStats = new DoubleSummaryStatistics();
+            DoubleSummaryStatistics sameTeamStats = new DoubleSummaryStatistics();
+            DoubleSummaryStatistics crossTeamStats = new DoubleSummaryStatistics();
+
+            List<String> empIds = new ArrayList<>(deskByEmployee.keySet());
+            for (int i = 0; i < empIds.size(); i++) {
+                for (int j = i + 1; j < empIds.size(); j++) {
+                    String a = empIds.get(i);
+                    String b = empIds.get(j);
+                    int treeDist = treeDistance(orgNodes.get(a), orgNodes.get(b));
+                    double dist = euclidean(deskById.get(deskByEmployee.get(a)), deskById.get(deskByEmployee.get(b)));
+                    if (treeDist == 1) siblingStats.accept(dist);
+                    else if (treeDist <= 5) sameTeamStats.accept(dist);
+                    else crossTeamStats.accept(dist);
+                }
+            }
+
+            double ratio = siblingStats.getCount() > 0 && crossTeamStats.getCount() > 0
+                    ? crossTeamStats.getAverage() / siblingStats.getAverage() : 0;
+
+            System.out.printf("  %-10d  %-10s  %-12.0f  %-12.0f  %-12.0f  %.2fx%n",
+                    numRuns,
+                    elapsed + "ms",
+                    siblingStats.getAverage(),
+                    sameTeamStats.getAverage(),
+                    crossTeamStats.getAverage(),
+                    ratio);
+        }
         System.out.println();
     }
 
