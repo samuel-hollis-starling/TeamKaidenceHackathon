@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from 'react'
 import type { AssignmentScore } from '../types'
 import { getScore } from '../api'
 
-type Metric = { label: string; key: keyof AssignmentScore; description: string }
+type Metric = { label: string; key: keyof AssignmentScore; invert?: boolean; description: string; forceColor?: string }
 
 const METRICS: Metric[] = [
   { label: 'Team Cohesion',       key: 'teamCohesion',       description: 'Teammates seated together' },
   { label: 'Manager Proximity',   key: 'managerProximity',   description: 'Reports close to their manager' },
   { label: 'Social Satisfaction', key: 'socialSatisfaction', description: 'Social preferences honoured' },
+  { label: 'QAP Cost',            key: 'totalQapCost',       invert: true, description: 'Overall desk assignment efficiency', forceColor: '#349C51' },
 ]
 
 function scoreColor(value: number) {
@@ -50,8 +51,9 @@ export default function ScoreDashboard() {
 
       <div className="score-metrics">
         {METRICS.map(m => {
-          const display = Math.round(score?.[m.key] ?? 0)
-          const color = scoreColor(display)
+          const raw = score?.[m.key] ?? 0
+          const display = Math.round(m.invert ? 100 - raw : raw)
+          const color = m.forceColor ?? scoreColor(display)
           return (
             <div key={m.key} className="metric-row">
               <div className="metric-header">
