@@ -199,30 +199,25 @@ TypeScript types generated from Jersey annotations for the React client.
 ## Current Checkpoint (2026-06-08)
 
 ### What's done
-- **SA algorithm**: `SimulatedAnnealingAssignmentService` fully implemented — 400 parallel SA runs, 200k iterations each, picks best QAP result. Bound in Guice (`AppModule`).
+- **SA algorithm**: `SimulatedAnnealingAssignmentService` fully implemented — 400 parallel SA runs, 200k iterations each, picks best QAP result. Bound in Guice + HK2.
 - **Floor map pipeline**: `FloorMapParser` → `HarParser` → `SvgParser` fully wired; `FloorMapServiceImpl` loads from HAR at startup. Bound in Guice + HK2.
+- **OrgChartServiceImpl**: loads `input-data/orgchart.json`, builds `Employee` + `OrgNode` maps. Bound in Guice + HK2.
+- **BookingServiceImpl**: thread-safe in-memory store (`CopyOnWriteArrayList`), upserts by `employeeId`, derives capacity from `FloorMapService` desk count. Bound in Guice + HK2.
+- **BookingResource**: fully wired — delegates `POST /api/bookings` and `GET /api/bookings` to `BookingService`.
 - **Models**: All model classes exist (`Desk`, `Employee`, `OrgNode`, `BookingRequest`, `AssignmentCollection`, `AssignmentScore`, etc.).
-- **Service interfaces**: `AssignmentService`, `BookingService`, `OrgChartService`, `ScoringService` — all defined.
 - **Frontend views**: `BookingForm`, `MapView`/`FloorMap`, `ScoreDashboard` all exist and call the API.
 
 ### What's missing / still stubbed
-- `OrgChartService` — **no implementation** (SA depends on it via `@Inject`, so SA can't run)
-- `BookingService` — **no implementation** (in-memory store needed)
 - `ScoringService` — **no implementation**
 - `AssignmentResource` — **stubbed**: returns `Map.of()`, doesn't inject any services
-- `BookingResource` — **stubbed**: echoes POST back, `GET /bookings` returns hardcoded `List.of()`
-- `Main.java` HK2 bridge — only exposes `HelloService` and `FloorMapService` to Jersey; `AssignmentService`, `BookingService`, `OrgChartService` are missing
+- `EmployeeResource` — **stubbed**: returns empty list (should delegate to `OrgChartService`)
 
 ### Next steps (in order)
 
-1. **Implement `OrgChartService`** — load `input-data/orgchart.json`, build employee + OrgNode maps, expose `getEmployees()` / `getOrgNodes()`
-2. **Implement `BookingService`** — in-memory `List<BookingRequest>`, enforce 191-cap, implement `addBooking` / `getBookings`
-3. **Implement `ScoringService`** — compute the 5 scoring metrics against a completed assignment
-4. **Bind new impls in `AppModule`** — `OrgChartService`, `BookingService`, `ScoringService`
-5. **Wire `BookingResource`** — inject `BookingService`, delegate to it
-6. **Wire `AssignmentResource`** — inject `AssignmentService` + `BookingService` + `FloorMapService`; `POST /run` calls `assign(bookings, desks)`; `GET /score` calls `ScoringService`
-7. **Update `Main.java` HK2 bridge** — add `AssignmentService`, `BookingService`, `OrgChartService`, `ScoringService` so Jersey can inject them
-8. **Smoke test end-to-end** — seed bookings, hit `POST /api/assignments/run`, verify floor map and score dashboard light up
+1. **Wire `EmployeeResource`** — inject `OrgChartService`, return `employees.values()` from `GET /api/employees`
+2. **Wire `AssignmentResource`** — inject `AssignmentService` + `BookingService` + `FloorMapService`; `POST /run` calls `assign(bookings, desks)`; `GET /assignments` returns current assignment; add `AssignmentService` to HK2 bridge
+3. **Implement `ScoringService`** — compute the 5 scoring metrics; wire into `GET /assignments/score`
+4. **Smoke test end-to-end** — seed bookings, hit `POST /api/assignments/run`, verify floor map and score dashboard light up
 
 ---
 
