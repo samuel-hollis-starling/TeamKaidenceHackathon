@@ -1,11 +1,16 @@
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 import type { Desk, Employee, OrgNode, AssignmentCollection } from '../types'
-import { getDesks, getEmployees, getOrgNodes, getAssignments } from '../api'
 
 const VIEW_W = 6736
 const VIEW_H = 4290
+const LABEL_SIZE = 60
+const CHAR_W = LABEL_SIZE * 0.52
+const LABEL_H = LABEL_SIZE * 1.5
+const LABEL_HIDE_RADIUS = 400
 
-function hashHue(s: string): number {
+export type Transform = { scale: number; tx: number; ty: number }
+
+export function hashHue(s: string): number {
   let h = 0
   for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) & 0xffffffff
   return Math.abs(h) % 360
@@ -23,44 +28,50 @@ function deskColor(desk: Desk, employeeByDeskId: Record<string, string>, orgByEm
 }
 
 function neighbourhoodLabels(desks: Desk[]): { name: string; x: number; y: number }[] {
-  const groups: Record<string, { minY: number; maxX: number; minX: number }> = {}
+  const groups: Record<string, { sumX: number; sumY: number; count: number }> = {}
   for (const d of desks) {
     if (!d.neighborhood) continue
-    if (!groups[d.neighborhood]) groups[d.neighborhood] = { minY: Infinity, maxX: -Infinity, minX: Infinity }
-    const g = groups[d.neighborhood]
-    if (d.y < g.minY) g.minY = d.y
-    if (d.x > g.maxX) g.maxX = d.x
-    if (d.x < g.minX) g.minX = d.x
+    if (!groups[d.neighborhood]) groups[d.neighborhood] = { sumX: 0, sumY: 0, count: 0 }
+    groups[d.neighborhood].sumX += d.x
+    groups[d.neighborhood].sumY += d.y
+    groups[d.neighborhood].count++
   }
-  return Object.entries(groups).map(([name, { minY, minX, maxX }]) => ({
-    name,
-    x: (minX + maxX) / 2,
-    y: minY - 80,
+  const labels = Object.entries(groups).map(([name, { sumX, sumY, count }]) => ({
+    name, x: sumX / count, y: sumY / count,
   }))
+  for (let iter = 0; iter < 20; iter++) {
+    let moved = false
+    for (let i = 0; i < labels.length; i++) {
+      for (let j = i + 1; j < labels.length; j++) {
+        const a = labels[i], b = labels[j]
+        const overlapX = (a.name.length + b.name.length) * CHAR_W / 2 - Math.abs(a.x - b.x)
+        if (overlapX <= 0) continue
+        const overlapY = LABEL_H - Math.abs(a.y - b.y)
+        if (overlapY <= 0) continue
+        const push = overlapY / 2 + 10
+        if (a.y <= b.y) { a.y -= push; b.y += push } else { a.y += push; b.y -= push }
+        moved = true
+      }
+    }
+    if (!moved) break
+  }
+  return labels
 }
 
-type Transform = { scale: number; tx: number; ty: number }
+interface FloorMapProps {
+  desks: Desk[]
+  empById: Record<string, Employee>
+  orgById: Record<string, OrgNode>
+  assignments: AssignmentCollection
+  transform: Transform
+  onTransformChange: (updater: (prev: Transform) => Transform) => void
+}
 
-export default function FloorMap() {
-  const [desks, setDesks] = useState<Desk[]>([])
-  const [empById, setEmpById] = useState<Record<string, Employee>>({})
-  const [orgById, setOrgById] = useState<Record<string, OrgNode>>({})
-  const [assignments, setAssignments] = useState<AssignmentCollection>({ deskByEmployeeId: {}, employeeByDeskId: {} })
-  const [transform, setTransform] = useState<Transform>({ scale: 0.18, tx: 20, ty: 20 })
+export default function FloorMap({ desks, empById, orgById, assignments, transform, onTransformChange }: FloorMapProps) {
   const [tooltip, setTooltip] = useState<{ desk: Desk; x: number; y: number } | null>(null)
+  const [svgMouse, setSvgMouse] = useState<{ x: number; y: number } | null>(null)
   const dragging = useRef<{ startX: number; startY: number; startTx: number; startTy: number } | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    Promise.all([getDesks(), getEmployees(), getOrgNodes(), getAssignments()]).then(
-      ([d, emps, nodes, ass]) => {
-        setDesks(d)
-        setEmpById(Object.fromEntries(emps.map(e => [e.id, e])))
-        setOrgById(Object.fromEntries(nodes.map(n => [n.employeeId, n])))
-        setAssignments(ass)
-      }
-    )
-  }, [])
 
   const labels = useMemo(() => neighbourhoodLabels(desks), [desks])
 
@@ -73,7 +84,7 @@ export default function FloorMap() {
       const rect = el!.getBoundingClientRect()
       const mx = e.clientX - rect.left
       const my = e.clientY - rect.top
-      setTransform(t => {
+      onTransformChange(t => {
         const newScale = Math.max(0.05, Math.min(5, t.scale * factor))
         const ratio = newScale / t.scale
         return { scale: newScale, tx: mx - (mx - t.tx) * ratio, ty: my - (my - t.ty) * ratio }
@@ -81,7 +92,7 @@ export default function FloorMap() {
     }
     el.addEventListener('wheel', onWheel, { passive: false })
     return () => el.removeEventListener('wheel', onWheel)
-  }, [])
+  }, [onTransformChange])
 
   function onMouseDown(e: React.MouseEvent) {
     if (e.button !== 0) return
@@ -89,8 +100,15 @@ export default function FloorMap() {
   }
 
   function onMouseMove(e: React.MouseEvent) {
+    const rect = containerRef.current?.getBoundingClientRect()
+    if (rect) {
+      setSvgMouse({
+        x: (e.clientX - rect.left - transform.tx) / transform.scale,
+        y: (e.clientY - rect.top - transform.ty) / transform.scale,
+      })
+    }
     if (!dragging.current) return
-    setTransform(t => ({
+    onTransformChange(t => ({
       ...t,
       tx: dragging.current!.startTx + e.clientX - dragging.current!.startX,
       ty: dragging.current!.startTy + e.clientY - dragging.current!.startY,
@@ -102,9 +120,6 @@ export default function FloorMap() {
   const tooltipEmp = tooltip ? empById[assignments.employeeByDeskId[tooltip.desk.id]] : null
   const tooltipOrg = tooltipEmp ? orgById[tooltipEmp.id] : null
 
-  // Label font size in SVG units — large enough to read at typical zoom
-  const labelSize = 60
-
   return (
     <div className="view floor-map-view">
       <h2>Floor Map — 5th Floor</h2>
@@ -115,14 +130,12 @@ export default function FloorMap() {
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
-        onMouseLeave={() => { onMouseUp(); setTooltip(null) }}
+        onMouseLeave={() => { onMouseUp(); setTooltip(null); setSvgMouse(null) }}
       >
         <svg width="100%" height="100%" style={{ cursor: dragging.current ? 'grabbing' : 'grab' }}>
           <g transform={`translate(${transform.tx},${transform.ty}) scale(${transform.scale})`}>
-            {/* Floor plan walls — SVG stripped of desk elements */}
             <image href="/floor-plan.svg" x={0} y={0} width={VIEW_W} height={VIEW_H} />
 
-            {/* Desk dots */}
             {desks.map(desk => (
               <circle
                 key={desk.id}
@@ -133,36 +146,49 @@ export default function FloorMap() {
                 stroke="#fff"
                 strokeWidth={4}
                 style={{ cursor: 'pointer' }}
-                onMouseEnter={e => showTooltip(desk, e)}
+                onMouseEnter={e => setTooltip({ desk, x: e.clientX, y: e.clientY })}
                 onMouseLeave={() => setTooltip(null)}
               />
             ))}
 
-            {/* Neighbourhood labels — rendered last so they sit above desk circles */}
-            {labels.map(l => (
-              <g key={l.name} style={{ pointerEvents: 'none', userSelect: 'none' }}>
-                <rect
-                  x={l.x - labelSize * l.name.length * 0.3}
-                  y={l.y - labelSize * 0.8}
-                  width={labelSize * l.name.length * 0.6}
-                  height={labelSize * 1.1}
-                  rx={8}
-                  fill="#fff"
-                  fillOpacity={0.72}
-                />
-                <text
-                  x={l.x}
-                  y={l.y}
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  fontSize={labelSize}
-                  fontWeight="600"
-                  fill="#374151"
+            {labels.map(l => {
+              const halfW = (l.name.length * CHAR_W) / 2 + 20
+              const nearCursor = svgMouse != null && Math.hypot(svgMouse.x - l.x, svgMouse.y - l.y) < LABEL_HIDE_RADIUS
+              return (
+                <g
+                  key={l.name}
+                  style={{
+                    pointerEvents: 'none',
+                    userSelect: 'none',
+                    opacity: nearCursor ? 0 : 1,
+                    transition: 'opacity 0.25s',
+                  }}
                 >
-                  {l.name}
-                </text>
-              </g>
-            ))}
+                  <rect
+                    x={l.x - halfW}
+                    y={l.y - LABEL_SIZE * 0.75}
+                    width={halfW * 2}
+                    height={LABEL_SIZE * 1.1}
+                    rx={10}
+                    fill="#fff"
+                    fillOpacity={0.92}
+                    stroke="#e4e0d8"
+                    strokeWidth={4}
+                  />
+                  <text
+                    x={l.x}
+                    y={l.y}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize={LABEL_SIZE}
+                    fontWeight="700"
+                    fill="#2A1F52"
+                  >
+                    {l.name}
+                  </text>
+                </g>
+              )
+            })}
           </g>
         </svg>
 
@@ -184,8 +210,4 @@ export default function FloorMap() {
       </div>
     </div>
   )
-
-  function showTooltip(desk: Desk, e: React.MouseEvent) {
-    setTooltip({ desk, x: e.clientX, y: e.clientY })
-  }
 }
