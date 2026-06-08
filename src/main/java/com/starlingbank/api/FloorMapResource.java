@@ -12,16 +12,12 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 
 import com.starlingbank.parser.FloorMapParser;
-import java.io.File;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Path("/api/floor-map")
 public class FloorMapResource {
 
     private static final ObjectMapper MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss");
 
     private final FloorMapService floorMapService;
 
@@ -31,20 +27,20 @@ public class FloorMapResource {
     }
 
     @POST
-    @Path("/export")
+    @Path("/parse-har")
     @Produces(MediaType.APPLICATION_JSON)
-    public Map<String, Object> export(@QueryParam("har") String harFile) throws Exception {
-        FloorMap floorMap;
-        if (harFile != null && !harFile.isBlank()) {
-            floorMap = new FloorMapParser().parse(java.nio.file.Path.of("input-data/" + harFile));
-        } else {
-            floorMap = floorMapService.getFloorMap();
-        }
-        String timestamp = LocalDateTime.now().format(FORMATTER);
-        String filename = "input-data/floor-map-" + timestamp + ".json";
-        MAPPER.writeValue(new File(filename), floorMap);
+    public Map<String, Object> parseHar(@QueryParam("har") String harFile) throws Exception {
+        java.nio.file.Path harPath = java.nio.file.Path.of("input-data/har/" + harFile);
+        FloorMap floorMap = new FloorMapParser().parse(harPath);
+
+        String slug = toSlug(floorMap.getFloor().getBuilding()) + "-" + toSlug(floorMap.getFloor().getName());
+        java.nio.file.Path outPath = java.nio.file.Path.of("input-data/floors/" + slug + ".json");
+        MAPPER.writeValue(outPath.toFile(), floorMap);
+
+        floorMapService.register(floorMap);
+
         return Map.of(
-            "file", filename,
+            "file", outPath.toString(),
             "floor", floorMap.getFloor().getName(),
             "building", floorMap.getFloor().getBuilding(),
             "desks", floorMap.getSpaces().getDesks().size(),
@@ -52,5 +48,9 @@ public class FloorMapResource {
             "walls", floorMap.getWalls().size(),
             "landmarks", floorMap.getLandmarks().size()
         );
+    }
+
+    private static String toSlug(String s) {
+        return s.toLowerCase().replaceAll("[^a-z0-9]+", "-").replaceAll("^-|-$", "");
     }
 }

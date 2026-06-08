@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface FloorMapService {
     FloorMap getFloorMap();
+    void register(FloorMap floorMap);
 
     default List<Desk> getDesks() {
         return getFloorMap().getSpaces().getDesks();
