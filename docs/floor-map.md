@@ -1,8 +1,11 @@
 # Floor Map
 
-## Source file
+## Source
 
-`input-data/floor-map-5th.json`
+Floor maps are parsed at runtime from `.har` files in `input-data/` via the HAR parser pipeline.
+See [office-layout-parsing.md](office-layout-parsing.md) for how the pipeline works and how to add a new floor.
+
+Pre-exported snapshots (for reference): `floor-map-2026-06-08T11-36-36.json` (London), `floor-map-2026-06-08T11-36-38.json` (Manchester), `floor-map-2026-06-08T11-36-40.json` (Cardiff).
 
 Top-level keys: `floor`, `landmarks`, `neighborhoods`, `spaces`, `unavailableSpaces`, `walls`
 
