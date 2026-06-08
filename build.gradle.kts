@@ -50,7 +50,8 @@ tasks.generateTypeScript {
         "com.starlingbank.api.DeskResource",
         "com.starlingbank.api.EmployeeResource",
         "com.starlingbank.api.BookingResource",
-        "com.starlingbank.api.AssignmentResource"
+        "com.starlingbank.api.AssignmentResource",
+        "com.starlingbank.api.OrgNodeResource"
     )
     outputFile = "frontend/src/generated/api.ts"
     generateJaxrsApplicationClient = true

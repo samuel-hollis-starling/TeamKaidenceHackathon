@@ -28,6 +28,7 @@ public class Main {
         config.register(com.starlingbank.api.EmployeeResource.class);
         config.register(com.starlingbank.api.BookingResource.class);
         config.register(com.starlingbank.api.AssignmentResource.class);
+        config.register(com.starlingbank.api.OrgNodeResource.class);
         config.register(com.starlingbank.api.FloorMapResource.class);
         // Bridge Guice-managed services into HK2 (Jersey's DI)
         config.register(new AbstractBinder() {
