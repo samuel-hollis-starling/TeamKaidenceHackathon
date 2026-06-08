@@ -1,16 +1,22 @@
-// Stub layer — all API calls go here.
-// When the backend is ready, swap each export below to use the generated client
-// from '../generated/api' + FetchHttpClient, and update the base URL in client.ts
-// from window.location.origin → http://localhost:8080.
-//
-// getOrgNodes() has no backend endpoint yet — flag this to the backend dev when wiring up.
-export {
-  getDesks,
-  getEmployees,
-  getOrgNodes,
-  getBookings,
-  addBooking,
-  getAssignments,
-  runAssignment,
-  getScore,
-} from './stubs'
+import { FetchHttpClient } from './client'
+import { RestApplicationClient } from '../generated/api'
+import type {
+  Desk,
+  Employee,
+  OrgNode,
+  BookingCollection,
+  BookingRequest,
+  AssignmentCollection,
+  AssignmentScore,
+} from '../types'
+
+const client = new RestApplicationClient(new FetchHttpClient())
+
+export const getDesks = (): Promise<Desk[]> => client.getDesks()
+export const getEmployees = (): Promise<Employee[]> => client.getEmployees()
+export const getOrgNodes = (): Promise<OrgNode[]> => client.getOrgNodes()
+export const getBookings = (): Promise<BookingCollection> => client.getBookings()
+export const addBooking = (req: BookingRequest): Promise<BookingRequest> => client.addBooking(req)
+export const getAssignments = (): Promise<AssignmentCollection> => client.getAssignment()
+export const runAssignment = (): Promise<AssignmentCollection> => client.run()
+export const getScore = (): Promise<AssignmentScore> => client.getScore()

@@ -20,10 +20,10 @@ export class FetchHttpClient implements HttpClient {
 
     return fetch(url.toString(), {
       method: requestConfig.method,
-      ...(requestConfig.data && {
+      ...(requestConfig.data ? {
         body: JSON.stringify(requestConfig.data),
         headers: { 'Content-Type': 'application/json' },
-      }),
+      } : {}),
     }).then(res => {
       if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`)
       return res.json() as R
