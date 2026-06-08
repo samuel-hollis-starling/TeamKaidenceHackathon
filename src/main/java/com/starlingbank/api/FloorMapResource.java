@@ -8,8 +8,10 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 
+import com.starlingbank.parser.FloorMapParser;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,13 +33,20 @@ public class FloorMapResource {
     @POST
     @Path("/export")
     @Produces(MediaType.APPLICATION_JSON)
-    public Map<String, Object> export() throws Exception {
-        FloorMap floorMap = floorMapService.getFloorMap();
+    public Map<String, Object> export(@QueryParam("har") String harFile) throws Exception {
+        FloorMap floorMap;
+        if (harFile != null && !harFile.isBlank()) {
+            floorMap = new FloorMapParser().parse(java.nio.file.Path.of("input-data/" + harFile));
+        } else {
+            floorMap = floorMapService.getFloorMap();
+        }
         String timestamp = LocalDateTime.now().format(FORMATTER);
         String filename = "input-data/floor-map-" + timestamp + ".json";
         MAPPER.writeValue(new File(filename), floorMap);
         return Map.of(
             "file", filename,
+            "floor", floorMap.getFloor().getName(),
+            "building", floorMap.getFloor().getBuilding(),
             "desks", floorMap.getSpaces().getDesks().size(),
             "pods", floorMap.getSpaces().getPods().size(),
             "walls", floorMap.getWalls().size(),

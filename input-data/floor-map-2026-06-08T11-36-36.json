@@ -1,0 +1,1597 @@
+{
+  "floor" : {
+    "id" : "01G6X15J9J81YY4RJRDCHWR27V",
+    "name" : "5th Floor",
+    "building" : "London Fruit & Wool Exchange",
+    "viewBox" : {
+      "width" : 6736.0,
+      "height" : 4290.0
+    }
+  },
+  "neighborhoods" : [ "Agile Workspaces", "Banking", "Desk Pods", "EMBER", "Facilities", "Meeting Pods", "Red Team", "Tech Central", "Tech North A", "Tech North B", "Tech North C", "Tech South A", "Tech South B", "Tech South B2", "Tech South C", "Technology - Priority", "Workplace Technology", "Workplace Technology Workbench" ],
+  "spaces" : {
+    "desks" : [ {
+      "id" : "01G6X1AXT33V1KY943F8CXP442",
+      "name" : "UK-LDN-LFW-5-100A",
+      "neighborhood" : "Tech South C",
+      "x" : 453.1643,
+      "y" : 2883.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1AY3F5B6WWHP50X600DM1",
+      "name" : "UK-LDN-LFW-5-100B",
+      "neighborhood" : "Tech South C",
+      "x" : 551.1643,
+      "y" : 2883.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1AYE4YSY1M3TD2CY9N4FQ",
+      "name" : "UK-LDN-LFW-5-100C",
+      "neighborhood" : "Tech South C",
+      "x" : 649.1643,
+      "y" : 2883.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1AYQE0JFGQQPRPBZXP1PH",
+      "name" : "UK-LDN-LFW-5-100D",
+      "neighborhood" : "Tech South C",
+      "x" : 453.1643,
+      "y" : 2951.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1AZ2A6HXBYE77FH9CSB58",
+      "name" : "UK-LDN-LFW-5-100E",
+      "neighborhood" : "Tech South C",
+      "x" : 551.1643,
+      "y" : 2951.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1AZBEFZYCSEQ69RHWDXEZ",
+      "name" : "UK-LDN-LFW-5-100F",
+      "neighborhood" : "Tech South C",
+      "x" : 649.1643,
+      "y" : 2951.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1AZNVQQ7HTS0AJ8QVHFMM",
+      "name" : "UK-LDN-LFW-5-101A",
+      "neighborhood" : "Tech South C",
+      "x" : 453.1643,
+      "y" : 3119.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1AZZE2BAKZ4BTA8Z8HQF7",
+      "name" : "UK-LDN-LFW-5-101B",
+      "neighborhood" : "Tech South C",
+      "x" : 551.1643,
+      "y" : 3119.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1B09PGF9JSXFBZ3Q5SKB0",
+      "name" : "UK-LDN-LFW-5-101C",
+      "neighborhood" : "Tech South C",
+      "x" : 649.1643,
+      "y" : 3119.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1B0M7E1HTXCPNZ0DXJM8B",
+      "name" : "UK-LDN-LFW-5-101D",
+      "neighborhood" : "Tech South C",
+      "x" : 453.1643,
+      "y" : 3187.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1B0YMDRRR40Q1Z01F9SZ5",
+      "name" : "UK-LDN-LFW-5-101E",
+      "neighborhood" : "Tech South C",
+      "x" : 551.1643,
+      "y" : 3187.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1B19D5Y7DKCQFX561K24J",
+      "name" : "UK-LDN-LFW-5-101F",
+      "neighborhood" : "Tech South C",
+      "x" : 649.1643,
+      "y" : 3187.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1B1JVATKJTS49B818YXRY",
+      "name" : "UK-LDN-LFW-5-102A",
+      "neighborhood" : "Tech South C",
+      "x" : 453.1643,
+      "y" : 3355.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1B1XE6BZ50HPCDJPMEQG0",
+      "name" : "UK-LDN-LFW-5-102B",
+      "neighborhood" : "Tech South C",
+      "x" : 551.1643,
+      "y" : 3355.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1B28A9X9S5MFPFEVS1FC6",
+      "name" : "UK-LDN-LFW-5-102C",
+      "neighborhood" : "Tech South C",
+      "x" : 649.1643,
+      "y" : 3355.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1B2JV39S29KAPD17201D0",
+      "name" : "UK-LDN-LFW-5-102D",
+      "neighborhood" : "Tech South C",
+      "x" : 453.1643,
+      "y" : 3423.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1B2XF5W2TZ691D8713Z4S",
+      "name" : "UK-LDN-LFW-5-102E",
+      "neighborhood" : "Tech South C",
+      "x" : 551.1643,
+      "y" : 3423.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1B385P4FF64768DGTZ1EV",
+      "name" : "UK-LDN-LFW-5-102F",
+      "neighborhood" : "Tech South C",
+      "x" : 649.1643,
+      "y" : 3423.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1B3JM2APSNTCYX7H5KADN",
+      "name" : "UK-LDN-LFW-5-103A",
+      "neighborhood" : "Tech South C",
+      "x" : 787.1643,
+      "y" : 3119.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1B3X7DZC43QVT2DJP3NCK",
+      "name" : "UK-LDN-LFW-5-103B",
+      "neighborhood" : "Tech South C",
+      "x" : 885.1643,
+      "y" : 3119.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1B47Z4ZM5RW4K1VT6FZ2S",
+      "name" : "UK-LDN-LFW-5-103C",
+      "neighborhood" : "Tech South C",
+      "x" : 983.1643,
+      "y" : 3119.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1B4JNB7AP2M1YPMT9K83R",
+      "name" : "UK-LDN-LFW-5-103D",
+      "neighborhood" : "Tech South C",
+      "x" : 787.1643,
+      "y" : 3187.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1B4XGDYA78DMA2367R6Y1",
+      "name" : "UK-LDN-LFW-5-103E",
+      "neighborhood" : "Tech South C",
+      "x" : 885.1643,
+      "y" : 3187.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1B57ZR7H6V7CDXK7CQXSB",
+      "name" : "UK-LDN-LFW-5-103F",
+      "neighborhood" : "Tech South C",
+      "x" : 983.1643,
+      "y" : 3187.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1B5H9HDS6CHJJERQ6XE3S",
+      "name" : "UK-LDN-LFW-5-104A",
+      "neighborhood" : "Tech South C",
+      "x" : 787.1643,
+      "y" : 3355.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1B5W48ZGJP01SSHDXXGAN",
+      "name" : "UK-LDN-LFW-5-104B",
+      "neighborhood" : "Tech South C",
+      "x" : 885.1643,
+      "y" : 3355.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1B66HZYY69YPT81M420Z8",
+      "name" : "UK-LDN-LFW-5-104C",
+      "neighborhood" : "Tech South C",
+      "x" : 983.1643,
+      "y" : 3355.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1B6H4VNE2M3YWEZ35BDAJ",
+      "name" : "UK-LDN-LFW-5-104D",
+      "neighborhood" : "Tech South C",
+      "x" : 787.1643,
+      "y" : 3423.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1B6VQE18T4WV7SQFPVD06",
+      "name" : "UK-LDN-LFW-5-104E",
+      "neighborhood" : "Tech South C",
+      "x" : 885.1643,
+      "y" : 3423.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1B761CTC37N7F6GMA3R6Q",
+      "name" : "UK-LDN-LFW-5-104F",
+      "neighborhood" : "Tech South C",
+      "x" : 983.1643,
+      "y" : 3423.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1B7F3GY7AQB6TJA0ANZEE",
+      "name" : "UK-LDN-LFW-5-105A",
+      "neighborhood" : "Tech South B2",
+      "x" : 1099.1643,
+      "y" : 3409.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G9C6W87A5SCACJCBBKT9C46B",
+      "name" : "UK-LDN-LFW-5-105B",
+      "neighborhood" : "Tech South B2",
+      "x" : 1099.1643,
+      "y" : 3311.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G9C6WGFWVY737ACR4KHAW6JD",
+      "name" : "UK-LDN-LFW-5-105C",
+      "neighborhood" : "Tech South B2",
+      "x" : 1099.1643,
+      "y" : 3213.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G6X1B8EVF92FFC8YKC9SZ4CE",
+      "name" : "UK-LDN-LFW-5-105D",
+      "neighborhood" : "Tech South B2",
+      "x" : 1196.1643,
+      "y" : 3453.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G9C6VTM5Q11M27M03VWZNP2Y",
+      "name" : "UK-LDN-LFW-5-105E",
+      "neighborhood" : "Tech South B2",
+      "x" : 1196.1643,
+      "y" : 3355.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G9C6WSG70DH6CF01F4PJY36K",
+      "name" : "UK-LDN-LFW-5-105F",
+      "neighborhood" : "Tech South B2",
+      "x" : 1196.1643,
+      "y" : 3257.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G6X1B9EJKJKFTRGF86WTXRXE",
+      "name" : "UK-LDN-LFW-5-106A",
+      "neighborhood" : "Tech South B2",
+      "x" : 1275.1643,
+      "y" : 3409.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G6X1B9SD9HZ9X1T29QQQVVXY",
+      "name" : "UK-LDN-LFW-5-106B",
+      "neighborhood" : "Tech South B2",
+      "x" : 1275.1643,
+      "y" : 3311.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G6X1BA3JY10PDR83P5MFHHQC",
+      "name" : "UK-LDN-LFW-5-106C",
+      "neighborhood" : "Tech South B2",
+      "x" : 1275.1643,
+      "y" : 3213.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G6X1BAECJ4X72W3VHSYMC5J3",
+      "name" : "UK-LDN-LFW-5-106D",
+      "neighborhood" : "Tech South B2",
+      "x" : 1372.1643,
+      "y" : 3453.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G6X1BARZKYPTPGSR6HDRMBDN",
+      "name" : "UK-LDN-LFW-5-106E",
+      "neighborhood" : "Tech South B2",
+      "x" : 1372.1643,
+      "y" : 3355.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G6X1BB3R2FPX7CYS2XXXZS14",
+      "name" : "UK-LDN-LFW-5-106F",
+      "neighborhood" : "Tech South B2",
+      "x" : 1372.1643,
+      "y" : 3257.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G6X1BBE65YBT28YQJC3ZMNVH",
+      "name" : "UK-LDN-LFW-5-107A",
+      "neighborhood" : "Tech South B2",
+      "x" : 1712.1643,
+      "y" : 3409.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G6X1BBS16998ZVDH23XT8TSE",
+      "name" : "UK-LDN-LFW-5-107B",
+      "neighborhood" : "Tech South B2",
+      "x" : 1712.1643,
+      "y" : 3311.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G6X1BC3T6GFGE63280JAJWNB",
+      "name" : "UK-LDN-LFW-5-107C",
+      "neighborhood" : "Tech South B2",
+      "x" : 1712.1643,
+      "y" : 3213.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G6X1BCEG1KEX91B4B03VJ5YX",
+      "name" : "UK-LDN-LFW-5-107D",
+      "neighborhood" : "Tech South B2",
+      "x" : 1809.1643,
+      "y" : 3453.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G6X1BCQKY77FHWEVBJMM79VZ",
+      "name" : "UK-LDN-LFW-5-107E",
+      "neighborhood" : "Tech South B2",
+      "x" : 1809.1643,
+      "y" : 3355.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G6X1BD2JVNQJ8WE9HZWXQCPS",
+      "name" : "UK-LDN-LFW-5-107F",
+      "neighborhood" : "Tech South B2",
+      "x" : 1809.1643,
+      "y" : 3257.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G6X1BDD4D06ZZYFGC6TN7TKC",
+      "name" : "UK-LDN-LFW-5-108A",
+      "neighborhood" : "Banking",
+      "x" : 2151.1643,
+      "y" : 3409.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01HZM3YJXFHPTWVAS1ZFF5MCYR",
+      "name" : "UK-LDN-LFW-5-107G",
+      "neighborhood" : "Tech South B2",
+      "x" : 1942.1643,
+      "y" : 3409.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G6X1BDPRDR3WJQT75KYDMCQB",
+      "name" : "UK-LDN-LFW-5-108B",
+      "neighborhood" : "Banking",
+      "x" : 2151.1643,
+      "y" : 3311.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01HZM3YPXGEQ5VTZGJZR56S6T1",
+      "name" : "UK-LDN-LFW-5-107H",
+      "neighborhood" : "Tech South B2",
+      "x" : 1942.1643,
+      "y" : 3311.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G6X1BE1DQARCFKCMH71K8VVX",
+      "name" : "UK-LDN-LFW-5-108C",
+      "neighborhood" : "Banking",
+      "x" : 2151.1643,
+      "y" : 3213.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01HZM3YTP3DY2J0M9XKW43FRKW",
+      "name" : "UK-LDN-LFW-5-107I",
+      "neighborhood" : "Tech South B2",
+      "x" : 1942.1643,
+      "y" : 3213.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G6X1BEC6P06DNJBM7J6D0AZR",
+      "name" : "UK-LDN-LFW-5-108D",
+      "neighborhood" : "Banking",
+      "x" : 2248.1643,
+      "y" : 3453.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01HZM3YYER1W6SV3CS11PM0DNX",
+      "name" : "UK-LDN-LFW-5-107J",
+      "neighborhood" : "Tech South B2",
+      "x" : 2039.1643,
+      "y" : 3453.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G6X1BEPN4SVF0DZ8NMETPXY2",
+      "name" : "UK-LDN-LFW-5-108E",
+      "neighborhood" : "Banking",
+      "x" : 2248.1643,
+      "y" : 3355.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01HZM3Z252R2SJE5H4MJDTFRQ9",
+      "name" : "UK-LDN-LFW-5-107K",
+      "neighborhood" : "Tech South B2",
+      "x" : 2039.1643,
+      "y" : 3355.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G6X1BF19BS5C2V6TJKG774GV",
+      "name" : "UK-LDN-LFW-5-108F",
+      "neighborhood" : "Banking",
+      "x" : 2248.1643,
+      "y" : 3257.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01K47GH0SZTNF0F06CPFZBXW92",
+      "name" : "Desk 03",
+      "neighborhood" : "Tech South B2",
+      "x" : 1942.1643,
+      "y" : 3115.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01K47GGZEH5BVWCYM3H5CB2338",
+      "name" : "Desk 02",
+      "neighborhood" : "Tech South B2",
+      "x" : 1809.1643,
+      "y" : 3159.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01K47GGY1TYFK0SV450JCXNZVZ",
+      "name" : "Desk 01",
+      "neighborhood" : "Tech South B2",
+      "x" : 1712.1643,
+      "y" : 3115.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01K47GH4T9KABGPB5JD2N7JZCB",
+      "name" : "Desk 06",
+      "neighborhood" : "Banking",
+      "x" : 2248.1643,
+      "y" : 3159.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01K47GH3EBZ6H8BNNTBHYF8WGS",
+      "name" : "Desk 05",
+      "neighborhood" : "Banking",
+      "x" : 2180.1643,
+      "y" : 3159.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01K47GH2317JGNFMF724YJKBPG",
+      "name" : "Desk 04",
+      "neighborhood" : "Tech South B2",
+      "x" : 2039.1643,
+      "y" : 3159.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01HZM3Z6W1QKMEY9W83V0QCF7C",
+      "name" : "UK-LDN-LFW-5-107L",
+      "neighborhood" : "Tech South B2",
+      "x" : 2039.1643,
+      "y" : 3257.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G6X1BFAP1HDRCZJX77N73262",
+      "name" : "UK-LDN-LFW-5-123A",
+      "neighborhood" : "Tech North C",
+      "x" : 766.7713,
+      "y" : 1143.8192,
+      "rotation" : 12.0
+    }, {
+      "id" : "01G6X1BFME8YVQWWY00YZE45BD",
+      "name" : "UK-LDN-LFW-5-124B",
+      "neighborhood" : "Tech North C",
+      "x" : 787.1467,
+      "y" : 1047.9607,
+      "rotation" : 12.0
+    }, {
+      "id" : "01G6X1BFZ37Y9P9VNJFFAZMPQC",
+      "name" : "UK-LDN-LFW-5-124C",
+      "neighborhood" : "Tech North C",
+      "x" : 807.522,
+      "y" : 952.1022,
+      "rotation" : 12.0
+    }, {
+      "id" : "01G6X1BG8GD332NVJFWN4AQ904",
+      "name" : "UK-LDN-LFW-5-124D",
+      "neighborhood" : "Tech North C",
+      "x" : 833.2854,
+      "y" : 1157.9572,
+      "rotation" : -168.0
+    }, {
+      "id" : "01G6X1BGK9JPZHDRVAPYXM4CGB",
+      "name" : "UK-LDN-LFW-5-124E",
+      "neighborhood" : "Tech North C",
+      "x" : 853.6607,
+      "y" : 1062.0987,
+      "rotation" : -168.0
+    }, {
+      "id" : "01G6X1BGY4APZZ29G9CKJNZM6F",
+      "name" : "UK-LDN-LFW-5-124F",
+      "neighborhood" : "Tech North C",
+      "x" : 874.0361,
+      "y" : 966.2402,
+      "rotation" : -168.0
+    }, {
+      "id" : "01G6X1BH8KW99J1CSZM6NFE8F5",
+      "name" : "UK-LDN-LFW-5-110A",
+      "neighborhood" : "Tech South B",
+      "x" : 3119.1643,
+      "y" : 3340.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BHKDQPWF42H03B6V0KZ3",
+      "name" : "UK-LDN-LFW-5-110B",
+      "neighborhood" : "Tech South B",
+      "x" : 3217.1643,
+      "y" : 3340.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BHXVNMD2W71P6Y203YEH",
+      "name" : "UK-LDN-LFW-5-110C",
+      "neighborhood" : "Tech South B",
+      "x" : 3315.1643,
+      "y" : 3340.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BJ8JMFWAK2F6RZ0QKC21",
+      "name" : "UK-LDN-LFW-5-110D",
+      "neighborhood" : "Red Team",
+      "x" : 3119.1643,
+      "y" : 3408.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BJK6GZ7QVC2Y1DRZFDD3",
+      "name" : "UK-LDN-LFW-5-110E",
+      "neighborhood" : "Red Team",
+      "x" : 3217.1643,
+      "y" : 3408.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BJXM62AVSJCCARAZTJP6",
+      "name" : "UK-LDN-LFW-5-110F",
+      "neighborhood" : "Red Team",
+      "x" : 3315.1643,
+      "y" : 3408.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BKK00BR6A02K35WSA3Q3",
+      "name" : "UK-LDN-LFW-5-111B",
+      "neighborhood" : "Tech South A",
+      "x" : 3119.1643,
+      "y" : 3116.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BKWKH4A6K6XAWTKQ9M50",
+      "name" : "UK-LDN-LFW-5-111C",
+      "neighborhood" : "Tech South A",
+      "x" : 3217.1643,
+      "y" : 3116.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BM7EJPVGB9ZVDQPXE0XY",
+      "name" : "UK-LDN-LFW-5-111D",
+      "neighborhood" : "Tech South A",
+      "x" : 3315.1643,
+      "y" : 3116.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BMVDZ0Z25NP1S9HW8SV0",
+      "name" : "UK-LDN-LFW-5-111F",
+      "neighborhood" : "Tech South A",
+      "x" : 3119.1643,
+      "y" : 3184.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BN68CV99BXR1DXK25S41",
+      "name" : "UK-LDN-LFW-5-111G",
+      "neighborhood" : "Tech South A",
+      "x" : 3217.1643,
+      "y" : 3184.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BNH9N5N014EFCX6M3NXH",
+      "name" : "UK-LDN-LFW-5-111H",
+      "neighborhood" : "Tech South A",
+      "x" : 3315.1643,
+      "y" : 3184.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BP66EEZBBX2JAXHJSCKQ",
+      "name" : "UK-LDN-LFW-5-112B",
+      "neighborhood" : "Tech South A",
+      "x" : 3119.1643,
+      "y" : 2940.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BPFBJR832GSRN85BVMNN",
+      "name" : "UK-LDN-LFW-5-112C",
+      "neighborhood" : "Tech South A",
+      "x" : 3217.1643,
+      "y" : 2940.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BPSYDBYW31YYVXRWA7EN",
+      "name" : "UK-LDN-LFW-5-112D",
+      "neighborhood" : "Technology - Priority",
+      "x" : 3315.1643,
+      "y" : 2940.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BQEYH2XD71B94H406A9C",
+      "name" : "UK-LDN-LFW-5-112F",
+      "neighborhood" : "Tech South A",
+      "x" : 3119.1643,
+      "y" : 3008.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BQSHQ0FYJVH4N5HN0BGM",
+      "name" : "UK-LDN-LFW-5-112G",
+      "neighborhood" : "Tech South A",
+      "x" : 3217.1643,
+      "y" : 3008.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BR49WYB5474RCM37CN01",
+      "name" : "UK-LDN-LFW-5-112H",
+      "neighborhood" : "Tech South A",
+      "x" : 3315.1643,
+      "y" : 3008.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01HA6T4X3E31MB5JHP3F9P09SE",
+      "name" : "UK-LDN-LFW-5-109A",
+      "neighborhood" : "Banking",
+      "x" : 2584.1643,
+      "y" : 3339.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01HA6T54C1KB8F7TECD29EKMF7",
+      "name" : "UK-LDN-LFW-5-109B",
+      "neighborhood" : "EMBER",
+      "x" : 2682.1643,
+      "y" : 3339.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01HA6T5AKDJ6J6SSQY93B902Y7",
+      "name" : "UK-LDN-LFW-5-109C",
+      "neighborhood" : "EMBER",
+      "x" : 2780.1643,
+      "y" : 3339.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01HA6T5HSNGN5QZKBZ5WP9KTQ3",
+      "name" : "UK-LDN-LFW-5-109D",
+      "neighborhood" : "Banking",
+      "x" : 2878.1643,
+      "y" : 3339.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01HA6T5XBFDNDS62VJ12E0EY3E",
+      "name" : "UK-LDN-LFW-5-109F",
+      "neighborhood" : "Banking",
+      "x" : 2584.1643,
+      "y" : 3407.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01HA6T644D40737CN7RDRB8M02",
+      "name" : "UK-LDN-LFW-5-109G",
+      "neighborhood" : "EMBER",
+      "x" : 2682.1643,
+      "y" : 3407.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01HA6T69M87G93C12M906AE727",
+      "name" : "UK-LDN-LFW-5-109H",
+      "neighborhood" : "EMBER",
+      "x" : 2780.1643,
+      "y" : 3407.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01HA6T6G2X56V2WTBHDMMH5Q71",
+      "name" : "UK-LDN-LFW-5-109I",
+      "neighborhood" : "EMBER",
+      "x" : 2878.1643,
+      "y" : 3407.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01HA6T5R5NNMHJR3JP7JRTPX0M",
+      "name" : "UK-LDN-LFW-5-109E",
+      "neighborhood" : "Banking",
+      "x" : 2972.1643,
+      "y" : 3339.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01HA6T6NH97KSEDMRF71ETVXYN",
+      "name" : "UK-LDN-LFW-5-109J",
+      "neighborhood" : "Banking",
+      "x" : 2972.1643,
+      "y" : 3407.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BRETVHTXGXJXT4RA87E2",
+      "name" : "UK-LDN-LFW-5-113A",
+      "neighborhood" : "Tech Central",
+      "x" : 3031.1643,
+      "y" : 2197.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BRSMBETC0DWVV5VE4W8G",
+      "name" : "UK-LDN-LFW-5-113B",
+      "neighborhood" : "Tech Central",
+      "x" : 3129.1643,
+      "y" : 2197.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BS4JQFWY3GB8SKJ45J2Y",
+      "name" : "UK-LDN-LFW-5-113C",
+      "neighborhood" : "Tech Central",
+      "x" : 3227.1643,
+      "y" : 2197.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BSFDQG8CQ3XPT5CZNA0K",
+      "name" : "UK-LDN-LFW-5-113D",
+      "neighborhood" : "Tech Central",
+      "x" : 3031.1643,
+      "y" : 2265.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BSSY6G5MSDMDM64GDCZC",
+      "name" : "UK-LDN-LFW-5-113E",
+      "neighborhood" : "Tech Central",
+      "x" : 3129.1643,
+      "y" : 2265.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BT4RW1Q317BNP4ZG7RKP",
+      "name" : "UK-LDN-LFW-5-113F",
+      "neighborhood" : "Tech Central",
+      "x" : 3227.1643,
+      "y" : 2265.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BTFEXB5JMYCZX6G6DF9Z",
+      "name" : "UK-LDN-LFW-5-114A",
+      "neighborhood" : "Workplace Technology",
+      "x" : 3031.1643,
+      "y" : 1961.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BTTAYKNCRJE6H4WM844C",
+      "name" : "UK-LDN-LFW-5-114B",
+      "neighborhood" : "Facilities",
+      "x" : 3129.1643,
+      "y" : 1961.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BV50WVANW5DJYVP7NDDK",
+      "name" : "UK-LDN-LFW-514C",
+      "neighborhood" : "Facilities",
+      "x" : 3227.1643,
+      "y" : 1961.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BVFKK09RE77NGMFGY04K",
+      "name" : "UK-LDN-LFW-5-114D",
+      "neighborhood" : "Workplace Technology",
+      "x" : 3031.1643,
+      "y" : 2029.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BVT6MNB56FQ4XXKC55M5",
+      "name" : "UK-LDN-LFW-5-114E",
+      "neighborhood" : "Workplace Technology",
+      "x" : 3129.1643,
+      "y" : 2029.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BW4T04WTXKYB9P6M2Z7E",
+      "name" : "UK-LDN-LFW-5-114F",
+      "neighborhood" : "Workplace Technology",
+      "x" : 3227.1643,
+      "y" : 2029.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BYF3XERKW9M7JWTT08J1",
+      "name" : "UK-LDN-LFW-5-116A",
+      "neighborhood" : "Tech North B",
+      "x" : 2905.1643,
+      "y" : 1310.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G6X1BYRPVYP2JPAKK37STJRK",
+      "name" : "UK-LDN-LFW-5-116B",
+      "neighborhood" : "Tech North B",
+      "x" : 2905.1643,
+      "y" : 1212.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G6X1BZ3HB6BMD28MATJ873P9",
+      "name" : "UK-LDN-LFW-5-116C",
+      "neighborhood" : "Tech North B",
+      "x" : 2905.1643,
+      "y" : 1114.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G6X1BZEGB1EA6H2XQ4EJR5ET",
+      "name" : "UK-LDN-LFW-5-116D",
+      "neighborhood" : "Tech North B",
+      "x" : 3002.1643,
+      "y" : 1354.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G6X1BZSNG1RNN24S5K3KS11Z",
+      "name" : "UK-LDN-LFW-5-116E",
+      "neighborhood" : "Tech North B",
+      "x" : 3002.1643,
+      "y" : 1256.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G6X1C04MRB7VPNPFZKAHYNV1",
+      "name" : "UK-LDN-LFW-5-116F",
+      "neighborhood" : "Tech North B",
+      "x" : 3002.1643,
+      "y" : 1158.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G6X1BWFQ6N0M7AHYBHWV056T",
+      "name" : "UK-LDN-LFW-5-115A",
+      "neighborhood" : "Tech North B",
+      "x" : 2603.1643,
+      "y" : 1301.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BWTD8YCNY14ARF80XQD2",
+      "name" : "UK-LDN-LFW-5-115B",
+      "neighborhood" : "Tech North B",
+      "x" : 2701.1643,
+      "y" : 1301.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BX59KV3TCFAP778E2YCB",
+      "name" : "UK-LDN-LFW-5-115C",
+      "neighborhood" : "Tech North B",
+      "x" : 2799.1643,
+      "y" : 1301.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1BXGBZ8MN6VNJ800RH3S4",
+      "name" : "UK-LDN-LFW-5-115D",
+      "neighborhood" : "Tech North B",
+      "x" : 2603.1643,
+      "y" : 1369.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BXST34QF06BCE4ZQHHMX",
+      "name" : "UK-LDN-LFW-5-115E",
+      "neighborhood" : "Tech North B",
+      "x" : 2701.1643,
+      "y" : 1369.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1BY4F657SDRYDDN7W52QJ",
+      "name" : "UK-LDN-LFW-5-115F",
+      "neighborhood" : "Tech North B",
+      "x" : 2799.1643,
+      "y" : 1369.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1C0FEFMVDCGA511S73PHS",
+      "name" : "UK-LDN-LFW-5-117A",
+      "neighborhood" : "Tech North B",
+      "x" : 3137.1643,
+      "y" : 1301.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C0SZMVGV9163H6Y4R48P",
+      "name" : "UK-LDN-LFW-5-117B",
+      "neighborhood" : "Tech North B",
+      "x" : 3235.1643,
+      "y" : 1301.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C14T3PDZGM1AKCGX17PC",
+      "name" : "UK-LDN-LFW-5-117C",
+      "neighborhood" : "Tech North B",
+      "x" : 3333.1643,
+      "y" : 1301.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C1E785GAQSRDHKM39FGR",
+      "name" : "UK-LDN-LFW-5-117D",
+      "neighborhood" : "Tech North B",
+      "x" : 3137.1643,
+      "y" : 1369.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1C1RQY3RV0YYXMVPBCK91",
+      "name" : "UK-LDN-LFW-5-117E",
+      "neighborhood" : "Tech North B",
+      "x" : 3235.1643,
+      "y" : 1369.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1C23E6Z67R95W4WMEATZ1",
+      "name" : "UK-LDN-LFW-5-117F",
+      "neighborhood" : "Tech North B",
+      "x" : 3333.1643,
+      "y" : 1369.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1C2DRMD02PR1SF58PHZQN",
+      "name" : "UK-LDN-LFW-5-118A",
+      "neighborhood" : "Tech North A",
+      "x" : 2603.1643,
+      "y" : 960.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C2RSCA62EFT7NA4VXSN6",
+      "name" : "UK-LDN-LFW-5-118B",
+      "neighborhood" : "Tech North A",
+      "x" : 2701.1643,
+      "y" : 960.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C331RQZ5RHJ3VPHHZCAR",
+      "name" : "UK-LDN-LFW-5-118C",
+      "neighborhood" : "Tech North A",
+      "x" : 2799.1643,
+      "y" : 960.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C3DPVPJWBYAFAAAFQP93",
+      "name" : "UK-LDN-LFW-5-118D",
+      "neighborhood" : "Tech North A",
+      "x" : 2603.1643,
+      "y" : 1028.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1C3R696HNSSJ7VNRKSZ7M",
+      "name" : "UK-LDN-LFW-5-118E",
+      "neighborhood" : "Tech North A",
+      "x" : 2701.1643,
+      "y" : 1028.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1C41A2SZT567X2X3AFA4W",
+      "name" : "UK-LDN-LFW-5-118F",
+      "neighborhood" : "Tech North A",
+      "x" : 2799.1643,
+      "y" : 1028.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01HA6T3QZVDX0TEZ863NFFSBHC",
+      "name" : "UK-LDN-LFW-5-120A",
+      "neighborhood" : "Tech North A",
+      "x" : 2603.1643,
+      "y" : 732.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01HA6T3Y64VK1N3XWXF8RV9SV3",
+      "name" : "UK-LDN-LFW-5-120B",
+      "neighborhood" : "Tech North A",
+      "x" : 2701.1643,
+      "y" : 732.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01HA6T44CAEPEA2M2DRWS743SK",
+      "name" : "UK-LDN-LFW-5-120C",
+      "neighborhood" : "Tech North A",
+      "x" : 2799.1643,
+      "y" : 732.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01HA6T49MC7Y74Q6GNMG1C8QKJ",
+      "name" : "UK-LDN-LFW-5-120D",
+      "neighborhood" : "Tech North A",
+      "x" : 2603.1643,
+      "y" : 800.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01HA6T4FPVHEZ4VMNMS4GRG2VF",
+      "name" : "UK-LDN-LFW-5-120E",
+      "neighborhood" : "Tech North A",
+      "x" : 2701.1643,
+      "y" : 800.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01HA6T4NF8712DB3N168YXAMYQ",
+      "name" : "UK-LDN-LFW-5-120F",
+      "neighborhood" : "Tech North A",
+      "x" : 2799.1643,
+      "y" : 800.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1C4BJAPGZ18SXWFEKSFN8",
+      "name" : "UK-LDN-LFW-5-119A",
+      "neighborhood" : "Tech North B",
+      "x" : 3137.1643,
+      "y" : 960.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C4NWF16SDVTQKMGZHW6N",
+      "name" : "UK-LDN-LFW-5-119B",
+      "neighborhood" : "Tech North B",
+      "x" : 3235.1643,
+      "y" : 960.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C50B7T7E4J1HFEHQDSG4",
+      "name" : "UK-LDN-LFW-5-119C",
+      "neighborhood" : "Tech North B",
+      "x" : 3333.1643,
+      "y" : 960.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C59KVR8SN69ME5RNMGEK",
+      "name" : "UK-LDN-LFW-5-119D",
+      "neighborhood" : "Tech North B",
+      "x" : 3137.1643,
+      "y" : 1028.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1C5MGC52QRQWT980ABGBD",
+      "name" : "UK-LDN-LFW-5-119E",
+      "neighborhood" : "Tech North B",
+      "x" : 3235.1643,
+      "y" : 1028.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1C5XQ0W8Y0PYYHD88W5TK",
+      "name" : "UK-LDN-LFW-5-119F",
+      "neighborhood" : "Tech North B",
+      "x" : 3333.1643,
+      "y" : 1028.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01HR9KBPJ1HBBQKH6FD3ZZ4E1C",
+      "name" : "UK-LDN-LFW-5-122A",
+      "neighborhood" : "Tech North A",
+      "x" : 3137.1643,
+      "y" : 491.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C8VRG4MA51GJ9Q939SXC",
+      "name" : "UK-LDN-LFW-5-122B",
+      "neighborhood" : "Tech North A",
+      "x" : 3235.1643,
+      "y" : 491.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C96BDHR87FQ9FN2BEYYG",
+      "name" : "UK-LDN-LFW-5-122C",
+      "neighborhood" : "Tech North A",
+      "x" : 3333.1643,
+      "y" : 491.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C9GDMCGRF71M2HQ6DWG9",
+      "name" : "UK-LDN-LFW-5-122D",
+      "neighborhood" : "Tech North A",
+      "x" : 3137.1643,
+      "y" : 559.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01HR9KEMR0TCJAP22EVH7EETMY",
+      "name" : "UK-LDN-LFW-5-122E",
+      "neighborhood" : "Tech North A",
+      "x" : 3235.1643,
+      "y" : 559.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1CA60VDGEP4R3GTNX13FK",
+      "name" : "UK-LDN-LFW-5-122F",
+      "neighborhood" : "Tech North A",
+      "x" : 3333.1643,
+      "y" : 559.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1C68F8XYPZT5PBPEQ2J7X",
+      "name" : "UK-LDN-LFW-5-121A",
+      "neighborhood" : "Tech North A",
+      "x" : 2603.1643,
+      "y" : 491.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C6K7N2ENVREEB6BJS624",
+      "name" : "UK-LDN-LFW-5-121B",
+      "neighborhood" : "Tech North A",
+      "x" : 2701.1643,
+      "y" : 491.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C6WBHVXP8W89633V0XFJ",
+      "name" : "UK-LDN-LFW-5-121C",
+      "neighborhood" : "Tech North A",
+      "x" : 2799.1643,
+      "y" : 491.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G6X1C778E9Q7YS9PJMT6SN0K",
+      "name" : "UK-LDN-LFW-5-121D",
+      "neighborhood" : "Tech North A",
+      "x" : 2603.1643,
+      "y" : 559.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1C7J9NWNQBKM3T5SX8TP9",
+      "name" : "UK-LDN-LFW-5-121E",
+      "neighborhood" : "Tech North A",
+      "x" : 2701.1643,
+      "y" : 559.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1C7X2JRQHWAKDB98S9SXM",
+      "name" : "UK-LDN-LFW-5-121F",
+      "neighborhood" : "Tech North A",
+      "x" : 2799.1643,
+      "y" : 559.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G6X1CQ86D560T7JV81VTHTZ5",
+      "name" : "Working Lounge",
+      "x" : 3161.1643,
+      "y" : 2454.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G6X1CH615BYTQ2QQK9HYCKQW",
+      "name" : "UK-LDN-LFW-5-125F",
+      "neighborhood" : "Tech North C",
+      "x" : 721.408,
+      "y" : 1373.279,
+      "rotation" : 102.0
+    }, {
+      "id" : "01G6X1CHGF80CSJZ3QNJFYQ575",
+      "name" : "UK-LDN-LFW-5-125E",
+      "neighborhood" : "Tech North C",
+      "x" : 817.2665,
+      "y" : 1393.6543,
+      "rotation" : 102.0
+    }, {
+      "id" : "01G6X1CHV35SZMPK2F7GMQ9F18",
+      "name" : "UK-LDN-LFW-5-125D",
+      "neighborhood" : "Tech North C",
+      "x" : 913.1249,
+      "y" : 1414.0297,
+      "rotation" : 102.0
+    }, {
+      "id" : "01G6X1CJ5W52P55TPYNAMX0NV8",
+      "name" : "UK-LDN-LFW-5-123C",
+      "neighborhood" : "Tech North C",
+      "x" : 1008.9834,
+      "y" : 1434.405,
+      "rotation" : 102.0
+    }, {
+      "id" : "01G6X1CJGSDWE3Z1B42B3GKN1V",
+      "name" : "UK-LDN-LFW-5-123D",
+      "neighborhood" : "Tech North C",
+      "x" : 1104.8419,
+      "y" : 1454.7803,
+      "rotation" : 102.0
+    }, {
+      "id" : "01G6X1CJVYQX8S6XX0ZPJFS5XW",
+      "name" : "UK-LDN-LFW-5-125C",
+      "neighborhood" : "Tech North C",
+      "x" : 707.27,
+      "y" : 1439.793,
+      "rotation" : -78.0
+    }, {
+      "id" : "01G6X1CK6N1Y38E1QFC4GHVV4F",
+      "name" : "UK-LDN-LFW-5-125B",
+      "neighborhood" : "Tech North C",
+      "x" : 803.1285,
+      "y" : 1460.1683,
+      "rotation" : -78.0
+    }, {
+      "id" : "01G6X1CKHEMHG0TBE4EB3MYBYX",
+      "name" : "UK-LDN-LFW-5-125A",
+      "neighborhood" : "Tech North C",
+      "x" : 898.9869,
+      "y" : 1480.5437,
+      "rotation" : -78.0
+    }, {
+      "id" : "01G6X1CKW9N865DBQZDKPG5EBF",
+      "name" : "UK-LDN-LFW-5-123E",
+      "neighborhood" : "Tech North C",
+      "x" : 994.8454,
+      "y" : 1500.919,
+      "rotation" : -78.0
+    }, {
+      "id" : "01G6X1CM6QTF2MXGJEK1D5C34E",
+      "name" : "UK-LDN-LFW-5-123F",
+      "neighborhood" : "Tech North C",
+      "x" : 1090.7039,
+      "y" : 1521.2944,
+      "rotation" : -78.0
+    }, {
+      "id" : "01G9F39VTCEHRZREECQCK82RRM",
+      "name" : "Flexible Working 01",
+      "x" : 3251.1643,
+      "y" : 1473.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G9F39W5NNW71B5558S9YX5E7",
+      "name" : "Flexible Working 02",
+      "x" : 3348.1643,
+      "y" : 1517.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G9F39WJ4E4K1935BGWWF1YEZ",
+      "name" : "Flexible Working 03",
+      "x" : 3251.1643,
+      "y" : 1571.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G9F39WWBP2SKB3Z5XJGG61E5",
+      "name" : "Flexible Working 04",
+      "x" : 3348.1643,
+      "y" : 1615.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G9F39X7PYH2AXPBK3VH7E7W7",
+      "name" : "Flexible Working 05",
+      "x" : 3251.1643,
+      "y" : 1669.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G9F39XMJG3N3WGN0RNTQPTBB",
+      "name" : "Flexible Working 06",
+      "x" : 3348.1643,
+      "y" : 1713.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G9F39XYP3ASZ3ZK1YVCXXSZ3",
+      "name" : "Flexible Working 07",
+      "x" : 3251.1643,
+      "y" : 1767.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G9F39YAGTP8TEKRPCXRFQ5QQ",
+      "name" : "Flexible Working 08",
+      "x" : 3348.1643,
+      "y" : 1811.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G9F39YQABJFRV7SQW80Z37CV",
+      "name" : "Pod 9",
+      "neighborhood" : "Desk Pods",
+      "x" : 2402.1643,
+      "y" : 2922.9011,
+      "rotation" : 90.0
+    }, {
+      "id" : "01G9F39Z7B4SVDFQ6DGY4WA7ZG",
+      "name" : "Pod 10",
+      "neighborhood" : "Desk Pods",
+      "x" : 2402.1643,
+      "y" : 3000.9011,
+      "rotation" : -90.0
+    }, {
+      "id" : "01G9F39ZK6XBS85FCTE7NJW489",
+      "name" : "Flexible Working 11",
+      "x" : 519.1643,
+      "y" : 2287.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G9F3A015Z0T2Y5BDCPHE2JE5",
+      "name" : "Flexible Working 12",
+      "x" : 616.1643,
+      "y" : 2331.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G9F3A0G8FAF6SST815EW1FND",
+      "name" : "Flexible Working 13",
+      "x" : 519.1643,
+      "y" : 2189.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G9F3A0XPDE64J32HGDRTBAGK",
+      "name" : "Flexible Working 14",
+      "x" : 616.1643,
+      "y" : 2233.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G9F3A1DS93RESAMFDHA3D19M",
+      "name" : "Flexible Working 15",
+      "x" : 519.1643,
+      "y" : 2091.9011,
+      "rotation" : 0.0
+    }, {
+      "id" : "01G9F3A1W0MSZZ78RMKF6C7AYH",
+      "name" : "Flexible Working 16",
+      "x" : 616.1643,
+      "y" : 2135.9011,
+      "rotation" : 180.0
+    }, {
+      "id" : "01G9F3A2899BMH0TD0AF448C5C",
+      "name" : "Flexible Working 17",
+      "x" : 643.5379,
+      "y" : 1718.5814,
+      "rotation" : 11.0
+    }, {
+      "id" : "01G9F3A2KSZ608BBW54KSVBXT7",
+      "name" : "Flexible Working 18",
+      "x" : 710.2886,
+      "y" : 1731.5564,
+      "rotation" : -169.0
+    }, {
+      "id" : "01G9F3A30JSC91K7N5CWQRSW15",
+      "name" : "Flexible Working 19",
+      "x" : 662.2372,
+      "y" : 1622.3819,
+      "rotation" : 11.0
+    }, {
+      "id" : "01G9F3A3C2EGB1AS42SPC7A7T1",
+      "name" : "Flexible Working 20",
+      "x" : 728.9879,
+      "y" : 1635.357,
+      "rotation" : -169.0
+    } ],
+    "pods" : [ {
+      "id" : "01JH398JY5VB6E22JVVDF4T4M6",
+      "name" : "Pod 1",
+      "neighborhood" : "Meeting Pods",
+      "x" : 1180.0,
+      "y" : 1010.75,
+      "rotation" : 102.0
+    }, {
+      "id" : "01JJ1WCGFJ3G0VQ1MDT14CB3S4",
+      "name" : "Pod 2",
+      "neighborhood" : "Meeting Pods",
+      "x" : 1152.0,
+      "y" : 1141.75,
+      "rotation" : 101.0
+    }, {
+      "id" : "01JJ1WCP5PVWJ23XGJNNYZ14H6",
+      "name" : "Pod 3",
+      "neighborhood" : "Meeting Pods",
+      "x" : 1126.0,
+      "y" : 1271.75,
+      "rotation" : 102.0
+    }, {
+      "id" : "01JJ1WCVF6PFXGS86AAF377E3G",
+      "name" : "Pod 4",
+      "neighborhood" : "Meeting Pods",
+      "x" : 831.0,
+      "y" : 2708.75,
+      "rotation" : 169.0
+    }, {
+      "id" : "01JJ1WD1BJEHCNK80EXTBACWTK",
+      "name" : "Pod 5",
+      "neighborhood" : "Meeting Pods",
+      "x" : 959.0,
+      "y" : 2682.75,
+      "rotation" : 168.0
+    }, {
+      "id" : "01JJ1WD6HRS7W7HNRD3P92FN15",
+      "name" : "Pod 6",
+      "neighborhood" : "Meeting Pods",
+      "x" : 1087.0,
+      "y" : 2656.0,
+      "rotation" : 168.0
+    }, {
+      "id" : "01JJ1WDBBM7G2FPDN8ZD58N4C7",
+      "name" : "Pod 7",
+      "neighborhood" : "Meeting Pods",
+      "x" : 2855.0,
+      "y" : 2608.75,
+      "rotation" : 193.0
+    }, {
+      "id" : "01JJ1WDJCTJND7BJH22DX50BKC",
+      "name" : "Pod 8",
+      "neighborhood" : "Meeting Pods",
+      "x" : 2984.5,
+      "y" : 2635.5,
+      "rotation" : 191.0
+    } ]
+  },
+  "walls" : [ {
+    "id" : "Path-36",
+    "points" : [ [ 829.434141, 337.0 ], [ 3435.90822, 337.0 ], [ 3435.90822, 3550.58621 ], [ 341.9999999999999, 3550.58621 ], [ 342.0, 2661.35017 ], [ 818.367587, 383.798558 ], [ 857.962576, 383.798558 ], [ 388.2329162, 2661.35017 ], [ 388.2329162, 3504.31461 ], [ 3357.17158, 3504.31461 ], [ 3357.17158, 2737.43352 ], [ 3381.70801, 2737.43352 ], [ 3381.70801, 1252.509927 ], [ 3381.70801, 383.798558 ], [ 2178.7618899999998, 383.798558 ], [ 2178.7618899999998, 578.1665849999999 ], [ 2138.16426, 578.1665849999999 ], [ 2138.16426, 383.798558 ], [ 1814.3633, 383.798558 ], [ 1814.3633, 578.1665849999999 ], [ 1781.0432, 578.1665849999999 ], [ 1781.0432, 383.798558 ], [ 818.367587, 383.798558 ] ]
+  }, {
+    "id" : "Path-37",
+    "points" : [ [ 1451.02895, 470.63340800000003 ], [ 1593.33324, 470.63340800000003 ], [ 1593.33324, 1052.1026510000002 ], [ 1583.56359, 1052.1026510000002 ], [ 1583.56359, 1012.582644 ], [ 1352.98783, 1012.582644 ], [ 1352.98783, 1052.1026510000002 ], [ 1340.887236, 1052.1026510000002 ], [ 1340.887236, 982.534173 ], [ 1352.98783, 982.534173 ], [ 1352.98783, 999.948587 ], [ 1541.08414, 999.948587 ], [ 1541.08414, 841.2112010000001 ], [ 1384.23335, 841.2112010000001 ], [ 1361.32338, 930.412115 ], [ 1352.98783, 930.412115 ], [ 1384.23335, 809.210142 ], [ 1391.39954, 809.210142 ], [ 1387.49987, 830.1889249999999 ], [ 1541.08414, 830.1889249999999 ], [ 1541.08414, 682.438264 ], [ 1417.52946, 682.438264 ], [ 1399.40461, 756.896258 ], [ 1391.39954, 753.2515169999999 ], [ 1417.52946, 654.16756 ], [ 1423.3002, 654.16756 ], [ 1420.35401, 670.2462889999999 ], [ 1541.08414, 670.2462889999999 ], [ 1541.08414, 518.080238 ], [ 1451.02895, 518.080238 ], [ 1432.80329, 596.762543 ], [ 1425.57272, 594.5236070000001 ], [ 1446.66803, 509.81329600000004 ], [ 1446.66803, 470.63340800000003 ] ]
+  }, {
+    "id" : "Path-38",
+    "points" : [ [ 1102.5331660000002, 924.443464 ], [ 1245.2020830000001, 955.680828 ], [ 1235.610477, 1006.759197 ], [ 1225.687351, 1003.2275 ], [ 1232.9883610000002, 964.242204 ], [ 1151.780756, 946.802673 ], [ 1126.4232550000002, 1061.51838 ], [ 1208.768523, 1076.048851 ], [ 1215.024112, 1044.781369 ], [ 1225.687351, 1048.123454 ], [ 1206.4301070000001, 1134.849597 ], [ 1196.000368, 1131.192014 ], [ 1204.081252, 1093.559745 ], [ 1122.496148, 1079.6169169999998 ], [ 1102.5331660000002, 1188.1942159999999 ], [ 1180.794316, 1205.439062 ], [ 1186.894309, 1170.7392909999999 ], [ 1199.963084, 1174.1680099999999 ], [ 1180.794316, 1265.4292289999999 ], [ 1169.649309, 1262.260815 ], [ 1177.226731, 1222.367033 ], [ 1099.2804099999998, 1205.439062 ], [ 1074.630609, 1318.6778530000001 ], [ 1154.159925, 1335.951155 ], [ 1162.9483460000001, 1298.941669 ], [ 1173.192164, 1301.09721 ], [ 1159.916346, 1354.9246600000001 ], [ 1025.4134549999999, 1326.138462 ], [ 1085.342922, 1022.204877 ], [ 1122.496148, 1029.460664 ], [ 1141.131751, 946.802673 ], [ 1099.2804099999998, 937.528846 ] ]
+  }, {
+    "id" : "Path-39",
+    "points" : [ [ 768.876767, 1560.18478 ], [ 1384.4001, 1688.72326 ], [ 1327.4706609999998, 1954.14953 ], [ 1300.4497000000001, 1954.14953 ], [ 1300.4497000000001, 1937.38153 ], [ 1315.371868, 1937.38153 ], [ 1365.46774, 1698.46481 ], [ 818.76279, 1584.66136 ], [ 768.876767, 1828.82988 ], [ 1245.2020830000001, 1926.40111 ], [ 1245.2020830000001, 1943.79311 ], [ 713.927098, 1836.64405 ] ]
+  }, {
+    "id" : "Path-40",
+    "points" : [ [ 645.170468, 1954.14953 ], [ 969.699525, 1954.14953 ], [ 969.699525, 1967.199 ], [ 926.626795, 1967.199 ], [ 926.626795, 2062.30558 ], [ 969.699525, 2062.30558 ], [ 969.699525, 2217.07889 ], [ 926.626795, 2217.07889 ], [ 926.626795, 2313.41857 ], [ 969.699525, 2313.41857 ], [ 969.699525, 2325.21955 ], [ 904.548114, 2325.21955 ], [ 904.548114, 2307.6585999999998 ], [ 916.978398, 2307.6585999999998 ], [ 916.978398, 1967.199 ], [ 697.523516, 1967.199 ], [ 697.523516, 2313.41857 ], [ 851.833464, 2313.41857 ], [ 851.833464, 2325.21955 ], [ 645.170468, 2325.21955 ] ]
+  }, {
+    "id" : "Path-41",
+    "points" : [ [ 658.149627, 2463.93867 ], [ 834.074316, 2427.56187 ], [ 838.561366, 2445.75027 ], [ 720.080928, 2469.69016 ], [ 761.081096, 2664.38487 ], [ 939.027189, 2626.9116 ], [ 898.187729, 2432.75318 ], [ 890.711091, 2435.21768 ], [ 886.60433, 2419.12523 ], [ 914.705499, 2412.5807 ], [ 919.817559, 2427.56187 ], [ 912.180274, 2427.56187 ], [ 951.781948, 2623.08271 ], [ 1131.205759, 2588.59732 ], [ 1091.989556, 2389.43781 ], [ 971.76307, 2414.69962 ], [ 968.01553, 2402.4536 ], [ 1102.594704, 2373.3177299999998 ], [ 1168.161237, 2690.50988 ], [ 1125.0630230000002, 2700.67162 ], [ 1121.438776, 2688.13028 ], [ 1152.4584260000001, 2680.60982 ], [ 1134.592007, 2606.41008 ], [ 1023.214614, 2626.9116 ], [ 1041.438483, 2706.36889 ], [ 1073.5286099999998, 2697.67693 ], [ 1076.593016, 2710.90442 ], [ 990.445846, 2732.62857 ], [ 987.836904, 2719.58071 ], [ 1023.214614, 2710.90442 ], [ 1006.391497, 2629.68451 ], [ 893.396613, 2654.67229 ], [ 908.607404, 2734.84426 ], [ 946.362894, 2726.44893 ], [ 949.121304, 2739.70459 ], [ 862.050929, 2759.03789 ], [ 859.178585, 2746.62912 ], [ 893.396613, 2737.52636 ], [ 878.093447, 2657.57793 ], [ 764.432971, 2680.60982 ], [ 781.178535, 2759.03789 ], [ 820.022393, 2751.6286 ], [ 823.273371, 2766.49274 ], [ 725.58043, 2785.89785 ] ]
+  }, {
+    "id" : "Path-42",
+    "points" : [ [ 1314.815153, 1135.124845 ], [ 1695.30164, 1135.124845 ], [ 1695.30164, 1159.8679280000001 ], [ 1585.87152, 1159.8679280000001 ], [ 1585.87152, 1254.9732749999998 ], [ 1771.52001, 1254.9732749999998 ], [ 1771.52001, 1159.8679280000001 ], [ 1750.09241, 1159.8679280000001 ], [ 1750.09241, 1135.124845 ], [ 1794.9091, 1135.124845 ], [ 1794.9091, 1159.8679280000001 ], [ 1784.44121, 1159.8679280000001 ], [ 1784.44121, 1254.9732749999998 ], [ 1850.62472, 1254.9732749999998 ], [ 1847.97093, 1135.124845 ], [ 1867.99244, 1135.124845 ], [ 1867.99244, 1159.8679280000001 ], [ 1861.19042, 1159.8679280000001 ], [ 1861.19042, 1254.9732749999998 ], [ 1927.27102, 1254.9732749999998 ], [ 1924.21585, 1135.124845 ], [ 2098.53953, 1135.124845 ], [ 2098.53953, 1159.8679280000001 ], [ 1941.14121, 1159.8679280000001 ], [ 1941.14121, 1254.9732749999998 ], [ 2168.22225, 1254.9732749999998 ], [ 2168.22225, 1159.8679280000001 ], [ 2147.47016, 1159.8679280000001 ], [ 2147.47016, 1135.124845 ], [ 2172.01516, 1135.124845 ], [ 2172.01516, 1055.277019 ], [ 1791.78344, 1055.277019 ], [ 1791.78344, 1074.155602 ], [ 1775.78532, 1074.155602 ], [ 1775.78532, 937.34804 ], [ 2194.94609, 937.34804 ], [ 2194.94609, 951.088839 ], [ 2181.0268, 951.088839 ], [ 2181.0268, 1135.124845 ], [ 2203.5137400000003, 1135.124845 ], [ 2203.5137400000003, 1159.8679280000001 ], [ 2181.0268, 1159.8679280000001 ], [ 2181.0268, 1254.9732749999998 ], [ 2366.0675499999998, 1254.9732749999998 ], [ 2366.0675499999998, 1159.8679280000001 ], [ 2251.92378, 1159.8679280000001 ], [ 2251.92378, 1135.124845 ], [ 2330.7195300000003, 1135.124845 ], [ 2330.7195300000003, 951.088839 ], [ 2247.79761, 951.088839 ], [ 2247.79761, 937.34804 ], [ 2481.53379, 937.34804 ], [ 2481.53379, 1074.155602 ], [ 2469.90399, 1074.155602 ], [ 2469.90399, 951.088839 ], [ 2344.9214300000003, 951.088839 ], [ 2344.9214300000003, 1135.124845 ], [ 2392.23579, 1135.124845 ], [ 2392.23579, 1159.8679280000001 ], [ 2378.17526, 1159.8679280000001 ], [ 2378.17526, 1254.9732749999998 ], [ 2469.90399, 1254.9732749999998 ], [ 2469.90399, 1159.8679280000001 ], [ 2443.50579, 1159.8679280000001 ], [ 2443.50579, 1135.124845 ], [ 2481.53379, 1135.124845 ], [ 2481.53379, 1272.53721 ], [ 2478.51591, 1272.53721 ], [ 2478.51591, 1482.65311 ], [ 2469.90399, 1482.65311 ], [ 2469.90399, 1272.53721 ], [ 2203.5137400000003, 1272.53721 ], [ 2203.5137400000003, 1546.80738 ], [ 2469.90399, 1546.80738 ], [ 2469.90399, 1536.91967 ], [ 2481.53379, 1536.91967 ], [ 2481.53379, 1570.51724 ], [ 2469.90399, 1570.51724 ], [ 2469.90399, 1559.73251 ], [ 2301.0996299999997, 1559.73251 ], [ 2301.0996299999997, 1837.94835 ], [ 2469.90399, 1837.94835 ], [ 2469.90399, 1649.28869 ], [ 2481.53379, 1649.28869 ], [ 2481.53379, 2077.5271700000003 ], [ 2473.04227, 2077.5271700000003 ], [ 2473.04227, 2030.3534 ], [ 2400.24521, 2030.3534 ], [ 2400.24521, 2007.72657 ], [ 2455.31851, 2007.72657 ], [ 2455.31851, 1863.97704 ], [ 2070.38085, 1863.97704 ], [ 2070.38085, 2007.72657 ], [ 2128.59627, 2007.72657 ], [ 2128.59627, 2030.3534 ], [ 2055.01214, 2030.3534 ], [ 2055.01214, 2074.55665 ], [ 2045.17054, 2074.55665 ], [ 2045.17054, 2030.3534 ], [ 1831.5853, 2030.3534 ], [ 1831.5853, 2014.16113 ], [ 2045.17054, 2014.16113 ], [ 2045.17054, 1943.79311 ], [ 1861.19042, 1943.79311 ], [ 1861.19042, 1963.1607 ], [ 1847.97093, 1963.1607 ], [ 1847.97093, 1926.40111 ], [ 1861.19042, 1926.40111 ], [ 1861.19042, 1932.8971 ], [ 2045.17054, 1932.8971 ], [ 2045.17054, 1855.70753 ], [ 1861.19042, 1855.70753 ], [ 1861.19042, 1882.52086 ], [ 1847.97093, 1882.52086 ], [ 1847.97093, 1819.01486 ], [ 1861.19042, 1819.01486 ], [ 1861.19042, 1844.94316 ], [ 1991.31253, 1844.94316 ], [ 1991.31253, 1808.36684 ], [ 2008.26532, 1808.36684 ], [ 2008.26532, 1844.94316 ], [ 2082.2249300000003, 1844.94316 ], [ 2082.2249300000003, 1729.86367 ], [ 2008.26532, 1729.86367 ], [ 2008.26532, 1756.16261 ], [ 1991.31253, 1756.16261 ], [ 1991.31253, 1712.21616 ], [ 2098.53953, 1712.21616 ], [ 2098.53953, 1842.08684 ], [ 2282.1636399999998, 1842.08684 ], [ 2282.1636399999998, 1559.73251 ], [ 1927.27102, 1559.73251 ], [ 1927.27102, 1614.5637 ], [ 1861.19042, 1614.5637 ], [ 1861.19042, 1756.16261 ], [ 1847.97093, 1756.16261 ], [ 1847.97093, 1729.86367 ], [ 1824.97791, 1729.86367 ], [ 1824.97791, 1712.21616 ], [ 1847.97093, 1712.21616 ], [ 1847.97093, 1579.38192 ], [ 1824.97791, 1579.38192 ], [ 1824.97791, 1559.73251 ], [ 1847.97093, 1559.73251 ], [ 1847.97093, 1555.09544 ], [ 1861.19042, 1555.09544 ], [ 1861.19042, 1600.88411 ], [ 1915.14279, 1600.88411 ], [ 1915.14279, 1514.10628 ], [ 1861.19042, 1514.10628 ], [ 1861.19042, 1523.50147 ], [ 1850.62472, 1523.50147 ], [ 1850.62472, 1497.60988 ], [ 1927.27102, 1497.60988 ], [ 1927.27102, 1546.80738 ], [ 2185.76347, 1546.80738 ], [ 2185.76347, 1407.37846 ], [ 2116.7555199999997, 1407.37846 ], [ 2116.7555199999997, 1300.403068 ], [ 1747.276, 1300.403068 ], [ 1750.09241, 1419.67292 ], [ 1732.3402, 1419.67292 ], [ 1732.3402, 1403.53124 ], [ 1612.94555, 1403.53124 ], [ 1612.94555, 1497.60988 ], [ 1732.3402, 1497.60988 ], [ 1732.3402, 1470.92148 ], [ 1747.276, 1470.92148 ], [ 1750.09241, 1559.73251 ], [ 1762.73775, 1559.73251 ], [ 1762.73775, 1579.38192 ], [ 1750.09241, 1579.38192 ], [ 1750.09241, 1644.04407 ], [ 1732.3402, 1644.04407 ], [ 1732.3402, 1514.10628 ], [ 1612.94555, 1514.10628 ], [ 1612.94555, 1712.21616 ], [ 1732.3402, 1712.21616 ], [ 1732.3402, 1692.01268 ], [ 1747.276, 1692.01268 ], [ 1747.276, 1712.21616 ], [ 1759.97012, 1712.21616 ], [ 1759.97012, 1729.86367 ], [ 1747.276, 1729.86367 ], [ 1747.276, 1756.16261 ], [ 1732.3402, 1756.16261 ], [ 1732.3402, 1729.86367 ], [ 1612.94555, 1729.86367 ], [ 1612.94555, 1781.14415 ], [ 1484.59869, 1781.14415 ], [ 1484.59869, 1906.86645 ], [ 1600.76864, 1906.86645 ], [ 1600.76864, 1830.03417 ], [ 1612.94555, 1830.03417 ], [ 1612.94555, 1837.94835 ], [ 1732.3402, 1837.94835 ], [ 1732.3402, 1819.01486 ], [ 1747.276, 1819.01486 ], [ 1747.276, 2014.16113 ], [ 1759.97012, 2014.16113 ], [ 1759.97012, 2030.3534 ], [ 1700.6154, 2030.3534 ], [ 1700.6154, 2014.16113 ], [ 1723.75122, 2014.16113 ], [ 1723.75122, 1863.97704 ], [ 1612.94555, 1863.97704 ], [ 1612.94555, 2014.16113 ], [ 1631.4807, 2014.16113 ], [ 1631.4807, 2030.3534 ], [ 1484.59869, 2030.3534 ], [ 1484.59869, 2077.5271700000003 ], [ 1468.57786, 2077.5271700000003 ], [ 1468.57786, 2007.72657 ], [ 1484.59869, 2007.72657 ], [ 1484.59869, 2014.16113 ], [ 1600.76864, 2014.16113 ], [ 1600.76864, 1918.58987 ], [ 1484.59869, 1918.58987 ], [ 1484.59869, 1954.14953 ], [ 1468.57786, 1954.14953 ], [ 1468.57786, 1619.28547 ], [ 1221.747405, 1570.51724 ], [ 1226.3772, 1546.80738 ], [ 1238.685994, 1546.80738 ], [ 1235.055513, 1559.73251 ], [ 1468.57786, 1605.56099 ], [ 1468.57786, 1596.22828 ], [ 1484.59869, 1596.22828 ], [ 1484.59869, 1629.21706 ], [ 1600.76864, 1629.21706 ], [ 1600.76864, 1403.53124 ], [ 1484.59869, 1403.53124 ], [ 1484.59869, 1463.66695 ], [ 1468.57786, 1463.66695 ], [ 1468.57786, 1314.880037 ], [ 1287.2943089999999, 1314.880037 ], [ 1249.681124, 1497.60988 ], [ 1238.685994, 1494.34104 ], [ 1281.546738, 1282.685039 ], [ 1291.83629, 1286.096509 ], [ 1291.83629, 1303.283322 ], [ 1468.57786, 1300.403068 ], [ 1467.11024, 1148.423484 ], [ 1320.626407, 1148.423484 ], [ 1304.568186, 1230.676102 ], [ 1294.500234, 1226.9989070000001 ] ]
+  }, {
+    "id" : "Path-43",
+    "points" : [ [ 1467.4604, 2190.92299 ], [ 1481.96059, 2190.92299 ], [ 1481.96059, 2231.37071 ], [ 1713.01608, 2231.37071 ], [ 1713.01608, 2247.0752 ], [ 1693.40007, 2247.0752 ], [ 1693.40007, 2621.13309 ], [ 1701.74672, 2621.13309 ], [ 1701.74672, 2633.4715 ], [ 1693.40007, 2633.4715 ], [ 1693.40007, 2656.5394 ], [ 1739.81552, 2656.5394 ], [ 1739.81552, 2633.4715 ], [ 1728.41499, 2633.4715 ], [ 1728.41499, 2621.13309 ], [ 1775.3804, 2621.13309 ], [ 1775.3804, 2633.4715 ], [ 1752.783, 2633.4715 ], [ 1752.783, 2690.52712 ], [ 1844.39411, 2690.52712 ], [ 1844.39411, 2633.4715 ], [ 1824.21496, 2633.4715 ], [ 1824.21496, 2621.13309 ], [ 1967.27702, 2621.13309 ], [ 1967.27702, 2567.37525 ], [ 1905.33997, 2567.37525 ], [ 1905.33997, 2542.86217 ], [ 1917.72763, 2542.86217 ], [ 1917.72763, 2551.30171 ], [ 2000.53152, 2551.30171 ], [ 2000.53152, 2677.6957 ], [ 2447.10173, 2677.6957 ], [ 2447.10173, 2426.55259 ], [ 1844.39411, 2426.55259 ], [ 1844.39411, 2247.0752 ], [ 1830.5444, 2247.0752 ], [ 1830.5444, 2231.37071 ], [ 1862.28288, 2231.37071 ], [ 1862.28288, 2399.55015 ], [ 2043.55783, 2399.55015 ], [ 2043.55783, 2247.0752 ], [ 1917.72763, 2247.0752 ], [ 1917.72763, 2231.37071 ], [ 2043.55783, 2231.37071 ], [ 2043.55783, 2190.92299 ], [ 2055.14887, 2190.92299 ], [ 2055.14887, 2231.37071 ], [ 2125.65531, 2231.37071 ], [ 2125.65531, 2259.4848 ], [ 2068.34402, 2259.4848 ], [ 2068.34402, 2399.55015 ], [ 2454.83391, 2399.55015 ], [ 2454.83391, 2259.4848 ], [ 2392.63147, 2259.4848 ], [ 2392.63147, 2231.37071 ], [ 2470.53375, 2231.37071 ], [ 2470.53375, 2190.92299 ], [ 2481.53379, 2190.92299 ], [ 2481.53379, 2423.16796 ], [ 2672.09076, 2423.16796 ], [ 2672.09076, 2372.48605 ], [ 2686.57115, 2372.48605 ], [ 2686.57115, 2499.88461 ], [ 2638.50203, 2499.88461 ], [ 2638.50203, 2436.91328 ], [ 2481.53379, 2436.91328 ], [ 2481.53379, 2562.36481 ], [ 2686.57115, 2562.36481 ], [ 2686.57115, 2575.27783 ], [ 2481.53379, 2575.27783 ], [ 2481.53379, 2720.17216 ], [ 2672.09076, 2720.17216 ], [ 2672.09076, 2633.4715 ], [ 2686.57115, 2633.4715 ], [ 2686.57115, 2739.97686 ], [ 2672.09076, 2739.97686 ], [ 2672.09076, 2730.00021 ], [ 2481.53379, 2730.00021 ], [ 2481.53379, 2847.47227 ], [ 2459.4716, 2847.47227 ], [ 2459.4716, 3010.64405 ], [ 2672.09076, 3010.64405 ], [ 2672.09076, 2797.06943 ], [ 2686.57115, 2797.06943 ], [ 2686.57115, 3072.3493 ], [ 2672.09076, 3072.3493 ], [ 2672.09076, 3020.2644 ], [ 2459.4716, 3020.2644 ], [ 2459.4716, 3072.3493 ], [ 2311.9039000000002, 3072.3493 ], [ 2311.9039000000002, 3052.48084 ], [ 2324.30804, 3052.48084 ], [ 2324.30804, 3058.94655 ], [ 2447.10173, 3058.94655 ], [ 2447.10173, 2963.02651 ], [ 2324.30804, 2963.02651 ], [ 2324.30804, 3002.11903 ], [ 2311.9039000000002, 3002.11903 ], [ 2311.9039000000002, 2908.012 ], [ 2324.30804, 2908.012 ], [ 2324.30804, 2951.71174 ], [ 2447.10173, 2951.71174 ], [ 2447.10173, 2847.47227 ], [ 2263.40155, 2847.47227 ], [ 2263.40155, 2831.61065 ], [ 2368.62653, 2831.61065 ], [ 2368.62653, 2710.42496 ], [ 2179.4017, 2710.42496 ], [ 2179.4017, 2831.61065 ], [ 2212.33135, 2831.61065 ], [ 2212.33135, 2847.47227 ], [ 2172.4923799999997, 2847.47227 ], [ 2172.4923799999997, 3062.36645 ], [ 2212.33135, 3062.36645 ], [ 2212.33135, 3072.3493 ], [ 2146.62433, 3072.3493 ], [ 2146.62433, 3062.36645 ], [ 2158.24363, 3062.36645 ], [ 2158.24363, 2847.47227 ], [ 2134.82542, 2847.47227 ], [ 2134.82542, 2831.61065 ], [ 2169.37084, 2831.61065 ], [ 2169.37084, 2710.42496 ], [ 1986.20329, 2710.42496 ], [ 1986.20329, 2831.61065 ], [ 2080.9660400000002, 2831.61065 ], [ 2080.9660400000002, 2847.47227 ], [ 1981.90566, 2847.47227 ], [ 1981.90566, 3062.36645 ], [ 2098.54353, 3062.36645 ], [ 2098.54353, 3072.3493 ], [ 1885.37243, 3072.3493 ], [ 1885.37243, 3062.36645 ], [ 1970.93988, 3062.36645 ], [ 1970.93988, 2847.47227 ], [ 1901.87844, 2847.47227 ], [ 1901.87844, 2831.61065 ], [ 1970.93988, 2831.61065 ], [ 1970.93988, 2710.42496 ], [ 1736.87397, 2710.42496 ], [ 1736.87397, 2831.61065 ], [ 1848.90518, 2831.61065 ], [ 1848.90518, 2847.47227 ], [ 1819.19508, 2847.47227 ], [ 1819.19508, 3062.36645 ], [ 1830.5444, 3062.36645 ], [ 1830.5444, 3072.3493 ], [ 1791.86326, 3072.3493 ], [ 1791.86326, 3062.36645 ], [ 1806.20717, 3062.36645 ], [ 1806.20717, 2847.47227 ], [ 1718.50174, 2847.47227 ], [ 1718.50174, 2831.61065 ], [ 1725.33643, 2831.61065 ], [ 1725.33643, 2690.52712 ], [ 1739.81552, 2690.52712 ], [ 1739.81552, 2670.55301 ], [ 1668.05219, 2670.55301 ], [ 1668.05219, 2847.47227 ], [ 1646.92022, 2847.47227 ], [ 1646.92022, 2831.61065 ], [ 1654.34896, 2831.61065 ], [ 1654.34896, 2670.55301 ], [ 1486.07238, 2670.55301 ], [ 1486.07238, 2831.61065 ], [ 1594.19552, 2831.61065 ], [ 1594.19552, 3062.36645 ], [ 1739.81552, 3062.36645 ], [ 1739.81552, 3072.3493 ], [ 1348.5781299999999, 3072.3493 ], [ 1348.5781299999999, 3062.36645 ], [ 1584.52371, 3062.36645 ], [ 1584.52371, 2847.47227 ], [ 1278.254627, 2847.47227 ], [ 1278.254627, 3062.36645 ], [ 1293.455132, 3062.36645 ], [ 1293.455132, 3072.3493 ], [ 1268.367862, 3072.3493 ], [ 1268.367862, 2633.4715 ], [ 1282.471735, 2633.4715 ], [ 1282.471735, 2819.70744 ], [ 1467.4604, 2819.70744 ], [ 1467.4604, 2575.27783 ], [ 1268.367862, 2575.27783 ], [ 1268.367862, 2410.41042 ], [ 1282.471735, 2410.41042 ], [ 1285.420788, 2562.36481 ], [ 1467.4604, 2562.36481 ], [ 1467.4604, 2310.5500300000003 ], [ 1268.367862, 2355.98157 ], [ 1268.367862, 2336.364 ], [ 1467.4604, 2293.4206599999998 ] ]
+  }, {
+    "id" : "Path-44",
+    "points" : [ [ 2830.71254, 2368.53611 ], [ 2858.19033, 2373.81378 ], [ 2854.6737, 2386.6423 ], [ 2841.32583, 2382.81329 ], [ 2809.00156, 2542.14667 ], [ 3054.22118, 2595.48269 ], [ 3089.18335, 2434.26541 ], [ 2906.87478, 2395.46581 ], [ 2910.1425, 2382.81329 ], [ 3132.99027, 2430.07131 ], [ 3128.85556, 2442.5375 ], [ 3102.32729, 2437.91755 ], [ 3047.98288, 2688.87579 ], [ 3077.61549, 2694.47097 ], [ 3073.25926, 2708.91038 ], [ 2995.15165, 2694.47097 ], [ 3001.81394, 2678.59591 ], [ 3034.03798, 2684.45287 ], [ 3047.98288, 2607.63375 ], [ 2937.86934, 2585.37299 ], [ 2920.61768, 2666.336 ], [ 2959.14207, 2672.53408 ], [ 2953.67262, 2688.87579 ], [ 2866.08937, 2672.53408 ], [ 2871.68531, 2655.0255 ], [ 2901.88138, 2661.40769 ], [ 2920.61768, 2581.52932 ], [ 2805.88173, 2555.47008 ], [ 2789.05003, 2639.01072 ], [ 2825.79473, 2645.44569 ], [ 2821.19873, 2659.75126 ], [ 2772.41879, 2649.63359 ] ]
+  }, {
+    "id" : "Path-45",
+    "points" : [ [ 2600.20036, 1978.98188 ], [ 2684.68514, 1963.38084 ], [ 2684.68514, 2249.63044 ], [ 2600.20036, 2227.5148099999997 ] ]
+  }, {
+    "id" : "Path-46",
+    "points" : [ [ 2851.41033, 1907.91455 ], [ 2939.60522, 1907.91455 ], [ 2939.60522, 2298.94918 ], [ 2851.41033, 2298.94918 ] ]
+  }, {
+    "id" : "Path-47",
+    "points" : [ [ 2777.98442, 1570.61946 ], [ 3161.122, 1493.70793 ], [ 3212.13573, 1741.59344 ], [ 2908.98777, 1805.51119 ], [ 2908.98777, 1793.93294 ], [ 3161.122, 1741.59344 ], [ 3113.17961, 1516.13898 ], [ 2798.73537, 1581.13839 ], [ 2843.86714, 1805.51119 ], [ 2858.22608, 1802.06611 ], [ 2858.22608, 1814.81585 ], [ 2832.70627, 1821.24194 ] ]
+  }, {
+    "id" : "Path-48",
+    "points" : [ [ 3381.54431, 670.186968 ], [ 3221.66426, 670.186968 ], [ 3221.66426, 838.6947660000001 ], [ 3266.16426, 838.6947660000001 ], [ 3266.16426, 826.352271 ], [ 3232.22866, 826.352271 ], [ 3232.22866, 683.09564 ], [ 3381.54431, 683.09564 ] ]
+  }, {
+    "id" : "Path-49",
+    "points" : [ [ 3381.54431, 824.005386 ], [ 3319.66426, 824.005386 ], [ 3319.66426, 838.6947660000001 ], [ 3381.54431, 838.6947660000001 ] ]
+  }, {
+    "id" : "Path-50",
+    "points" : [ [ 1049.163601, 2015.77514 ], [ 1104.304881, 2015.77514 ], [ 1104.304881, 2248.8180199999997 ], [ 1049.163601, 2248.8180199999997 ] ]
+  }, {
+    "id" : "Path-51",
+    "points" : [ [ 2883.37263, 719.8974840000001 ], [ 3038.72972, 719.8974840000001 ], [ 3038.72972, 793.6575230000001 ], [ 2883.37263, 793.9011049999999 ] ]
+  } ],
+  "landmarks" : [ {
+    "type" : "WORKPLACETECHBAR",
+    "x" : 2595.0593,
+    "y" : 1586.5231
+  }, {
+    "type" : "KITCHEN",
+    "x" : 1633.1643,
+    "y" : 746.9011
+  }, {
+    "type" : "KITCHEN",
+    "x" : 2725.1643,
+    "y" : 2102.9011
+  }, {
+    "type" : "KITCHEN",
+    "x" : 1334.1643,
+    "y" : 2686.9011
+  }, {
+    "type" : "RECEPTION",
+    "x" : 1129.1643,
+    "y" : 2128.9011
+  }, {
+    "type" : "RESTROOM",
+    "x" : 1903.6123,
+    "y" : 1362.9011
+  }, {
+    "type" : "RESTROOM",
+    "x" : 2031.6123,
+    "y" : 1637.9011
+  }, {
+    "type" : "STAIRS",
+    "x" : 2180.1643,
+    "y" : 2544.9011
+  }, {
+    "type" : "ELEVATOR",
+    "x" : 2197.1643,
+    "y" : 2132.9011
+  } ],
+  "unavailableSpaces" : [ {
+    "x" : 1541.1643,
+    "y" : 2950.9011,
+    "rotation" : 90.0
+  }, {
+    "x" : 1037.1643,
+    "y" : 2506.9011,
+    "rotation" : -103.0
+  }, {
+    "x" : 1391.1643,
+    "y" : 1382.9011,
+    "rotation" : 180.0
+  }, {
+    "x" : 838.1644,
+    "y" : 2561.8104,
+    "rotation" : 38.0
+  }, {
+    "x" : 845.1644,
+    "y" : 2942.8104,
+    "rotation" : 38.0
+  }, {
+    "x" : 1111.1644,
+    "y" : 2971.8104,
+    "rotation" : 38.0
+  }, {
+    "x" : 1892.6643,
+    "y" : 473.4011,
+    "rotation" : 38.0
+  }, {
+    "x" : 2069.6643,
+    "y" : 473.4011,
+    "rotation" : 38.0
+  }, {
+    "x" : 1409.6643,
+    "y" : 1216.4011,
+    "rotation" : 38.0
+  }, {
+    "x" : 1373.6643,
+    "y" : 1493.4011,
+    "rotation" : 38.0
+  }, {
+    "x" : 2579.6643,
+    "y" : 2649.4011,
+    "rotation" : 38.0
+  }, {
+    "x" : 2570.6643,
+    "y" : 2844.4011,
+    "rotation" : 38.0
+  }, {
+    "x" : 1856.6643,
+    "y" : 685.4011,
+    "rotation" : 38.0
+  }, {
+    "x" : 1988.6643,
+    "y" : 685.4011,
+    "rotation" : 38.0
+  }, {
+    "x" : 2121.6643,
+    "y" : 685.4011,
+    "rotation" : 38.0
+  }, {
+    "x" : 2121.6643,
+    "y" : 821.4011,
+    "rotation" : 38.0
+  }, {
+    "x" : 1988.6643,
+    "y" : 821.4011,
+    "rotation" : 38.0
+  }, {
+    "x" : 1856.6643,
+    "y" : 821.4011,
+    "rotation" : 38.0
+  }, {
+    "x" : 1474.6643,
+    "y" : 911.9011,
+    "rotation" : -90.0
+  }, {
+    "x" : 1913.6643,
+    "y" : 2951.9011,
+    "rotation" : 180.0
+  }, {
+    "x" : 3166.1643,
+    "y" : 762.9011,
+    "rotation" : 180.0
+  }, {
+    "x" : 1400.6643,
+    "y" : 2961.9011,
+    "rotation" : -90.0
+  }, {
+    "x" : 2676.6643,
+    "y" : 1725.9011,
+    "rotation" : -103.0
+  }, {
+    "x" : 1396.6643,
+    "y" : 2449.9011,
+    "rotation" : -90.0
+  }, {
+    "x" : 2887.6643,
+    "y" : 2950.9011,
+    "rotation" : -90.0
+  }, {
+    "x" : 1709.6643,
+    "y" : 2958.9011,
+    "rotation" : 180.0
+  }, {
+    "x" : 2971.6643,
+    "y" : 2488.9011,
+    "rotation" : -170.0
+  }, {
+    "x" : 814.6643,
+    "y" : 2138.9011,
+    "rotation" : -90.0
+  }, {
+    "x" : 2991.6643,
+    "y" : 1664.9011,
+    "rotation" : -13.0
+  }, {
+    "x" : 2090.1644,
+    "y" : 2955.8104,
+    "rotation" : 38.0
+  } ]
+}
