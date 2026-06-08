@@ -10,7 +10,7 @@ const LABEL_HIDE_RADIUS = 400
 
 export type Transform = { scale: number; tx: number; ty: number }
 
-const DESK_R = 22
+const DESK_R = 27.5
 
 function lineContrastColor(hex: string): string {
   const r = parseInt(hex.slice(1, 3), 16)
@@ -65,12 +65,15 @@ interface FloorMapProps {
   onViewInOrg?: (employeeId: string) => void
   hoveredEmpId?: string | null
   onHoverEmployee?: (id: string | null) => void
+  clickedEmpId?: string | null
+  onClickEmployee?: (id: string | null) => void
 }
 
 export default function FloorMap({
   desks, empById, orgById, assignments, transform, onTransformChange,
   selectedDeskId, nodeColors, onViewInOrg,
   hoveredEmpId, onHoverEmployee,
+  clickedEmpId, onClickEmployee,
 }: FloorMapProps) {
   const [tooltip, setTooltip] = useState<{ desk: Desk; x: number; y: number } | null>(null)
   const [svgMouse, setSvgMouse] = useState<{ x: number; y: number } | null>(null)
@@ -81,16 +84,17 @@ export default function FloorMap({
 
   const labels = useMemo(() => neighbourhoodLabels(desks), [desks])
 
-  // Spiderweb connections for hovered employee
+  // Spiderweb connections for clicked employee
   const connections = useMemo(() => {
-    if (!hoveredEmpId) return null
-    const hoveredDeskId = assignments.deskByEmployeeId[hoveredEmpId]
-    const hoveredDesk = hoveredDeskId ? desks.find(d => d.id === hoveredDeskId) : null
-    if (!hoveredDesk) return null
-    const org = orgById[hoveredEmpId]
+    if (!clickedEmpId) return null
+    const clickedDeskId = assignments.deskByEmployeeId[clickedEmpId]
+    const clickedDesk = clickedDeskId ? desks.find(d => d.id === clickedDeskId) : null
+    if (!clickedDesk) return null
+    const org = orgById[clickedEmpId]
     if (!org) return null
 
-    const color = nodeColors.get(hoveredEmpId) ?? '#873DAD'
+    const color = nodeColors.get(clickedEmpId) ?? '#873DAD'
+    const relatedEmpIds = new Set<string>([clickedEmpId])
 
     const pos = (empId: string): { x: number; y: number } | null => {
       const dId = assignments.deskByEmployeeId[empId]
@@ -99,12 +103,12 @@ export default function FloorMap({
       return d ? { x: d.x, y: d.y } : null
     }
 
-    const from = { x: hoveredDesk.x, y: hoveredDesk.y }
+    const from = { x: clickedDesk.x, y: clickedDesk.y }
 
     let manager: Seg | null = null
     if (org.parentId) {
       const to = pos(org.parentId)
-      if (to) manager = { x1: from.x, y1: from.y, x2: to.x, y2: to.y }
+      if (to) { manager = { x1: from.x, y1: from.y, x2: to.x, y2: to.y }; relatedEmpIds.add(org.parentId) }
     }
 
     const siblings: Seg[] = []
@@ -112,9 +116,9 @@ export default function FloorMap({
       const parentOrg = orgById[org.parentId]
       if (parentOrg) {
         for (const sibId of parentOrg.childrenIds) {
-          if (sibId === hoveredEmpId) continue
+          if (sibId === clickedEmpId) continue
           const to = pos(sibId)
-          if (to) siblings.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y })
+          if (to) { siblings.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y }); relatedEmpIds.add(sibId) }
         }
       }
     }
@@ -122,11 +126,11 @@ export default function FloorMap({
     const children: Seg[] = []
     for (const childId of org.childrenIds) {
       const to = pos(childId)
-      if (to) children.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y })
+      if (to) { children.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y }); relatedEmpIds.add(childId) }
     }
 
-    return { color, manager, siblings, children }
-  }, [hoveredEmpId, orgById, assignments, desks, nodeColors])
+    return { color, manager, siblings, children, relatedEmpIds }
+  }, [clickedEmpId, orgById, assignments, desks, nodeColors])
 
   useEffect(() => { transformRef.current = transform }, [transform])
 
@@ -193,7 +197,7 @@ export default function FloorMap({
       <div className="map-view-header">
         <div>
           <h2>Floor Map — 5th Floor</h2>
-          <p className="map-hint">Scroll to zoom · drag to pan · hover a desk or name for connections</p>
+          <p className="map-hint">Scroll to zoom · drag to pan · click a desk to show connections</p>
         </div>
         <button
           className={`dev-toggle${devMode ? ' active' : ''}`}
@@ -213,6 +217,7 @@ export default function FloorMap({
       >
         <svg width="100%" height="100%" style={{ cursor: dragging.current ? 'grabbing' : 'grab' }}>
           <g transform={`translate(${transform.tx},${transform.ty}) scale(${transform.scale})`}>
+            <rect x={-50000} y={-50000} width={200000} height={200000} fill="transparent" onClick={() => onClickEmployee?.(null)} />
             <image href="/floor-plan.svg" x={0} y={0} width={VIEW_W} height={VIEW_H} />
 
             {desks.map(desk => {
@@ -220,6 +225,8 @@ export default function FloorMap({
               const deskOrg = empId ? orgById[empId] : null
               const color = (empId ? nodeColors.get(empId) : null) ?? '#d1d5db'
               const isHovered = !!hoveredEmpId && empId === hoveredEmpId
+              const isClicked = !!clickedEmpId && empId === clickedEmpId
+              const showRing = !!empId && !!deskOrg && (connections?.relatedEmpIds.has(empId) ?? false)
               const ringR = DESK_R + 10
               const ringStrokeW = deskOrg ? sw(Math.max(1, (9 - deskOrg.depth) * 0.7 + 1)) : 0
               return (
@@ -235,23 +242,27 @@ export default function FloorMap({
                     setTooltip(null)
                     onHoverEmployee?.(null)
                   }}
+                  onClick={e => {
+                    e.stopPropagation()
+                    if (empId) onClickEmployee?.(isClicked ? null : empId)
+                  }}
                 >
-                  {deskOrg && (
+                  {showRing && (
                     <circle
                       cx={0} cy={0}
                       r={ringR}
                       fill="none"
                       stroke={color}
                       strokeWidth={ringStrokeW}
-                      strokeOpacity={0.55}
+                      strokeOpacity={0.65}
                     />
                   )}
                   <circle
                     cx={0} cy={0}
                     r={DESK_R}
                     fill={color}
-                    stroke={isHovered ? '#321e37' : '#fff'}
-                    strokeWidth={isHovered ? sw(4) : sw(1.5)}
+                    stroke={isClicked ? '#321e37' : isHovered ? '#555' : '#fff'}
+                    strokeWidth={isClicked ? sw(4) : isHovered ? sw(2.5) : sw(1.5)}
                   />
                   {devMode && deskOrg && (
                     <text
@@ -324,8 +335,22 @@ export default function FloorMap({
           </g>
         </svg>
 
-        {tooltip && (
-          <div className="map-tooltip" style={{ left: tooltip.x + 12, top: tooltip.y - 8 }}>
+        {tooltip && (() => {
+          let left = tooltip.x + 12
+          let top = tooltip.y - 8
+          if (clickedEmpId) {
+            const cDeskId = assignments.deskByEmployeeId[clickedEmpId]
+            const cDesk = cDeskId ? desks.find(d => d.id === cDeskId) : null
+            const rect = containerRef.current?.getBoundingClientRect()
+            if (cDesk && rect) {
+              const csx = cDesk.x * transform.scale + transform.tx + rect.left
+              const csy = cDesk.y * transform.scale + transform.ty + rect.top
+              left = tooltip.x + (csx > tooltip.x ? -240 : 12)
+              top = tooltip.y + (csy > tooltip.y ? -8 : -120)
+            }
+          }
+          return (
+          <div className="map-tooltip" style={{ left, top }}>
             <div className="tt-desk">{tooltip.desk.name}</div>
             {tooltip.desk.neighborhood && <div className="tt-zone">{tooltip.desk.neighborhood}</div>}
             {tooltipEmp ? (
@@ -357,7 +382,8 @@ export default function FloorMap({
               <div className="tt-empty">Unassigned</div>
             )}
           </div>
-        )}
+          )
+        })()}
       </div>
     </div>
   )

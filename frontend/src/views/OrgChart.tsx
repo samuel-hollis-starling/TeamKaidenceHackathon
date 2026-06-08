@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState, useMemo } from 'react'
 import type { Employee, OrgNode } from '../types'
-import { getEmployees, getOrgNodes } from '../api'
+import { getEmployees, getOrgNodes, getBookings } from '../api'
 
 const VIVID = ['#349C51','#22C9B6','#34869C','#4563E0','#873DAD','#9C347A','#CE3D3D','#D17728','#D1B528']
 const LIGHT = ['#D0F5DA','#B9FFF7','#BCE1EB','#CAD4FF','#E8C9F8','#EBBCDB','#F5C2C2','#FBCAA0','#FBECA0']
 
-const NW = 168, NH = 56, HG = 12, VG = 68, SG = 44, MC = 5
+const NW = 168, NH = 56, HG = 12, VG = 68, SG = 44, MC = 8
 
 type Transform = { scale: number; tx: number; ty: number }
 
 interface LayoutNode {
   id: string; name: string; role: string
   x: number; y: number
-  vivid: string; light: string; isManager: boolean
+  vivid: string; light: string; isManager: boolean; booked: boolean
 }
 
 interface Conn {
@@ -25,12 +25,13 @@ interface OrgChartProps {
 
 const trunc = (s: string, n: number) => s.length > n ? s.slice(0, n - 1) + '…' : s
 
-function computeLayout(employees: Employee[], orgNodes: OrgNode[]) {
+function computeLayout(employees: Employee[], orgNodes: OrgNode[], bookedIds: Set<string>) {
   const empById = Object.fromEntries(employees.map(e => [e.id, e]))
-  const orgById = Object.fromEntries(orgNodes.map(n => [n.employeeId, n]))
+
+  const minDepth = Math.min(...orgNodes.map(n => n.depth))
 
   const managers = orgNodes
-    .filter(n => n.depth === 2)
+    .filter(n => n.depth === minDepth)
     .sort((a, b) => (empById[a.employeeId]?.name ?? '').localeCompare(empById[b.employeeId]?.name ?? ''))
 
   const nodes: LayoutNode[] = []
@@ -45,21 +46,20 @@ function computeLayout(employees: Employee[], orgNodes: OrgNode[]) {
     const vivid = VIVID[mi % VIVID.length]
     const light = LIGHT[mi % LIGHT.length]
 
-    const children = mgr.childrenIds
-      .map(cid => orgById[cid])
-      .filter((n): n is OrgNode => !!n && n.depth === 3)
+    // All descendants of this manager, sorted by depth then name
+    const children = orgNodes
+      .filter(n => n.depth > minDepth && n.orgPath[minDepth] === mgr.employeeId)
       .map(n => ({ org: n, emp: empById[n.employeeId] }))
       .filter((c): c is { org: OrgNode; emp: Employee } => !!c.emp)
-      .sort((a, b) => a.emp.name.localeCompare(b.emp.name))
+      .sort((a, b) => a.org.depth !== b.org.depth
+        ? a.org.depth - b.org.depth
+        : a.emp.name.localeCompare(b.emp.name))
 
     const cols = Math.min(Math.max(children.length, 1), MC)
     const subtreeW = children.length === 0 ? NW : cols * NW + (cols - 1) * HG
 
     const mgrX = curX + (subtreeW - NW) / 2
-    nodes.push({ id: mgr.employeeId, name: emp.name, role: emp.role, x: mgrX, y: 0, vivid, light, isManager: true })
-
-    const mgrCX = mgrX + NW / 2
-    const mgrBY = NH
+    nodes.push({ id: mgr.employeeId, name: emp.name, role: emp.role, x: mgrX, y: 0, vivid, light, isManager: true, booked: bookedIds.has(mgr.employeeId) })
 
     const rows: { org: OrgNode; emp: Employee }[][] = []
     for (let i = 0; i < children.length; i += MC) rows.push(children.slice(i, i + MC))
@@ -73,10 +73,7 @@ function computeLayout(employees: Employee[], orgNodes: OrgNode[]) {
       for (let ci = 0; ci < row.length; ci++) {
         const { org, emp: cEmp } = row[ci]
         const childX = rowStartX + ci * (NW + HG)
-        const childCX = childX + NW / 2
-
-        nodes.push({ id: org.employeeId, name: cEmp.name, role: cEmp.role, x: childX, y: rowY, vivid, light, isManager: false })
-        conns.push({ x1: mgrCX, y1: mgrBY, x2: childCX, y2: rowY, color: vivid })
+        nodes.push({ id: org.employeeId, name: cEmp.name, role: cEmp.role, x: childX, y: rowY, vivid, light, isManager: false, booked: bookedIds.has(org.employeeId) })
       }
     }
 
@@ -89,18 +86,22 @@ function computeLayout(employees: Employee[], orgNodes: OrgNode[]) {
 export default function OrgChart({ focusId }: OrgChartProps) {
   const [employees, setEmployees] = useState<Employee[]>([])
   const [orgNodes, setOrgNodes] = useState<OrgNode[]>([])
+  const [bookedIds, setBookedIds] = useState<Set<string>>(new Set())
   const [transform, setTransform] = useState<Transform>({ scale: 0.35, tx: 40, ty: 80 })
   const containerRef = useRef<HTMLDivElement>(null)
   const dragging = useRef<{ startX: number; startY: number; startTx: number; startTy: number } | null>(null)
 
   useEffect(() => {
-    Promise.all([getEmployees(), getOrgNodes()]).then(([emps, nodes]) => {
+    Promise.all([getEmployees(), getOrgNodes(), getBookings()]).then(([emps, nodes, bookings]) => {
       setEmployees(emps)
       setOrgNodes(nodes)
+      // When nobody has booked yet show everyone in colour; grey-out only kicks in once bookings exist
+      const ids = bookings.bookings.map(b => b.employeeId)
+      setBookedIds(ids.length > 0 ? new Set(ids) : new Set(emps.map(e => e.id)))
     })
   }, [])
 
-  const { nodes, conns } = useMemo(() => computeLayout(employees, orgNodes), [employees, orgNodes])
+  const { nodes, conns } = useMemo(() => computeLayout(employees, orgNodes, bookedIds), [employees, orgNodes, bookedIds])
 
   // Pan to and highlight focusId when nodes are loaded
   useEffect(() => {
@@ -182,39 +183,47 @@ export default function OrgChart({ focusId }: OrgChartProps) {
               )
             })}
 
-            {nodes.map(n => (
-              <g key={n.id} transform={`translate(${n.x},${n.y})`}>
-                <rect
-                  width={NW}
-                  height={NH}
-                  rx={9}
-                  fill={n.isManager ? n.vivid : n.light}
-                  stroke={n.vivid}
-                  strokeWidth={n.isManager ? 0 : 1.5}
-                />
-                <text
-                  x={NW / 2}
-                  y={21}
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  fontSize={11}
-                  fontWeight="600"
-                  fill={n.isManager ? '#fff' : '#171B1F'}
-                >
-                  {trunc(n.name, 22)}
-                </text>
-                <text
-                  x={NW / 2}
-                  y={38}
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  fontSize={9}
-                  fill={n.isManager ? 'rgba(255,255,255,0.78)' : '#636363'}
-                >
-                  {trunc(n.role, 28)}
-                </text>
-              </g>
-            ))}
+            {nodes.map(n => {
+              const fill = n.booked
+                ? (n.isManager ? n.vivid : n.light)
+                : (n.isManager ? '#94a3b8' : '#f1f5f9')
+              const stroke = n.booked ? n.vivid : '#cbd5e1'
+              const nameColor = n.booked ? (n.isManager ? '#fff' : '#171B1F') : '#94a3b8'
+              const roleColor = n.booked ? (n.isManager ? 'rgba(255,255,255,0.78)' : '#636363') : '#b0bcc8'
+              return (
+                <g key={n.id} transform={`translate(${n.x},${n.y})`}>
+                  <rect
+                    width={NW}
+                    height={NH}
+                    rx={9}
+                    fill={fill}
+                    stroke={stroke}
+                    strokeWidth={n.isManager ? 0 : 1.5}
+                  />
+                  <text
+                    x={NW / 2}
+                    y={21}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize={11}
+                    fontWeight="600"
+                    fill={nameColor}
+                  >
+                    {trunc(n.name, 22)}
+                  </text>
+                  <text
+                    x={NW / 2}
+                    y={38}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize={9}
+                    fill={roleColor}
+                  >
+                    {trunc(n.role, 28)}
+                  </text>
+                </g>
+              )
+            })}
 
             {/* Focus ring around the linked-to node */}
             {focusNode && (

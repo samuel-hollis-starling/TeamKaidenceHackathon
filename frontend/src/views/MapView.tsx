@@ -18,25 +18,31 @@ function buildColors(
   divisionNames: Map<string, string>
   nodeColors: Map<string, string>           // employeeId → color
 } {
-  // Real grouping is at depth 2 (C-suite divisions, direct reports to CEO)
-  const divisions = Object.values(orgById)
-    .filter(n => n.depth === 2)
-    .sort((a, b) => a.employeeId.localeCompare(b.employeeId))
+  const allNodes = Object.values(orgById)
+  const minDepth = allNodes.length > 0 ? Math.min(...allNodes.map(n => n.depth)) : 2
+
+  // Collect ALL unique orgPath[minDepth] ancestors referenced by any node —
+  // this includes managers who aren't in the office themselves but whose reports are.
+  const divAncestorIds = [...new Set(
+    allNodes.flatMap(n => n.orgPath.length > minDepth ? [n.orgPath[minDepth]] : [])
+  )].sort()
 
   const divHue = new Map<string, number>(
-    divisions.map((d, i) => [d.employeeId, STARLING_HUES[i % STARLING_HUES.length]])
+    divAncestorIds.map((id, i) => [id, STARLING_HUES[i % STARLING_HUES.length]])
   )
+
+  // Sidebar: only show divisions whose representative is actually in the office
   const divisionNames = new Map<string, string>(
-    divisions.map(d => [d.employeeId, empById[d.employeeId]?.name ?? d.employeeId])
+    divAncestorIds.map(id => [id, empById[id]?.name ?? id.replace(/_/g, ' ').replace(/^\d+\s*/, '')])
   )
-  const divisionColors: Array<[string, string]> = divisions
-    .map((d, i) => [d.employeeId, `hsl(${STARLING_HUES[i % STARLING_HUES.length]}, ${PALETTE_SAT}%, ${PALETTE_LUM}%)`] as [string, string])
+  const divisionColors: Array<[string, string]> = divAncestorIds
+    .map((id, i) => [id, `hsl(${STARLING_HUES[i % STARLING_HUES.length]}, ${PALETTE_SAT}%, ${PALETTE_LUM}%)`] as [string, string])
     .sort((a, b) => (divisionNames.get(a[0]) ?? '').localeCompare(divisionNames.get(b[0]) ?? ''))
 
   // Sibling position for each node (used to spread hue within a branch)
   const sibIdx = new Map<string, number>()
   const sibCnt = new Map<string, number>()
-  for (const node of Object.values(orgById)) {
+  for (const node of allNodes) {
     for (let i = 0; i < node.childrenIds.length; i++) {
       sibIdx.set(node.childrenIds[i], i)
       sibCnt.set(node.childrenIds[i], node.childrenIds.length)
@@ -44,13 +50,13 @@ function buildColors(
   }
 
   const nodeColors = new Map<string, string>()
-  for (const node of Object.values(orgById)) {
+  for (const node of allNodes) {
     const path = node.orgPath
-    if (path.length < 3) {
+    if (path.length <= minDepth) {
       nodeColors.set(node.employeeId, '#636363')
       continue
     }
-    const baseHue = divHue.get(path[2])
+    const baseHue = divHue.get(path[minDepth])
     if (baseHue === undefined) {
       nodeColors.set(node.employeeId, '#94a3b8')
       continue
@@ -58,21 +64,19 @@ function buildColors(
 
     let hue = baseHue
 
-    // Depth-3 (department head siblings): ±15° spread within the division
-    if (path.length >= 4) {
-      const idx = sibIdx.get(path[3]) ?? 0
-      const cnt = sibCnt.get(path[3]) ?? 1
+    // One level below division: ±15° spread across siblings
+    if (path.length >= minDepth + 2) {
+      const idx = sibIdx.get(path[minDepth + 1]) ?? 0
+      const cnt = sibCnt.get(path[minDepth + 1]) ?? 1
       if (cnt > 1) hue += (idx / (cnt - 1) - 0.5) * 30
     }
 
-    // Depth-4 (team lead siblings): ±6° spread within the department
-    if (path.length >= 5) {
-      const idx = sibIdx.get(path[4]) ?? 0
-      const cnt = sibCnt.get(path[4]) ?? 1
+    // Two levels below division: ±6° spread within sub-group
+    if (path.length >= minDepth + 3) {
+      const idx = sibIdx.get(path[minDepth + 2]) ?? 0
+      const cnt = sibCnt.get(path[minDepth + 2]) ?? 1
       if (cnt > 1) hue += (idx / (cnt - 1) - 0.5) * 12
     }
-
-    // Depth 5+ (ICs and below): no further spread — whole team shares one colour
 
     hue = ((hue % 360) + 360) % 360
     nodeColors.set(node.employeeId, `hsl(${hue.toFixed(0)}, ${PALETTE_SAT}%, ${PALETTE_LUM}%)`)
@@ -93,6 +97,10 @@ export default function MapView({ onViewInOrg }: MapViewProps) {
   const [transform, setTransform] = useState<Transform>({ scale: 0.18, tx: 20, ty: 20 })
   const [selectedDeskId, setSelectedDeskId] = useState<string | null>(null)
   const [hoveredEmpId, setHoveredEmpId] = useState<string | null>(null)
+  const [clickedEmpId, setClickedEmpId] = useState<string | null>(null)
+  const [sidebarHoveredEmpId, setSidebarHoveredEmpId] = useState<string | null>(null)
+
+  const activeSpiderEmpId = clickedEmpId ?? sidebarHoveredEmpId
 
   useEffect(() => {
     Promise.all([getDesks(), getEmployees(), getOrgNodes(), getAssignments()]).then(
@@ -148,9 +156,9 @@ export default function MapView({ onViewInOrg }: MapViewProps) {
             <button
               key={emp.id}
               className={`person-row${deskId ? '' : ' no-desk'}${hoveredEmpId === emp.id ? ' hovered' : ''}`}
-              onClick={() => deskId && panToDesk(deskId)}
-              onMouseEnter={() => setHoveredEmpId(emp.id)}
-              onMouseLeave={() => setHoveredEmpId(null)}
+              onClick={() => { if (deskId) { panToDesk(deskId); setClickedEmpId(emp.id) } }}
+              onMouseEnter={() => { setHoveredEmpId(emp.id); setSidebarHoveredEmpId(emp.id) }}
+              onMouseLeave={() => { setHoveredEmpId(null); setSidebarHoveredEmpId(null) }}
               disabled={!deskId}
               title={emp.role}
             >
@@ -174,6 +182,8 @@ export default function MapView({ onViewInOrg }: MapViewProps) {
           onViewInOrg={onViewInOrg}
           hoveredEmpId={hoveredEmpId}
           onHoverEmployee={setHoveredEmpId}
+          clickedEmpId={activeSpiderEmpId}
+          onClickEmployee={setClickedEmpId}
         />
       </div>
 
