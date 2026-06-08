@@ -107,6 +107,11 @@ class SimulatedAnnealingAssignmentServiceTest {
 
         // ── Pretty output ───────────────────────────────────────────────────────
         printAssignment(bookings, deskByEmployee, subtree.size(), elapsedMs);
+
+        // ── Random baseline ─────────────────────────────────────────────────────
+        AssignmentCollection randomResult = new RandomAssignmentService(42).assign(bookings, realDesks);
+        printMetrics("Random baseline", bookings, randomResult.getDeskByEmployeeId());
+
         writeJsonOutput(selected, result);
     }
 
@@ -159,11 +164,10 @@ class SimulatedAnnealingAssignmentServiceTest {
                     window);
         }
         System.out.println("╚" + "═".repeat(88) + "╝");
+        printMetrics("SA", bookings, deskByEmployee);
+    }
 
-        // ── QAP Metrics ─────────────────────────────────────────────────────────
-        System.out.println();
-        System.out.println("── QAP Metrics " + "─".repeat(65));
-
+    private void printMetrics(String label, List<BookingRequest> bookings, Map<String, String> deskByEmployee) {
         DoubleSummaryStatistics siblingStats = new DoubleSummaryStatistics();
         DoubleSummaryStatistics sameTeamStats = new DoubleSummaryStatistics();
         DoubleSummaryStatistics crossTeamStats = new DoubleSummaryStatistics();
@@ -181,17 +185,18 @@ class SimulatedAnnealingAssignmentServiceTest {
             }
         }
 
+        double ratio = siblingStats.getCount() > 0 && crossTeamStats.getCount() > 0
+                ? crossTeamStats.getAverage() / siblingStats.getAverage() : 0;
+
+        System.out.println();
+        System.out.println("── QAP Metrics (" + label + ") " + "─".repeat(Math.max(0, 65 - label.length())));
         System.out.printf("  Direct siblings    (tree dist=1):  %6.0f units avg over %5d pairs%n",
                 siblingStats.getAverage(), siblingStats.getCount());
         System.out.printf("  Same sub-org       (tree dist 2-5): %6.0f units avg over %5d pairs%n",
                 sameTeamStats.getAverage(), sameTeamStats.getCount());
         System.out.printf("  Cross-team         (tree dist 6+):  %6.0f units avg over %5d pairs%n",
                 crossTeamStats.getAverage(), crossTeamStats.getCount());
-
-        // The quality signal: siblings should be much closer than cross-team
-        double ratio = siblingStats.getCount() > 0 && crossTeamStats.getCount() > 0
-                ? crossTeamStats.getAverage() / siblingStats.getAverage() : 0;
-        System.out.printf("%n  Clustering ratio (cross/sibling): %.2fx  (>1 = siblings closer than strangers)%n", ratio);
+        System.out.printf("%n  Clustering ratio (cross/sibling): %.2fx%n", ratio);
         System.out.println();
     }
 
