@@ -10,21 +10,13 @@ const LABEL_HIDE_RADIUS = 400
 
 export type Transform = { scale: number; tx: number; ty: number }
 
-export function hashHue(s: string): number {
-  let h = 0
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) & 0xffffffff
-  return Math.abs(h) % 360
-}
-
-function deskColor(desk: Desk, employeeByDeskId: Record<string, string>, orgByEmployeeId: Record<string, OrgNode>): string {
+function deskColor(desk: Desk, employeeByDeskId: Record<string, string>, orgByEmployeeId: Record<string, OrgNode>, branchColors: Map<string, string>): string {
   const empId = employeeByDeskId[desk.id]
   if (!empId) return '#d1d5db'
   const node = orgByEmployeeId[empId]
   if (!node) return '#94a3b8'
   const branch = node.orgPath[1] ?? node.orgPath[0]
-  const hue = hashHue(branch)
-  const lightness = 45 + node.depth * 8
-  return `hsl(${hue},65%,${lightness}%)`
+  return branchColors.get(branch) ?? '#94a3b8'
 }
 
 function neighbourhoodLabels(desks: Desk[]): { name: string; x: number; y: number }[] {
@@ -65,15 +57,29 @@ interface FloorMapProps {
   assignments: AssignmentCollection
   transform: Transform
   onTransformChange: (updater: (prev: Transform) => Transform) => void
+  selectedDeskId?: string | null
+  branchColors: Map<string, string>
 }
 
-export default function FloorMap({ desks, empById, orgById, assignments, transform, onTransformChange }: FloorMapProps) {
+export default function FloorMap({ desks, empById, orgById, assignments, transform, onTransformChange, selectedDeskId, branchColors }: FloorMapProps) {
   const [tooltip, setTooltip] = useState<{ desk: Desk; x: number; y: number } | null>(null)
   const [svgMouse, setSvgMouse] = useState<{ x: number; y: number } | null>(null)
   const dragging = useRef<{ startX: number; startY: number; startTx: number; startTy: number } | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const transformRef = useRef(transform)
 
   const labels = useMemo(() => neighbourhoodLabels(desks), [desks])
+
+  useEffect(() => { transformRef.current = transform }, [transform])
+
+  useEffect(() => {
+    if (!selectedDeskId || !containerRef.current) return
+    const desk = desks.find(d => d.id === selectedDeskId)
+    if (!desk) return
+    const t = transformRef.current
+    const rect = containerRef.current.getBoundingClientRect()
+    setTooltip({ desk, x: rect.left + desk.x * t.scale + t.tx, y: rect.top + desk.y * t.scale + t.ty })
+  }, [selectedDeskId, desks])
 
   useEffect(() => {
     const el = containerRef.current
@@ -142,7 +148,7 @@ export default function FloorMap({ desks, empById, orgById, assignments, transfo
                 cx={desk.x}
                 cy={desk.y}
                 r={28}
-                fill={deskColor(desk, assignments.employeeByDeskId, orgById)}
+                fill={deskColor(desk, assignments.employeeByDeskId, orgById, branchColors)}
                 stroke="#fff"
                 strokeWidth={4}
                 style={{ cursor: 'pointer' }}
