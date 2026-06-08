@@ -11,18 +11,13 @@ const PALETTE_SAT = 62
 const PALETTE_LUM = 48
 
 function buildColors(
-  orgById: Record<string, OrgNode>,
-  empById: Record<string, Employee>
+  orgById: Record<string, OrgNode>
 ): {
-  divisionColors: Array<[string, string]>  // [divId, color], sorted by name for sidebar
-  divisionNames: Map<string, string>
   nodeColors: Map<string, string>           // employeeId → color
 } {
   const allNodes = Object.values(orgById)
   const minDepth = allNodes.length > 0 ? Math.min(...allNodes.map(n => n.depth)) : 2
 
-  // Collect ALL unique orgPath[minDepth] ancestors referenced by any node —
-  // this includes managers who aren't in the office themselves but whose reports are.
   const divAncestorIds = [...new Set(
     allNodes.flatMap(n => n.orgPath.length > minDepth ? [n.orgPath[minDepth]] : [])
   )].sort()
@@ -30,14 +25,6 @@ function buildColors(
   const divHue = new Map<string, number>(
     divAncestorIds.map((id, i) => [id, STARLING_HUES[i % STARLING_HUES.length]])
   )
-
-  // Sidebar: only show divisions whose representative is actually in the office
-  const divisionNames = new Map<string, string>(
-    divAncestorIds.map(id => [id, empById[id]?.name ?? id.replace(/_/g, ' ').replace(/^\d+\s*/, '')])
-  )
-  const divisionColors: Array<[string, string]> = divAncestorIds
-    .map((id, i) => [id, `hsl(${STARLING_HUES[i % STARLING_HUES.length]}, ${PALETTE_SAT}%, ${PALETTE_LUM}%)`] as [string, string])
-    .sort((a, b) => (divisionNames.get(a[0]) ?? '').localeCompare(divisionNames.get(b[0]) ?? ''))
 
   // Sibling position for each node (used to spread hue within a branch)
   const sibIdx = new Map<string, number>()
@@ -82,7 +69,7 @@ function buildColors(
     nodeColors.set(node.employeeId, `hsl(${hue.toFixed(0)}, ${PALETTE_SAT}%, ${PALETTE_LUM}%)`)
   }
 
-  return { divisionColors, divisionNames, nodeColors }
+  return { nodeColors }
 }
 
 interface MapViewProps {
@@ -123,9 +110,9 @@ export default function MapView({ onViewInOrg }: MapViewProps) {
     setSelectedDeskId(deskId)
   }
 
-  const { divisionColors, divisionNames, nodeColors } = useMemo(
-    () => buildColors(orgById, empById),
-    [orgById, empById]
+  const { nodeColors } = useMemo(
+    () => buildColors(orgById),
+    [orgById]
   )
 
   const employees = useMemo(
@@ -136,37 +123,26 @@ export default function MapView({ onViewInOrg }: MapViewProps) {
   return (
     <div className="map-view-layout">
       <div className="people-panel">
-        {divisionColors.length > 0 && (
-          <>
-            <div className="panel-section-title">Divisions</div>
-            {divisionColors.map(([divId, color]) => (
-              <div key={divId} className="key-row">
-                <span className="person-dot" style={{ background: color }} />
-                <span className="key-label">{divisionNames.get(divId)}</span>
-              </div>
-            ))}
-          </>
-        )}
-
         <div className="panel-section-title">People</div>
-        {employees.map(emp => {
-          const deskId = assignments.deskByEmployeeId[emp.id]
-          const color = nodeColors.get(emp.id) ?? '#d1d5db'
-          return (
-            <button
-              key={emp.id}
-              className={`person-row${deskId ? '' : ' no-desk'}${hoveredEmpId === emp.id ? ' hovered' : ''}`}
-              onClick={() => { if (deskId) { panToDesk(deskId); setClickedEmpId(emp.id) } }}
-              onMouseEnter={() => { setHoveredEmpId(emp.id); setSidebarHoveredEmpId(emp.id) }}
-              onMouseLeave={() => { setHoveredEmpId(null); setSidebarHoveredEmpId(null) }}
-              disabled={!deskId}
-              title={emp.role}
-            >
-              <span className="person-dot" style={{ background: color }} />
-              <span className="person-name">{emp.name}</span>
-            </button>
-          )
-        })}
+        {employees
+          .filter(emp => assignments.deskByEmployeeId[emp.id])
+          .map(emp => {
+            const deskId = assignments.deskByEmployeeId[emp.id]
+            const color = nodeColors.get(emp.id) ?? '#d1d5db'
+            return (
+              <button
+                key={emp.id}
+                className={`person-row${hoveredEmpId === emp.id ? ' hovered' : ''}`}
+                onClick={() => { panToDesk(deskId); setClickedEmpId(emp.id) }}
+                onMouseEnter={() => { setHoveredEmpId(emp.id); setSidebarHoveredEmpId(emp.id) }}
+                onMouseLeave={() => { setHoveredEmpId(null); setSidebarHoveredEmpId(null) }}
+                title={emp.role}
+              >
+                <span className="person-dot" style={{ background: color }} />
+                <span className="person-name">{emp.name}</span>
+              </button>
+            )
+          })}
       </div>
 
       <div className="map-area">
