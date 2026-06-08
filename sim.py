@@ -14,6 +14,8 @@ Examples:
   python3 sim.py list "Raman Bhatia" --depth 2
   python3 sim.py book "Raman Bhatia" --lucky-rate 0.1
   python3 sim.py book "Engineering" --max 40 --social TALK_TO_ME
+  python3 sim.py book "Raman Bhatia" --leave-free 2
+  python3 sim.py smoke --leave-free 1
   python3 sim.py score
   python3 sim.py smoke
 """
@@ -222,7 +224,13 @@ def cmd_book(args):
     n_desks = desk_count(args.base_url)
     print(f"Desks available: {n_desks}")
 
-    cap = args.max if args.max else n_desks
+    if args.leave_free is not None:
+        cap = n_desks - args.leave_free
+        if cap <= 0:
+            print(f"--leave-free {args.leave_free} ≥ desk count {n_desks}; nothing to book.", file=sys.stderr)
+            sys.exit(1)
+    else:
+        cap = args.max if args.max else n_desks
     if len(nodes) > cap:
         print(f"Sampling {cap} of {len(nodes)} (random)")
         nodes = random.sample(nodes, cap)
@@ -260,6 +268,16 @@ def cmd_smoke(args):
 
     attendees = json.loads(ATTENDEES_FILE.read_text())
     print(f"Loaded {len(attendees)} attendees from {ATTENDEES_FILE.name}")
+
+    if args.leave_free is not None:
+        n_desks = desk_count(args.base_url)
+        cap = n_desks - args.leave_free
+        if cap <= 0:
+            print(f"--leave-free {args.leave_free} ≥ desk count {n_desks}; nothing to book.", file=sys.stderr)
+            sys.exit(1)
+        if len(attendees) > cap:
+            print(f"Sampling {cap} of {len(attendees)} (leave {args.leave_free} free)")
+            attendees = random.sample(attendees, cap)
 
     existing = already_booked_ids(args.base_url) if args.skip_existing else set()
     failures = []
@@ -314,8 +332,11 @@ def main():
     p_book.add_argument("name", help="Name of subtree root (partial match OK)")
     p_book.add_argument("--depth", type=int, default=None, metavar="N",
                         help="Max depth below root (default: unlimited)")
-    p_book.add_argument("--max", type=int, default=None, metavar="N",
-                        help="Cap at N people (random sample); default: cap at desk count")
+    p_book_cap = p_book.add_mutually_exclusive_group()
+    p_book_cap.add_argument("--max", type=int, default=None, metavar="N",
+                            help="Cap at N people (random sample); default: cap at desk count")
+    p_book_cap.add_argument("--leave-free", type=int, default=None, metavar="N",
+                            help="Book desk_count minus N people (leave N desks free)")
     p_book.add_argument("--social", choices=SOCIAL_CHOICES, default="NONE",
                         help="Social preference applied to everyone (default: NONE)")
     p_book.add_argument("--lucky-rate", type=float, default=0.0, metavar="F",
@@ -333,6 +354,8 @@ def main():
     p_smoke = sub.add_parser("smoke", help="Book all har-attendees and run assignment")
     p_smoke.add_argument("--skip-existing", action="store_true",
                          help="Skip employees already booked")
+    p_smoke.add_argument("--leave-free", type=int, default=None, metavar="N",
+                         help="Book desk_count minus N people (leave N desks free)")
 
     args = parser.parse_args()
     args.base_url = args.base_url.rstrip("/")

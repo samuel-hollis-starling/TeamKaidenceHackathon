@@ -45,10 +45,12 @@ python3 sim.py list "Raman Bhatia" --depth 2
 python3 sim.py book "Raman Bhatia"
 python3 sim.py book "Engineering" --max 40 --social TALK_TO_ME
 python3 sim.py book "Raman Bhatia" --lucky-rate 0.1 --skip-existing
+python3 sim.py book "Raman Bhatia" --leave-free 2
 
 # Smoke test: book all real attendees from input-data/har-attendees-*.json, run SA, print score
 python3 sim.py smoke
 python3 sim.py smoke --skip-existing
+python3 sim.py smoke --leave-free 1
 
 # Print current score without changing anything
 python3 sim.py score
@@ -61,9 +63,16 @@ python3 sim.py reset
 | Flag | Default | Description |
 |---|---|---|
 | `--depth N` | unlimited | Limit subtree depth |
-| `--max N` | desk count | Random-sample to N people |
+| `--max N` | desk count | Random-sample to N people (mutually exclusive with `--leave-free`) |
+| `--leave-free N` | — | Book `desk_count − N` people, leaving N desks empty (mutually exclusive with `--max`) |
 | `--social` | `NONE` | Apply `TALK_TO_ME` or `DONT_TALK_TO_ME` to all |
 | `--lucky-rate F` | `0.0` | Fraction of bookings marked feeling lucky |
+| `--skip-existing` | off | Skip employees already booked |
+
+**Flags for `smoke`:**
+| Flag | Default | Description |
+|---|---|---|
+| `--leave-free N` | — | Book `desk_count − N` attendees, leaving N desks empty |
 | `--skip-existing` | off | Skip employees already booked |
 
 ### Development setup
