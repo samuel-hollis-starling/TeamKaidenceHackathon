@@ -2,7 +2,9 @@ package com.starlingbank;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.starlingbank.service.BookingService;
 import com.starlingbank.service.FloorMapService;
+import com.starlingbank.service.OrgChartService;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -30,6 +32,8 @@ public class Main {
             protected void configure() {
                 bind(injector.getInstance(HelloService.class)).to(HelloService.class);
                 bind(injector.getInstance(FloorMapService.class)).to(FloorMapService.class);
+                bind(injector.getInstance(OrgChartService.class)).to(OrgChartService.class);
+                bind(injector.getInstance(BookingService.class)).to(BookingService.class);
             }
         });
 
