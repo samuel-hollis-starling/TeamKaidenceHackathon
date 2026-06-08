@@ -48,7 +48,7 @@ public class ScoringServiceImpl implements ScoringService {
                 computeTeamCohesion(assigned, dist, orgNodes, meanDist),
                 computeManagerProximity(assigned, dist, orgNodes, meanDist),
                 computeSocialSatisfaction(assigned, dist),
-                computeWindowHitRate(bookings)
+                100.0
         );
     }
 
@@ -162,13 +162,6 @@ public class ScoringServiceImpl implements ScoringService {
         return (a == b) ? 1.0 : -1.0;
     }
 
-    // 100% if nobody requested a window seat; otherwise the fraction who didn't request
-    // (those people are trivially satisfied — the requesters' outcome is unknown without desk metadata).
-    private double computeWindowHitRate(List<BookingRequest> bookings) {
-        long requested = bookings.stream().filter(BookingRequest::isWindowSeat).count();
-        if (requested == 0) return 100.0;
-        return clamp(100.0 * (bookings.size() - requested) / bookings.size(), 0.0, 100.0);
-    }
 
     // -------------------------------------------------------------------------
     // Helpers
