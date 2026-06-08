@@ -36,7 +36,15 @@ private final OrgChartService orgChartService;
         int n = bookings.size();
         int m = desks.size();
 
-        double[][] weightMatrix = buildWeightMatrix(bookings);
+        // Pad to a full permutation so the SA considers every desk on the floor,
+        // not just a random n-subset. Dummy bookings have no org node → weight 0
+        // to everyone, so the optimiser freely fills them into leftover desks.
+        List<BookingRequest> augmented = new ArrayList<>(bookings);
+        for (int i = n; i < m; i++) {
+            augmented.add(new BookingRequest("__dummy__" + i, SocialPreference.NONE, false, false));
+        }
+
+        double[][] weightMatrix = buildWeightMatrix(augmented);
         double[][] distMatrix = buildDistMatrix(desks);
 
         ExecutorService executor = Executors.newFixedThreadPool(NUM_THREADS);
@@ -45,7 +53,7 @@ private final OrgChartService orgChartService;
         for (int r = 0; r < numRuns; r++) {
             final int runId = r;
             futures.add(executor.submit(
-                    () -> runSA(runId, n, m, weightMatrix, distMatrix)));
+                    () -> runSA(runId, m, m, weightMatrix, distMatrix)));
         }
 
         RunResult best = null;
@@ -63,6 +71,7 @@ private final OrgChartService orgChartService;
 
         executor.shutdown();
 
+        // Only emit the first n entries — dummies are discarded
         Map<String, String> deskByEmployee = new LinkedHashMap<>();
         Map<String, String> employeeByDesk = new LinkedHashMap<>();
         for (int i = 0; i < n; i++) {

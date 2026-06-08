@@ -28,7 +28,7 @@ class SimulatedAnnealingAssignmentServiceTest {
     static void loadData() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
 
-        JsonNode floorRoot = mapper.readTree(new File("input-data/floor-map-5th.json"));
+        JsonNode floorRoot = mapper.readTree(new File("input-data/floors/london-fruit-wool-exchange-5th-floor.json"));
         desks = new ArrayList<>();
         for (JsonNode d : floorRoot.get("spaces").get("desks")) {
             JsonNode nbNode = d.get("neighborhood");
