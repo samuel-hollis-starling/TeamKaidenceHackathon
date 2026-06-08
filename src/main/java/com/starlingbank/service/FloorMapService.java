@@ -9,6 +9,8 @@ public interface FloorMapService {
     void register(FloorMap floorMap);
 
     default List<Desk> getDesks() {
-        return getFloorMap().getSpaces().getDesks();
+        return getFloorMap().getSpaces().getDesks().stream()
+                .filter(d -> d.getNeighborhood() != null && !d.getNeighborhood().equals("Desk Pods"))
+                .toList();
     }
 }
