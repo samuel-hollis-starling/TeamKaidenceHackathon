@@ -17,9 +17,6 @@ import java.util.TreeSet;
 
 public class FloorMapParser {
 
-    private static final String FLOOR_ID = "01G6X15J9J81YY4RJRDCHWR27V";
-    private static final String FLOOR_NAME = "5th Floor";
-    private static final String FLOOR_BUILDING = "London Fruit & Wool Exchange";
 
     private static class DeskMeta {
         final String name;
@@ -72,7 +69,7 @@ public class FloorMapParser {
             }
         }
 
-        FloorInfo floorInfo = new FloorInfo(FLOOR_ID, FLOOR_NAME, FLOOR_BUILDING, svgData.viewBox);
+        FloorInfo floorInfo = new FloorInfo(extract.floorId, extract.floorName, extract.buildingName, svgData.viewBox);
         Spaces spaces = new Spaces(desks, pods);
 
         return new FloorMap(floorInfo, neighborhoods, spaces, svgData.walls, svgData.landmarks, svgData.unavailableSpaces);
