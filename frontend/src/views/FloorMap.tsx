@@ -3,48 +3,12 @@ import type { Desk, Employee, OrgNode, AssignmentCollection } from '../types'
 
 const VIEW_W = 6736
 const VIEW_H = 4290
-const LABEL_SIZE = 60
-const CHAR_W = LABEL_SIZE * 0.52
-const LABEL_H = LABEL_SIZE * 1.5
-const LABEL_HIDE_RADIUS = 400
-
 export type Transform = { scale: number; tx: number; ty: number }
 
 const DESK_R = 27.5
 
-
-function neighbourhoodLabels(desks: Desk[]): { name: string; x: number; y: number }[] {
-  const groups: Record<string, { sumX: number; sumY: number; count: number }> = {}
-  for (const d of desks) {
-    if (!d.neighborhood) continue
-    if (!groups[d.neighborhood]) groups[d.neighborhood] = { sumX: 0, sumY: 0, count: 0 }
-    groups[d.neighborhood].sumX += d.x
-    groups[d.neighborhood].sumY += d.y
-    groups[d.neighborhood].count++
-  }
-  const labels = Object.entries(groups).map(([name, { sumX, sumY, count }]) => ({
-    name, x: sumX / count, y: sumY / count,
-  }))
-  for (let iter = 0; iter < 20; iter++) {
-    let moved = false
-    for (let i = 0; i < labels.length; i++) {
-      for (let j = i + 1; j < labels.length; j++) {
-        const a = labels[i], b = labels[j]
-        const overlapX = (a.name.length + b.name.length) * CHAR_W / 2 - Math.abs(a.x - b.x)
-        if (overlapX <= 0) continue
-        const overlapY = LABEL_H - Math.abs(a.y - b.y)
-        if (overlapY <= 0) continue
-        const push = overlapY / 2 + 10
-        if (a.y <= b.y) { a.y -= push; b.y += push } else { a.y += push; b.y -= push }
-        moved = true
-      }
-    }
-    if (!moved) break
-  }
-  return labels
-}
-
 type Seg = { x1: number; y1: number; x2: number; y2: number }
+
 
 interface FloorMapProps {
   desks: Desk[]
@@ -69,13 +33,10 @@ export default function FloorMap({
   clickedEmpId, onClickEmployee,
 }: FloorMapProps) {
   const [tooltip, setTooltip] = useState<{ desk: Desk; x: number; y: number } | null>(null)
-  const [svgMouse, setSvgMouse] = useState<{ x: number; y: number } | null>(null)
   const [devMode, setDevMode] = useState(false)
   const dragging = useRef<{ startX: number; startY: number; startTx: number; startTy: number } | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const transformRef = useRef(transform)
-
-  const labels = useMemo(() => neighbourhoodLabels(desks), [desks])
 
   // Spiderweb connections — prefer hovered employee, fall back to clicked
   const connections = useMemo(() => {
@@ -117,13 +78,19 @@ export default function FloorMap({
       }
     }
 
-    const children: Seg[] = []
-    for (const childId of org.childrenIds) {
-      const to = pos(childId)
-      if (to) { children.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y }); relatedEmpIds.add(childId) }
+    // BFS all descendants; draw from active employee to each booked descendant, tagged by relative depth.
+    const descendants: { seg: Seg; depth: number }[] = []
+    const queue: { empId: string; depth: number }[] = org.childrenIds.map(id => ({ empId: id, depth: 1 }))
+    while (queue.length > 0) {
+      const { empId, depth } = queue.shift()!
+      const childOrg = orgById[empId]
+      if (!childOrg) continue
+      const to = pos(empId)
+      if (to) { descendants.push({ seg: { x1: from.x, y1: from.y, x2: to.x, y2: to.y }, depth }); relatedEmpIds.add(empId) }
+      for (const grandchildId of childOrg.childrenIds) queue.push({ empId: grandchildId, depth: depth + 1 })
     }
 
-    return { color, manager, siblings, children, relatedEmpIds }
+    return { color, manager, siblings, descendants, relatedEmpIds }
   }, [hoveredEmpId, clickedEmpId, orgById, assignments, desks, nodeColors])
 
   useEffect(() => { transformRef.current = transform }, [transform])
@@ -162,13 +129,6 @@ export default function FloorMap({
   }
 
   function onMouseMove(e: React.MouseEvent) {
-    const rect = containerRef.current?.getBoundingClientRect()
-    if (rect) {
-      setSvgMouse({
-        x: (e.clientX - rect.left - transform.tx) / transform.scale,
-        y: (e.clientY - rect.top - transform.ty) / transform.scale,
-      })
-    }
     const drag = dragging.current
     if (!drag) return
     const { startTx, startTy, startX, startY } = drag
@@ -207,7 +167,7 @@ export default function FloorMap({
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
-        onMouseLeave={() => { onMouseUp(); setTooltip(null); setSvgMouse(null); onHoverEmployee?.(null) }}
+        onMouseLeave={() => { onMouseUp(); setTooltip(null); onHoverEmployee?.(null) }}
       >
         <svg width="100%" height="100%" style={{ cursor: dragging.current ? 'grabbing' : 'grab' }}>
           <g transform={`translate(${transform.tx},${transform.ty}) scale(${transform.scale})`}>
@@ -286,12 +246,17 @@ export default function FloorMap({
                       <line x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2} stroke={c} strokeWidth={sw(2)} strokeOpacity={0.8} strokeDasharray={da(10, 7)} strokeLinecap="round" />
                     </g>
                   ))}
-                  {connections.children.map((ch, i) => (
-                    <g key={i}>
-                      <line x1={ch.x1} y1={ch.y1} x2={ch.x2} y2={ch.y2} stroke="#18181b" strokeWidth={sw(5)} strokeOpacity={0.25} strokeLinecap="round" />
-                      <line x1={ch.x1} y1={ch.y1} x2={ch.x2} y2={ch.y2} stroke={c} strokeWidth={sw(3)} strokeOpacity={0.9} strokeLinecap="round" />
-                    </g>
-                  ))}
+                  {connections.descendants.map(({ seg: ch, depth }, i) => {
+                    const w    = depth === 1 ? sw(3) : depth === 2 ? sw(2) : depth === 3 ? sw(1.5) : sw(1)
+                    const op   = depth === 1 ? 0.9  : depth === 2 ? 0.6  : depth === 3 ? 0.4   : 0.25
+                    const dash = depth >= 3 ? da(depth === 3 ? 10 : 5, depth === 3 ? 6 : 5) : undefined
+                    return (
+                      <g key={i}>
+                        {depth <= 2 && <line x1={ch.x1} y1={ch.y1} x2={ch.x2} y2={ch.y2} stroke="#18181b" strokeWidth={sw(depth === 1 ? 5 : 4)} strokeOpacity={0.2} strokeLinecap="round" />}
+                        <line x1={ch.x1} y1={ch.y1} x2={ch.x2} y2={ch.y2} stroke={c} strokeWidth={w} strokeOpacity={op} strokeLinecap="round" strokeDasharray={dash} />
+                      </g>
+                    )
+                  })}
                   {connections.manager && (
                     <g>
                       <line x1={connections.manager.x1} y1={connections.manager.y1} x2={connections.manager.x2} y2={connections.manager.y2} stroke="#18181b" strokeWidth={sw(7)} strokeOpacity={0.25} strokeLinecap="round" />
@@ -302,30 +267,6 @@ export default function FloorMap({
               )
             })()}
 
-            {labels.map(l => {
-              const nearCursor = svgMouse != null && Math.hypot(svgMouse.x - l.x, svgMouse.y - l.y) < LABEL_HIDE_RADIUS
-              return (
-                <g
-                  key={l.name}
-                  style={{ pointerEvents: 'none', userSelect: 'none', opacity: nearCursor ? 0 : 1, transition: 'opacity 0.25s' }}
-                >
-                  <text
-                    x={l.x}
-                    y={l.y}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fontSize={LABEL_SIZE}
-                    fontWeight="700"
-                    fill="#2A1F52"
-                    stroke="rgba(255,255,255,0.75)"
-                    strokeWidth={14}
-                    paintOrder="stroke"
-                  >
-                    {l.name}
-                  </text>
-                </g>
-              )
-            })}
           </g>
         </svg>
 

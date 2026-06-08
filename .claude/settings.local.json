@@ -4,7 +4,10 @@
       "Bash(node -e ' *)",
       "Bash(node *)",
       "Read(//tmp/**)",
-      "Bash(./gradlew generateTypeScript)"
+      "Bash(./gradlew generateTypeScript)",
+      "Bash(git fetch *)",
+      "Bash(git add *)",
+      "Bash(git stash *)"
     ]
   }
 }

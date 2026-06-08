@@ -29,9 +29,10 @@ function computeLayout(employees: Employee[], orgNodes: OrgNode[], bookedIds: Se
   const empById = Object.fromEntries(employees.map(e => [e.id, e]))
 
   const minDepth = Math.min(...orgNodes.map(n => n.depth))
+  const divDepth = minDepth + 1  // C-suite direct reports are the top-level groups
 
   const managers = orgNodes
-    .filter(n => n.depth === minDepth)
+    .filter(n => n.depth === divDepth)
     .sort((a, b) => (empById[a.employeeId]?.name ?? '').localeCompare(empById[b.employeeId]?.name ?? ''))
 
   const nodes: LayoutNode[] = []
@@ -48,7 +49,7 @@ function computeLayout(employees: Employee[], orgNodes: OrgNode[], bookedIds: Se
 
     // All descendants of this manager, sorted by depth then name
     const children = orgNodes
-      .filter(n => n.depth > minDepth && n.orgPath[minDepth] === mgr.employeeId)
+      .filter(n => n.depth > divDepth && n.orgPath[divDepth] === mgr.employeeId)
       .map(n => ({ org: n, emp: empById[n.employeeId] }))
       .filter((c): c is { org: OrgNode; emp: Employee } => !!c.emp)
       .sort((a, b) => a.org.depth !== b.org.depth

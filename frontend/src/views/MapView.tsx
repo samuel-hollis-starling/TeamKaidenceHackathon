@@ -5,78 +5,90 @@ import FloorMap from './FloorMap'
 import type { Transform } from './FloorMap'
 import ScoreDashboard from './ScoreDashboard'
 
-// Starling-brand hues: anchored on plum (285°) and teal (174°), spread across the wheel
-const STARLING_HUES = [285, 265, 246, 225, 205, 185, 174, 157, 135, 90, 40, 20, 340]
-const PALETTE_SAT = 62
-const PALETTE_LUM = 48
+// Starling chromatic families, shades 400→800 (light to dark), readable on map backgrounds.
+const STARLING_FAMILIES = [
+  ['#68C482', '#4AB067', '#349C51', '#238940', '#187532'],  // green
+  ['#35E4D0', '#22C9B6', '#16AE9C', '#0E9383', '#0A7669'],  // teal
+  ['#68B0C4', '#4A9AB0', '#34869C', '#237389', '#186175'],  // tealBlue
+  ['#829AFF', '#6482FF', '#4563E0', '#2E4BC1', '#1E38A2'],  // blue
+  ['#B979DA', '#9F57C3', '#873DAD', '#722996', '#5F1C80'],  // purple
+  ['#C468A5', '#B04A8E', '#9C347A', '#892367', '#751856'],  // pink
+  ['#E27373', '#D85555', '#CE3D3D', '#B22929', '#961B1B'],  // red
+  ['#EC984D', '#E18637', '#D17728', '#BD681D', '#A35815'],  // orange
+  ['#ECD24D', '#E1C537', '#D1B528', '#BDA21D', '#A38C15'],  // yellow
+] as const
 
 function buildColors(
+  assignments: AssignmentCollection,
   orgById: Record<string, OrgNode>
-): {
-  nodeColors: Map<string, string>           // employeeId → color
-} {
-  const allNodes = Object.values(orgById)
-  const minDepth = allNodes.length > 0 ? Math.min(...allNodes.map(n => n.depth)) : 2
+): Map<string, string> {
+  const bookedEmpIds = new Set(Object.keys(assignments.deskByEmployeeId))
+  const bookedNodes = Object.values(orgById).filter(n => bookedEmpIds.has(n.employeeId))
+  if (bookedNodes.length === 0) return new Map()
+
+  // Find the lowest common ancestor of all booked employees by longest common orgPath prefix.
+  // orgPath excludes self, so orgPath.length === node.depth.
+  const paths = bookedNodes.map(n => n.orgPath)
+  const minLen = Math.min(...paths.map(p => p.length))
+  let lcaIdx = 0
+  while (lcaIdx + 1 < minLen && paths.every(p => p[lcaIdx + 1] === paths[0][lcaIdx + 1])) {
+    lcaIdx++
+  }
+  // Color groups are the LCA's direct children — one level below the LCA.
+  const divIdx = lcaIdx + 1
 
   const divAncestorIds = [...new Set(
-    allNodes.flatMap(n => n.orgPath.length > minDepth ? [n.orgPath[minDepth]] : [])
+    bookedNodes.flatMap(n =>
+      n.orgPath.length > divIdx ? [n.orgPath[divIdx]] :
+      n.orgPath.length === divIdx ? [n.employeeId] : []
+    )
   )].sort()
 
-  const divHue = new Map<string, number>(
-    divAncestorIds.map((id, i) => [id, STARLING_HUES[i % STARLING_HUES.length]])
+  // Each division group gets a Starling color family, cycling if there are more groups than families.
+  const divFamily = new Map<string, readonly string[]>(
+    divAncestorIds.map((id, i) => [id, STARLING_FAMILIES[i % STARLING_FAMILIES.length]])
   )
 
-  // Sibling position for each node (used to spread hue within a branch)
+  // Sibling index/count from the full org so shade positions are stable.
   const sibIdx = new Map<string, number>()
   const sibCnt = new Map<string, number>()
-  for (const node of allNodes) {
+  for (const node of Object.values(orgById)) {
     for (let i = 0; i < node.childrenIds.length; i++) {
       sibIdx.set(node.childrenIds[i], i)
       sibCnt.set(node.childrenIds[i], node.childrenIds.length)
     }
   }
 
-  const nodeColors = new Map<string, string>()
-  for (const node of allNodes) {
+  const colors = new Map<string, string>()
+  for (const node of bookedNodes) {
     const path = node.orgPath
-    if (path.length <= minDepth) {
-      nodeColors.set(node.employeeId, '#636363')
-      continue
-    }
-    const baseHue = divHue.get(path[minDepth])
-    if (baseHue === undefined) {
-      nodeColors.set(node.employeeId, '#94a3b8')
-      continue
-    }
+    if (path.length < divIdx) { colors.set(node.employeeId, '#636363'); continue }
+    const divKey = path.length > divIdx ? path[divIdx] : node.employeeId
+    const family = divFamily.get(divKey)
+    if (!family) { colors.set(node.employeeId, '#94a3b8'); continue }
 
-    let hue = baseHue
-
-    // One level below division: ±15° spread across siblings
-    if (path.length >= minDepth + 2) {
-      const idx = sibIdx.get(path[minDepth + 1]) ?? 0
-      const cnt = sibCnt.get(path[minDepth + 1]) ?? 1
-      if (cnt > 1) hue += (idx / (cnt - 1) - 0.5) * 30
+    // Compute a shade position (0–1) from sibling indices at deeper org levels.
+    // Successive levels nudge the position with diminishing weight.
+    let pos = 0.5
+    const nudge = (depthOffset: number, weight: number) => {
+      if (path.length <= divIdx + depthOffset) return
+      const idx = sibIdx.get(path[divIdx + depthOffset]) ?? 0
+      const cnt = sibCnt.get(path[divIdx + depthOffset]) ?? 1
+      if (cnt > 1) pos += (idx / (cnt - 1) - 0.5) * weight
     }
+    nudge(1, 0.6)
+    nudge(2, 0.3)
+    nudge(3, 0.15)
+    nudge(4, 0.08)
 
-    // Two levels below division: ±6° spread within sub-group
-    if (path.length >= minDepth + 3) {
-      const idx = sibIdx.get(path[minDepth + 2]) ?? 0
-      const cnt = sibCnt.get(path[minDepth + 2]) ?? 1
-      if (cnt > 1) hue += (idx / (cnt - 1) - 0.5) * 12
-    }
-
-    hue = ((hue % 360) + 360) % 360
-    nodeColors.set(node.employeeId, `hsl(${hue.toFixed(0)}, ${PALETTE_SAT}%, ${PALETTE_LUM}%)`)
+    pos = Math.max(0, Math.min(1, pos))
+    const shadeIdx = Math.round(pos * (family.length - 1))
+    colors.set(node.employeeId, family[shadeIdx])
   }
-
-  return { nodeColors }
+  return colors
 }
 
-interface MapViewProps {
-  onViewInOrg?: (employeeId: string) => void
-}
-
-export default function MapView({ onViewInOrg }: MapViewProps) {
+export default function MapView() {
   const [desks, setDesks] = useState<Desk[]>([])
   const [empById, setEmpById] = useState<Record<string, Employee>>({})
   const [orgById, setOrgById] = useState<Record<string, OrgNode>>({})
@@ -110,9 +122,9 @@ export default function MapView({ onViewInOrg }: MapViewProps) {
     setSelectedDeskId(deskId)
   }
 
-  const { nodeColors } = useMemo(
-    () => buildColors(orgById),
-    [orgById]
+  const nodeColors = useMemo(
+    () => buildColors(assignments, orgById),
+    [assignments, orgById]
   )
 
   const employees = useMemo(
@@ -155,7 +167,6 @@ export default function MapView({ onViewInOrg }: MapViewProps) {
           onTransformChange={setTransform}
           selectedDeskId={selectedDeskId}
           nodeColors={nodeColors}
-          onViewInOrg={onViewInOrg}
           hoveredEmpId={hoveredEmpId}
           onHoverEmployee={setHoveredEmpId}
           clickedEmpId={activeSpiderEmpId}

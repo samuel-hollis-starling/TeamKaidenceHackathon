@@ -1,64 +1,73 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import type { AssignmentScore } from '../types'
-import { getScore, runAssignment } from '../api'
+import { getScore } from '../api'
 
-type Metric = { label: string; key: keyof AssignmentScore; invert?: boolean; description: string }
+type Metric = { label: string; key: keyof AssignmentScore; description: string }
 
 const METRICS: Metric[] = [
-  { label: 'Team Cohesion',       key: 'teamCohesion',       description: 'How closely teammates sit together' },
-  { label: 'Manager Proximity',   key: 'managerProximity',   description: 'How close reports sit to their manager' },
+  { label: 'Team Cohesion',       key: 'teamCohesion',       description: 'Teammates seated together' },
+  { label: 'Manager Proximity',   key: 'managerProximity',   description: 'Reports close to their manager' },
   { label: 'Social Satisfaction', key: 'socialSatisfaction', description: 'Social preferences honoured' },
-  { label: 'QAP Cost',            key: 'totalQapCost',       invert: true, description: 'Overall assignment cost — lower is better' },
 ]
 
 function scoreColor(value: number) {
-  if (value >= 75) return '#349C51'  // green 600
-  if (value >= 50) return '#E18637'  // orange 500
-  return '#CE3D3D'                   // red 600
+  if (value >= 75) return '#349C51'
+  if (value >= 50) return '#E18637'
+  return '#CE3D3D'
+}
+
+function AnimatedNumber({ target }: { target: number }) {
+  const [displayed, setDisplayed] = useState(0)
+  const raf = useRef<number>(0)
+  const start = useRef<number | null>(null)
+
+  useEffect(() => {
+    start.current = null
+    const duration = 900
+    const from = 0
+    function step(ts: number) {
+      if (start.current === null) start.current = ts
+      const t = Math.min((ts - start.current) / duration, 1)
+      const eased = 1 - Math.pow(1 - t, 3)
+      setDisplayed(Math.round(from + (target - from) * eased))
+      if (t < 1) raf.current = requestAnimationFrame(step)
+    }
+    raf.current = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(raf.current)
+  }, [target])
+
+  return <>{displayed}</>
 }
 
 export default function ScoreDashboard() {
   const [score, setScore] = useState<AssignmentScore | null>(null)
-  const [running, setRunning] = useState(false)
 
   useEffect(() => { getScore().then(setScore) }, [])
-
-  async function run() {
-    setRunning(true)
-    await runAssignment()
-    const s = await getScore()
-    setScore(s)
-    setRunning(false)
-  }
 
   return (
     <div className="view score-dashboard">
       <h2>Assignment Score</h2>
-      <p className="score-subtitle">All scores 0–100. Higher is better except QAP Cost.</p>
 
       <div className="score-metrics">
         {METRICS.map(m => {
-          const raw = score?.[m.key] ?? 0
-          const display = m.invert ? 100 - raw : raw
+          const display = Math.round(score?.[m.key] ?? 0)
           const color = scoreColor(display)
           return (
             <div key={m.key} className="metric-row">
               <div className="metric-header">
                 <span className="metric-label">{m.label}</span>
-                <span className="metric-value" style={{ color }}>{Math.round(display)}</span>
+                <span className="metric-value" style={{ color }}>
+                  <AnimatedNumber target={display} />
+                </span>
               </div>
               <div className="metric-track">
-                <div className="metric-fill" style={{ width: `${display}%`, background: color }} />
+                <div className="metric-fill" style={{ width: `${display}%`, background: color, boxShadow: `0 0 8px ${color}99` }} />
               </div>
               <div className="metric-desc">{m.description}</div>
             </div>
           )
         })}
       </div>
-
-      <button className="run-btn" onClick={run} disabled={running}>
-        {running ? 'Running…' : 'Run assignment'}
-      </button>
     </div>
   )
 }
