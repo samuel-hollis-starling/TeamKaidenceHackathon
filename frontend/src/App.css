@@ -1,16 +1,15 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --plum: #2A1F52;
-  --plum-light: #3a2e6a;
-  --teal: #00C9AF;
-  --teal-dark: #00A892;
-  --ink: #1a1a1a;
-  --ink-mid: #555;
-  --ink-light: #888;
-  --border: #e4e0d8;
-  --surface: #fff;
-  --bg: #EDE8DF;
+  --plum: #321e37;          /* starlingPurple */
+  --teal: #22C9B6;          /* teal 600 */
+  --teal-dark: #16AE9C;     /* teal 700 */
+  --ink: #171B1F;           /* midnight 1200 */
+  --ink-mid: #636363;       /* darkGrey 600 */
+  --ink-light: #9C9C9C;     /* darkGrey 200 */
+  --border: #E6D5D1;        /* taupe 400 */
+  --surface: #FFFFFF;
+  --bg: #F8EEEC;            /* taupe 200 */
 }
 
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--ink); }
@@ -32,7 +31,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 /* Segmented control nav */
 .app-nav {
   display: flex;
-  background: var(--plum-light);
+  background: rgba(255,255,255,0.12);
   border-radius: 8px;
   padding: 3px;
   gap: 2px;
@@ -65,7 +64,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 }
 
 .confirmation {
-  background: #e6faf7; border: 1px solid #a0e8df; color: #006b5e;
+  background: #E3FCEA; border: 1px solid #8ED8A3; color: #238940;
   padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.9rem;
 }
 
@@ -102,7 +101,7 @@ form > label { font-size: 0.82rem; font-weight: 600; color: var(--ink-mid); lett
   background: var(--surface);
 }
 .radio-pill input { display: none; }
-.radio-pill.active { background: #e6faf7; border-color: var(--teal); color: #006b5e; font-weight: 600; }
+.radio-pill.active { background: #E3FCF9; border-color: var(--teal); color: #0E9383; font-weight: 600; }
 
 .toggle-row { display: flex; gap: 1.5rem; }
 .toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; color: var(--ink-mid); }
@@ -171,7 +170,7 @@ form button[type=submit]:disabled { background: #bbb; cursor: not-allowed; }
   border-radius: 0;
   transition: background 0.12s;
 }
-.person-row:hover:not(:disabled) { background: #f0fdfb; }
+.person-row:hover:not(:disabled), .person-row.hovered:not(:disabled) { background: #E3FCF9; }
 .person-row:disabled { cursor: default; opacity: 0.45; }
 .person-dot {
   width: 12px;
@@ -199,10 +198,23 @@ form button[type=submit]:disabled { background: #bbb; cursor: not-allowed; }
 .score-panel .view { flex: none; }
 .score-panel .score-dashboard { max-width: none; }
 
-/* ── FloorMap ── */
-.floor-map-view { display: flex; flex-direction: column; padding: 1rem 1.5rem; }
-.floor-map-view h2 { margin-bottom: 0.25rem; }
+/* ── FloorMap / OrgChart ── */
+.floor-map-view, .org-chart-view { display: flex; flex-direction: column; padding: 1rem 1.5rem; }
 .map-hint { font-size: 0.8rem; color: var(--ink-light); margin-bottom: 0.75rem; }
+
+.map-view-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 0.15rem;
+}
+.map-view-header h2 { margin-bottom: 0.15rem; }
+.dev-toggle {
+  flex-shrink: 0; margin-top: 3px;
+  padding: 4px 13px; border: 1.5px solid var(--border); border-radius: 999px;
+  font-size: 0.78rem; font-weight: 600; cursor: pointer; background: transparent;
+  color: var(--ink-mid); transition: all 0.15s; white-space: nowrap;
+}
+.dev-toggle:hover:not(.active) { border-color: var(--ink-mid); color: var(--ink); }
+.dev-toggle.active { background: var(--plum); color: #fff; border-color: var(--plum); }
 
 .map-container {
   flex: 1; position: relative; border: 1.5px solid var(--border); border-radius: 10px;
@@ -220,7 +232,20 @@ form button[type=submit]:disabled { background: #bbb; cursor: not-allowed; }
 .tt-name { font-weight: 600; font-size: 0.9rem; }
 .tt-role { color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-top: 2px; }
 .tt-depth { color: rgba(255,255,255,0.45); font-size: 0.72rem; margin-top: 2px; }
+.tt-manager { color: rgba(255,255,255,0.55); font-size: 0.73rem; margin-top: 2px; }
+.tt-path { color: rgba(255,255,255,0.38); font-size: 0.65rem; margin-top: 2px; line-height: 1.4; word-break: break-all; }
 .tt-empty { color: rgba(255,255,255,0.45); font-style: italic; }
+.tt-org-btn {
+  display: block; width: 100%; margin-top: 8px; padding: 5px 10px;
+  background: rgba(255,255,255,0.13); color: #fff;
+  border: 1px solid rgba(255,255,255,0.28); border-radius: 6px;
+  font-size: 0.72rem; font-weight: 600; cursor: pointer; text-align: center;
+  transition: background 0.15s;
+}
+.tt-org-btn:hover { background: rgba(255,255,255,0.25); }
+
+@keyframes focus-pulse { 0%, 100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.2; } }
+.focus-ring { animation: focus-pulse 1.5s ease-in-out infinite; }
 
 /* ── ScoreDashboard ── */
 .score-dashboard { max-width: 560px; }

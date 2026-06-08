@@ -13,9 +13,9 @@ const METRICS: Metric[] = [
 ]
 
 function scoreColor(value: number) {
-  if (value >= 75) return '#22c55e'
-  if (value >= 50) return '#f59e0b'
-  return '#ef4444'
+  if (value >= 75) return '#349C51'  // green 600
+  if (value >= 50) return '#E18637'  // orange 500
+  return '#CE3D3D'                   // red 600
 }
 
 export default function ScoreDashboard() {

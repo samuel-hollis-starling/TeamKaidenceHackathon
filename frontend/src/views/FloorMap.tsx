@@ -10,14 +10,15 @@ const LABEL_HIDE_RADIUS = 400
 
 export type Transform = { scale: number; tx: number; ty: number }
 
-function deskColor(desk: Desk, employeeByDeskId: Record<string, string>, orgByEmployeeId: Record<string, OrgNode>, branchColors: Map<string, string>): string {
-  const empId = employeeByDeskId[desk.id]
-  if (!empId) return '#d1d5db'
-  const node = orgByEmployeeId[empId]
-  if (!node) return '#94a3b8'
-  const branch = node.orgPath[1] ?? node.orgPath[0]
-  return branchColors.get(branch) ?? '#94a3b8'
+const DESK_R = 22
+
+function lineContrastColor(hex: string): string {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  return (0.299 * r + 0.587 * g + 0.114 * b) > 128 ? '#18181b' : '#ffffff'
 }
+
 
 function neighbourhoodLabels(desks: Desk[]): { name: string; x: number; y: number }[] {
   const groups: Record<string, { sumX: number; sumY: number; count: number }> = {}
@@ -50,6 +51,8 @@ function neighbourhoodLabels(desks: Desk[]): { name: string; x: number; y: numbe
   return labels
 }
 
+type Seg = { x1: number; y1: number; x2: number; y2: number }
+
 interface FloorMapProps {
   desks: Desk[]
   empById: Record<string, Employee>
@@ -58,17 +61,72 @@ interface FloorMapProps {
   transform: Transform
   onTransformChange: (updater: (prev: Transform) => Transform) => void
   selectedDeskId?: string | null
-  branchColors: Map<string, string>
+  nodeColors: Map<string, string>
+  onViewInOrg?: (employeeId: string) => void
+  hoveredEmpId?: string | null
+  onHoverEmployee?: (id: string | null) => void
 }
 
-export default function FloorMap({ desks, empById, orgById, assignments, transform, onTransformChange, selectedDeskId, branchColors }: FloorMapProps) {
+export default function FloorMap({
+  desks, empById, orgById, assignments, transform, onTransformChange,
+  selectedDeskId, nodeColors, onViewInOrg,
+  hoveredEmpId, onHoverEmployee,
+}: FloorMapProps) {
   const [tooltip, setTooltip] = useState<{ desk: Desk; x: number; y: number } | null>(null)
   const [svgMouse, setSvgMouse] = useState<{ x: number; y: number } | null>(null)
+  const [devMode, setDevMode] = useState(false)
   const dragging = useRef<{ startX: number; startY: number; startTx: number; startTy: number } | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const transformRef = useRef(transform)
 
   const labels = useMemo(() => neighbourhoodLabels(desks), [desks])
+
+  // Spiderweb connections for hovered employee
+  const connections = useMemo(() => {
+    if (!hoveredEmpId) return null
+    const hoveredDeskId = assignments.deskByEmployeeId[hoveredEmpId]
+    const hoveredDesk = hoveredDeskId ? desks.find(d => d.id === hoveredDeskId) : null
+    if (!hoveredDesk) return null
+    const org = orgById[hoveredEmpId]
+    if (!org) return null
+
+    const color = nodeColors.get(hoveredEmpId) ?? '#873DAD'
+
+    const pos = (empId: string): { x: number; y: number } | null => {
+      const dId = assignments.deskByEmployeeId[empId]
+      if (!dId) return null
+      const d = desks.find(dk => dk.id === dId)
+      return d ? { x: d.x, y: d.y } : null
+    }
+
+    const from = { x: hoveredDesk.x, y: hoveredDesk.y }
+
+    let manager: Seg | null = null
+    if (org.parentId) {
+      const to = pos(org.parentId)
+      if (to) manager = { x1: from.x, y1: from.y, x2: to.x, y2: to.y }
+    }
+
+    const siblings: Seg[] = []
+    if (org.parentId) {
+      const parentOrg = orgById[org.parentId]
+      if (parentOrg) {
+        for (const sibId of parentOrg.childrenIds) {
+          if (sibId === hoveredEmpId) continue
+          const to = pos(sibId)
+          if (to) siblings.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y })
+        }
+      }
+    }
+
+    const children: Seg[] = []
+    for (const childId of org.childrenIds) {
+      const to = pos(childId)
+      if (to) children.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y })
+    }
+
+    return { color, manager, siblings, children }
+  }, [hoveredEmpId, orgById, assignments, desks, nodeColors])
 
   useEffect(() => { transformRef.current = transform }, [transform])
 
@@ -113,74 +171,139 @@ export default function FloorMap({ desks, empById, orgById, assignments, transfo
         y: (e.clientY - rect.top - transform.ty) / transform.scale,
       })
     }
-    if (!dragging.current) return
-    onTransformChange(t => ({
-      ...t,
-      tx: dragging.current!.startTx + e.clientX - dragging.current!.startX,
-      ty: dragging.current!.startTy + e.clientY - dragging.current!.startY,
-    }))
+    const drag = dragging.current
+    if (!drag) return
+    const { startTx, startTy, startX, startY } = drag
+    const cx = e.clientX, cy = e.clientY
+    onTransformChange(t => ({ ...t, tx: startTx + cx - startX, ty: startTy + cy - startY }))
   }
 
   function onMouseUp() { dragging.current = null }
 
   const tooltipEmp = tooltip ? empById[assignments.employeeByDeskId[tooltip.desk.id]] : null
   const tooltipOrg = tooltipEmp ? orgById[tooltipEmp.id] : null
+  const tooltipManager = tooltipOrg?.parentId != null ? (empById[tooltipOrg.parentId] ?? null) : null
+
+  // Scale-invariant stroke helpers: n screen pixels regardless of zoom
+  const sw = (n: number) => n / transform.scale
+  const da = (on: number, off: number) => `${on / transform.scale} ${off / transform.scale}`
 
   return (
     <div className="view floor-map-view">
-      <h2>Floor Map — 5th Floor</h2>
-      <p className="map-hint">Scroll to zoom · drag to pan · hover a desk for details</p>
+      <div className="map-view-header">
+        <div>
+          <h2>Floor Map — 5th Floor</h2>
+          <p className="map-hint">Scroll to zoom · drag to pan · hover a desk or name for connections</p>
+        </div>
+        <button
+          className={`dev-toggle${devMode ? ' active' : ''}`}
+          onClick={() => setDevMode(d => !d)}
+        >
+          Dev mode
+        </button>
+      </div>
+
       <div
         ref={containerRef}
         className="map-container"
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
-        onMouseLeave={() => { onMouseUp(); setTooltip(null); setSvgMouse(null) }}
+        onMouseLeave={() => { onMouseUp(); setTooltip(null); setSvgMouse(null); onHoverEmployee?.(null) }}
       >
         <svg width="100%" height="100%" style={{ cursor: dragging.current ? 'grabbing' : 'grab' }}>
           <g transform={`translate(${transform.tx},${transform.ty}) scale(${transform.scale})`}>
             <image href="/floor-plan.svg" x={0} y={0} width={VIEW_W} height={VIEW_H} />
 
-            {desks.map(desk => (
-              <circle
-                key={desk.id}
-                cx={desk.x}
-                cy={desk.y}
-                r={28}
-                fill={deskColor(desk, assignments.employeeByDeskId, orgById, branchColors)}
-                stroke="#fff"
-                strokeWidth={4}
-                style={{ cursor: 'pointer' }}
-                onMouseEnter={e => setTooltip({ desk, x: e.clientX, y: e.clientY })}
-                onMouseLeave={() => setTooltip(null)}
-              />
-            ))}
+            {desks.map(desk => {
+              const empId = assignments.employeeByDeskId[desk.id]
+              const deskOrg = empId ? orgById[empId] : null
+              const color = (empId ? nodeColors.get(empId) : null) ?? '#d1d5db'
+              const isHovered = !!hoveredEmpId && empId === hoveredEmpId
+              const ringR = DESK_R + 10
+              const ringStrokeW = deskOrg ? sw(Math.max(1, (9 - deskOrg.depth) * 0.7 + 1)) : 0
+              return (
+                <g
+                  key={desk.id}
+                  transform={`translate(${desk.x},${desk.y})`}
+                  style={{ cursor: 'pointer' }}
+                  onMouseEnter={e => {
+                    setTooltip({ desk, x: e.clientX, y: e.clientY })
+                    if (empId) onHoverEmployee?.(empId)
+                  }}
+                  onMouseLeave={() => {
+                    setTooltip(null)
+                    onHoverEmployee?.(null)
+                  }}
+                >
+                  {deskOrg && (
+                    <circle
+                      cx={0} cy={0}
+                      r={ringR}
+                      fill="none"
+                      stroke={color}
+                      strokeWidth={ringStrokeW}
+                      strokeOpacity={0.55}
+                    />
+                  )}
+                  <circle
+                    cx={0} cy={0}
+                    r={DESK_R}
+                    fill={color}
+                    stroke={isHovered ? '#321e37' : '#fff'}
+                    strokeWidth={isHovered ? sw(4) : sw(1.5)}
+                  />
+                  {devMode && deskOrg && (
+                    <text
+                      x={0} y={0}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      fontSize={14}
+                      fontWeight="700"
+                      fill="rgba(255,255,255,0.92)"
+                      style={{ pointerEvents: 'none' }}
+                    >
+                      {deskOrg.depth}
+                    </text>
+                  )}
+                </g>
+              )
+            })}
+
+            {/* Spiderweb overlay — rendered above desks */}
+            {connections && (() => {
+              const lc = lineContrastColor(connections.color)
+              return (
+                <g style={{ pointerEvents: 'none' }}>
+                  {connections.siblings.map((s, i) => (
+                    <g key={i}>
+                      <line x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2} stroke="#18181b" strokeWidth={sw(4)} strokeOpacity={0.25} strokeDasharray={da(10, 7)} strokeLinecap="round" />
+                      <line x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2} stroke={lc} strokeWidth={sw(2)} strokeOpacity={0.8} strokeDasharray={da(10, 7)} strokeLinecap="round" />
+                    </g>
+                  ))}
+                  {connections.children.map((c, i) => (
+                    <g key={i}>
+                      <line x1={c.x1} y1={c.y1} x2={c.x2} y2={c.y2} stroke="#18181b" strokeWidth={sw(5)} strokeOpacity={0.25} strokeLinecap="round" />
+                      <line x1={c.x1} y1={c.y1} x2={c.x2} y2={c.y2} stroke={lc} strokeWidth={sw(3)} strokeOpacity={0.9} strokeLinecap="round" />
+                    </g>
+                  ))}
+                  {connections.manager && (
+                    <g>
+                      <line x1={connections.manager.x1} y1={connections.manager.y1} x2={connections.manager.x2} y2={connections.manager.y2} stroke="#18181b" strokeWidth={sw(7)} strokeOpacity={0.25} strokeLinecap="round" />
+                      <line x1={connections.manager.x1} y1={connections.manager.y1} x2={connections.manager.x2} y2={connections.manager.y2} stroke={lc} strokeWidth={sw(5)} strokeOpacity={0.95} strokeLinecap="round" />
+                    </g>
+                  )}
+                </g>
+              )
+            })()}
 
             {labels.map(l => {
-              const halfW = (l.name.length * CHAR_W) / 2 + 20
               const nearCursor = svgMouse != null && Math.hypot(svgMouse.x - l.x, svgMouse.y - l.y) < LABEL_HIDE_RADIUS
               return (
                 <g
                   key={l.name}
-                  style={{
-                    pointerEvents: 'none',
-                    userSelect: 'none',
-                    opacity: nearCursor ? 0 : 1,
-                    transition: 'opacity 0.25s',
-                  }}
+                  style={{ pointerEvents: 'none', userSelect: 'none', opacity: nearCursor ? 0 : 1, transition: 'opacity 0.25s' }}
                 >
-                  <rect
-                    x={l.x - halfW}
-                    y={l.y - LABEL_SIZE * 0.75}
-                    width={halfW * 2}
-                    height={LABEL_SIZE * 1.1}
-                    rx={10}
-                    fill="#fff"
-                    fillOpacity={0.92}
-                    stroke="#e4e0d8"
-                    strokeWidth={4}
-                  />
                   <text
                     x={l.x}
                     y={l.y}
@@ -189,6 +312,9 @@ export default function FloorMap({ desks, empById, orgById, assignments, transfo
                     fontSize={LABEL_SIZE}
                     fontWeight="700"
                     fill="#2A1F52"
+                    stroke="rgba(255,255,255,0.75)"
+                    strokeWidth={14}
+                    paintOrder="stroke"
                   >
                     {l.name}
                   </text>
@@ -206,7 +332,26 @@ export default function FloorMap({ desks, empById, orgById, assignments, transfo
               <>
                 <div className="tt-name">{tooltipEmp.name}</div>
                 <div className="tt-role">{tooltipEmp.role}</div>
-                {tooltipOrg && <div className="tt-depth">Depth {tooltipOrg.depth}</div>}
+                {devMode ? (
+                  <>
+                    <div className="tt-depth">Depth {tooltipOrg?.depth}</div>
+                    {tooltipOrg && (
+                      <div className="tt-path">{tooltipOrg.orgPath.join(' › ')}</div>
+                    )}
+                  </>
+                ) : (
+                  tooltipManager && (
+                    <div className="tt-manager">↑ {tooltipManager.name}</div>
+                  )
+                )}
+                {onViewInOrg && (
+                  <button
+                    className="tt-org-btn"
+                    onClick={() => onViewInOrg(tooltipEmp.id)}
+                  >
+                    View in org chart
+                  </button>
+                )}
               </>
             ) : (
               <div className="tt-empty">Unassigned</div>
