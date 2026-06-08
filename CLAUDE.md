@@ -32,6 +32,40 @@ npm run build      # type-check + production build
 npm run lint
 ```
 
+### sim.py — CLI for bookings and simulation
+
+Requires the backend to be running. Targets `http://localhost:8080` by default; override with `--base-url`.
+
+```bash
+# Dry-run: list everyone under a subtree root (no HTTP calls)
+python3 sim.py list "Raman Bhatia"
+python3 sim.py list "Raman Bhatia" --depth 2
+
+# Book a subtree, run SA, print score
+python3 sim.py book "Raman Bhatia"
+python3 sim.py book "Engineering" --max 40 --social TALK_TO_ME
+python3 sim.py book "Raman Bhatia" --lucky-rate 0.1 --skip-existing
+
+# Smoke test: book all real attendees from input-data/har-attendees-*.json, run SA, print score
+python3 sim.py smoke
+python3 sim.py smoke --skip-existing
+
+# Print current score without changing anything
+python3 sim.py score
+
+# Clear all in-memory bookings
+python3 sim.py reset
+```
+
+**Flags for `book`:**
+| Flag | Default | Description |
+|---|---|---|
+| `--depth N` | unlimited | Limit subtree depth |
+| `--max N` | desk count | Random-sample to N people |
+| `--social` | `NONE` | Apply `TALK_TO_ME` or `DONT_TALK_TO_ME` to all |
+| `--lucky-rate F` | `0.0` | Fraction of bookings marked feeling lucky |
+| `--skip-existing` | off | Skip employees already booked |
+
 ### Development setup
 Run backend (`./gradlew run`) and frontend (`npm run dev`) simultaneously. The Vite dev server proxies `/hello` to the backend; all other `/api/*` calls go directly to `http://localhost:8080`.
 
