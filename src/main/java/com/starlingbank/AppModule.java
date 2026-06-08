@@ -9,6 +9,8 @@ import com.starlingbank.service.FloorMapService;
 import com.starlingbank.service.FloorMapServiceImpl;
 import com.starlingbank.service.OrgChartService;
 import com.starlingbank.service.OrgChartServiceImpl;
+import com.starlingbank.service.ScoringService;
+import com.starlingbank.service.ScoringServiceImpl;
 
 public class AppModule extends AbstractModule {
     @Override
@@ -17,6 +19,7 @@ public class AppModule extends AbstractModule {
         bind(FloorMapService.class).to(FloorMapServiceImpl.class);
         bind(OrgChartService.class).to(OrgChartServiceImpl.class);
         bind(AssignmentService.class).to(SimulatedAnnealingAssignmentService.class);
+        bind(ScoringService.class).to(ScoringServiceImpl.class);
         bind(BookingService.class).to(BookingServiceImpl.class);
     }
 }
