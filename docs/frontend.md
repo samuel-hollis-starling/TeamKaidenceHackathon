@@ -44,7 +44,6 @@ Employee picks their name, sets preferences, submits. Calls `POST /api/bookings`
 
 Preference controls:
 - Employee dropdown (searchable, sourced from `GET /api/employees`)
-- Window seat toggle
 - Social preference: Talk to me / Don't talk to me / None
 - Feeling lucky toggle (UI present, feature stubbed in backend)
 - Capacity indicator — shows remaining desks from `BookingCollection.remaining`

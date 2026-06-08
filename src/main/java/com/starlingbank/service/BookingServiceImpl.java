@@ -29,6 +29,11 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public void clearBookings() {
+        bookings.clear();
+    }
+
+    @Override
     public BookingCollection getBookings() {
         int totalCapacity = floorMapService.getDesks().size();
         List<BookingRequest> snapshot = new ArrayList<>(bookings);

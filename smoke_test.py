@@ -44,7 +44,6 @@ def main():
         payload = {
             "employeeId": person["id"],
             "socialPreference": "NONE",
-            "windowSeat": False,
             "feelingLucky": False,
         }
         try:

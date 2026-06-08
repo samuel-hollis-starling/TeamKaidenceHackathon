@@ -41,7 +41,7 @@ private final OrgChartService orgChartService;
         // to everyone, so the optimiser freely fills them into leftover desks.
         List<BookingRequest> augmented = new ArrayList<>(bookings);
         for (int i = n; i < m; i++) {
-            augmented.add(new BookingRequest("__dummy__" + i, SocialPreference.NONE, false, false));
+            augmented.add(new BookingRequest("__dummy__" + i, SocialPreference.NONE, false));
         }
 
         double[][] weightMatrix = buildWeightMatrix(augmented);

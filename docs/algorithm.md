@@ -73,9 +73,6 @@ Count pairs where the social preference was correctly honoured:
 - DONT_TALK_TO_ME employee has no immediate neighbours ✓
 Return as a percentage.
 
-### `windowHitRate`
-Count employees who requested a window seat and received a perimeter desk. Return as a percentage.
-
 ## Current stub
 
 `ScoringServiceImpl` returns hardcoded values: `{72, 58, 61, 80, 65}`. Replace with real computation when implementing Dev 3's work.

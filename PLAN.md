@@ -37,7 +37,6 @@ Each employee has: `id`, `name`, `role`, `location`, `org`, `depth`, `orgPath`, 
 | Preference | Description |
 |---|---|
 | **Team auto-clustering** | Always on. Org chart used to compute relationship weights. |
-| **Window seat** | Prefer desks near the building perimeter. |
 | **Talk to me** | Prefer to be seated near other sociable people. |
 | **Don't talk to me** | Prefer isolation; seat away from high-traffic / social clusters. |
 | **I'm feeling lucky** | Seat the user next to the highest-ranking person in the office that day. |
@@ -51,7 +50,7 @@ Each employee has: `id`, `name`, `role`, `location`, `org`, `depth`, `orgPath`, 
 #### `FloorMapService`
 - Loads desks from `floor-map-5th.json` at startup
 - Provides: `List<Desk> getDesks()`, `double distance(deskA, deskB)` (Euclidean)
-- Identifies perimeter desks (window seats) using coordinate bounding box
+- Identifies perimeter desks using coordinate bounding box
 
 #### `OrgChartService`
 - Loads `orgchart.json` at startup

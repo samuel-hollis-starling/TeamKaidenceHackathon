@@ -29,4 +29,11 @@ public class BookingResource {
     public BookingCollection getBookings() {
         return bookingService.getBookings();
     }
+
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public BookingCollection clearBookings() {
+        bookingService.clearBookings();
+        return bookingService.getBookings();
+    }
 }

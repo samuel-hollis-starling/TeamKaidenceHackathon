@@ -27,7 +27,6 @@ export interface OrgNode {
 export interface BookingRequest {
   employeeId: string
   socialPreference: SocialPreference
-  windowSeat: boolean
   feelingLucky: boolean
 }
 

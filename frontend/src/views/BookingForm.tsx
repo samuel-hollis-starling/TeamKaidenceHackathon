@@ -8,7 +8,6 @@ export default function BookingForm() {
   const [search, setSearch] = useState('')
   const [selectedId, setSelectedId] = useState('')
   const [socialPref, setSocialPref] = useState<SocialPreference>('NONE')
-  const [windowSeat, setWindowSeat] = useState(false)
   const [feelingLucky, setFeelingLucky] = useState(false)
   const [confirmed, setConfirmed] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
@@ -33,7 +32,7 @@ export default function BookingForm() {
   async function submit(ev: React.FormEvent) {
     ev.preventDefault()
     if (!selectedId) return
-    await addBooking({ employeeId: selectedId, socialPreference: socialPref, windowSeat, feelingLucky })
+    await addBooking({ employeeId: selectedId, socialPreference: socialPref, feelingLucky })
     const updated = await getBookings()
     setCollection(updated)
     setConfirmed(selected?.name ?? selectedId)
@@ -93,10 +92,6 @@ export default function BookingForm() {
         </div>
 
         <div className="toggle-row">
-          <label className="toggle">
-            <input type="checkbox" checked={windowSeat} onChange={e => setWindowSeat(e.target.checked)} />
-            <span>Window seat</span>
-          </label>
           <label className="toggle">
             <input type="checkbox" checked={feelingLucky} onChange={e => setFeelingLucky(e.target.checked)} />
             <span>Feeling lucky 🍀</span>

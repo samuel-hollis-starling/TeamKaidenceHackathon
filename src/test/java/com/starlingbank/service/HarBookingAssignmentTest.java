@@ -243,7 +243,7 @@ class HarBookingAssignmentTest {
                 .toList();
 
         List<BookingRequest> bookings = HAR_EMPLOYEE_IDS.stream()
-                .map(id -> new BookingRequest(id, SocialPreference.NONE, false, false))
+                .map(id -> new BookingRequest(id, SocialPreference.NONE, false))
                 .collect(Collectors.toList());
 
         OrgChartService orgChartService = new OrgChartService() {

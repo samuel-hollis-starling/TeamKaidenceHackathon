@@ -56,7 +56,6 @@ What a user submits when booking a desk for the day.
 ```
 employeeId        String
 socialPreference  SocialPreference
-windowSeat        boolean  — prefer a perimeter desk
 feelingLucky      boolean  — stubbed; sit next to highest-ranking person present
 ```
 

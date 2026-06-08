@@ -82,7 +82,7 @@ class SimulatedAnnealingAssignmentServiceTest {
 
         Random rng = new Random(42);
         List<BookingRequest> bookings = selected.stream()
-                .map(id -> new BookingRequest(id, SocialPreference.NONE, rng.nextDouble() < 0.05, false))
+                .map(id -> new BookingRequest(id, SocialPreference.NONE, false))
                 .collect(Collectors.toList());
 
         OrgChartService orgChartService = new OrgChartService() {
@@ -147,21 +147,18 @@ class SimulatedAnnealingAssignmentServiceTest {
 
         for (String empId : sorted) {
             Desk desk = deskById.get(deskByEmployee.get(empId));
-            BookingRequest b = bookingById.get(empId);
             OrgNode node = orgNodes.get(empId);
-            String window = b.isWindowSeat() ? "WIN" : "   ";
 
             // Depth-4 ancestor first name
             String team = node.getOrgPath().size() > 4
                     ? teamHeadFirstName.getOrDefault(node.getOrgPath().get(4), "?")
                     : teamHeadFirstName.getOrDefault(empId, "?");
 
-            System.out.printf("║  %-22s  %-18s  %-28s  %-10s  %s║%n",
+            System.out.printf("║  %-22s  %-18s  %-28s  %-10s║%n",
                     desk.getName(),
                     desk.getNeighborhood() == null ? "" : desk.getNeighborhood(),
                     employees.get(empId).getName(),
-                    team,
-                    window);
+                    team);
         }
         System.out.println("╚" + "═".repeat(88) + "╝");
         printMetrics("SA", bookings, deskByEmployee);
@@ -222,7 +219,7 @@ class SimulatedAnnealingAssignmentServiceTest {
 
         Random rng = new Random(42);
         List<BookingRequest> bookings = selected.stream()
-                .map(id -> new BookingRequest(id, SocialPreference.NONE, rng.nextDouble() < 0.05, false))
+                .map(id -> new BookingRequest(id, SocialPreference.NONE, false))
                 .collect(Collectors.toList());
 
         OrgChartService orgChartService = new OrgChartService() {

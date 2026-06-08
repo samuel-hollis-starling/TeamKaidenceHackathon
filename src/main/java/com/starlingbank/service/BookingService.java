@@ -6,4 +6,5 @@ import com.starlingbank.model.BookingRequest;
 public interface BookingService {
     BookingCollection getBookings();
     BookingRequest addBooking(BookingRequest request);
+    void clearBookings();
 }
