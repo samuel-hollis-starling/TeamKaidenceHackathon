@@ -179,7 +179,14 @@ public class SimulatedAnnealingAssignmentService implements AssignmentService {
 
         int dist = treeDistance(a, b);
         if (dist <= 0) return 0.0;
-        return 1.0 / dist;
+        // Scale by leaf-factor: ICs (0 reports) get factor 1.0; managers get 1/N.
+        // Two managers each with N reports contribute 1/N² — nearly invisible —
+        // so ICs drive placement while managers are anchored by their team aggregate.
+        // max() preserves IC→manager signal: if either party is a leaf, full weight.
+        // Only two managers paired together get the reduced factor.
+        double leafA = 1.0 / Math.max(1, a.getChildrenIds().size());
+        double leafB = 1.0 / Math.max(1, b.getChildrenIds().size());
+        return (1.0 / dist) * Math.max(leafA, leafB);
     }
 
     private double socialTerm(SocialPreference si, SocialPreference sj) {

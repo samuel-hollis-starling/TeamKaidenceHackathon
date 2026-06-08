@@ -2,6 +2,8 @@ package com.starlingbank.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.starlingbank.model.*;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -59,7 +61,7 @@ class SimulatedAnnealingAssignmentServiceTest {
     }
 
     @Test
-    void martinsOrgAssignment() {
+    void martinsOrgAssignment() throws Exception {
         // Only use real fixed desks — exclude Flexible Working, Working Lounge, and Pods
         List<Desk> realDesks = desks.stream()
                 .filter(d -> d.getNeighborhood() != null && !d.getNeighborhood().equals("Desk Pods"))
@@ -105,6 +107,7 @@ class SimulatedAnnealingAssignmentServiceTest {
 
         // ── Pretty output ───────────────────────────────────────────────────────
         printAssignment(bookings, deskByEmployee, subtree.size(), elapsedMs);
+        writeJsonOutput(selected, result);
     }
 
     // ---------------------------------------------------------------------------
@@ -190,6 +193,44 @@ class SimulatedAnnealingAssignmentServiceTest {
                 ? crossTeamStats.getAverage() / siblingStats.getAverage() : 0;
         System.out.printf("%n  Clustering ratio (cross/sibling): %.2fx  (>1 = siblings closer than strangers)%n", ratio);
         System.out.println();
+    }
+
+    // ---------------------------------------------------------------------------
+    // JSON output for stubs.ts
+    // ---------------------------------------------------------------------------
+
+    private void writeJsonOutput(List<String> selected, AssignmentCollection result) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode root = mapper.createObjectNode();
+
+        ArrayNode empArr = root.putArray("employees");
+        ArrayNode nodeArr = root.putArray("orgNodes");
+        for (String id : selected) {
+            Employee emp = employees.get(id);
+            ObjectNode e = empArr.addObject();
+            e.put("id", emp.getId());
+            e.put("name", emp.getName());
+            e.put("role", emp.getRole());
+            e.put("location", emp.getLocation());
+
+            OrgNode on = orgNodes.get(id);
+            ObjectNode n = nodeArr.addObject();
+            n.put("employeeId", on.getEmployeeId());
+            if (on.getParentId() == null) n.putNull("parentId"); else n.put("parentId", on.getParentId());
+            ArrayNode ch = n.putArray("childrenIds");
+            on.getChildrenIds().forEach(ch::add);
+            n.put("depth", on.getDepth());
+            ArrayNode op = n.putArray("orgPath");
+            on.getOrgPath().forEach(op::add);
+        }
+
+        ObjectNode deskByEmp = root.putObject("deskByEmployeeId");
+        result.getDeskByEmployeeId().forEach(deskByEmp::put);
+        ObjectNode empByDesk = root.putObject("employeeByDeskId");
+        result.getEmployeeByDeskId().forEach(empByDesk::put);
+
+        mapper.writerWithDefaultPrettyPrinter().writeValue(new File("sa-output.json"), root);
+        System.out.println("Wrote sa-output.json");
     }
 
     // ── Helpers ─────────────────────────────────────────────────────────────────
