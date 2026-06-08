@@ -12,7 +12,7 @@ Commands:
 Examples:
   python3 sim.py list "Raman Bhatia"
   python3 sim.py list "Raman Bhatia" --depth 2
-  python3 sim.py book "Raman Bhatia" --window-rate 0.3 --lucky-rate 0.1
+  python3 sim.py book "Raman Bhatia" --lucky-rate 0.1
   python3 sim.py book "Engineering" --max 40 --social TALK_TO_ME
   python3 sim.py score
   python3 sim.py smoke
@@ -271,7 +271,7 @@ def cmd_smoke(args):
             print(f"  [{i:>3}/{len(attendees)}] SKIP  {person['name']}")
             skipped += 1
             continue
-        payload = make_payload(person["id"], "NONE", False, False)
+        payload = make_payload(person["id"], "NONE", False)
         try:
             post(args.base_url, "/api/bookings", payload)
             print(f"  [{i:>3}/{len(attendees)}] {person['name']}")
@@ -283,6 +283,9 @@ def cmd_smoke(args):
     if failures:
         print(f"\nWARN: {len(failures)} failures: {failures}")
     print(f"\n  Booked: {booked}  |  Skipped: {skipped}")
+
+    confirmed = get(args.base_url, "/api/bookings").get("bookings", [])
+    print(f"  Server confirmed: {len(confirmed)} bookings")
 
     _, _ = run_assignment(args.base_url)
     print_score(args.base_url)
