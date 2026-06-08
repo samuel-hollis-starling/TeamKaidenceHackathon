@@ -17,6 +17,11 @@ public class Main {
         ResourceConfig config = new ResourceConfig();
         config.register(HelloResource.class);
         config.register(JacksonFeature.class);
+        config.register(com.starlingbank.api.CorsFilter.class);
+        config.register(com.starlingbank.api.DeskResource.class);
+        config.register(com.starlingbank.api.EmployeeResource.class);
+        config.register(com.starlingbank.api.BookingResource.class);
+        config.register(com.starlingbank.api.AssignmentResource.class);
         // Bridge Guice-managed services into HK2 (Jersey's DI)
         config.register(new AbstractBinder() {
             @Override

@@ -45,7 +45,13 @@ tasks.generateTypeScript {
     outputKind = TypeScriptOutputKind.module
     outputFileType = TypeScriptFileType.implementationFile
     classPatterns = mutableListOf("com.starlingbank.model.**")
-    classes = mutableListOf("com.starlingbank.HelloResource")
+    classes = mutableListOf(
+        "com.starlingbank.HelloResource",
+        "com.starlingbank.api.DeskResource",
+        "com.starlingbank.api.EmployeeResource",
+        "com.starlingbank.api.BookingResource",
+        "com.starlingbank.api.AssignmentResource"
+    )
     outputFile = "frontend/src/generated/api.ts"
     generateJaxrsApplicationClient = true
     dependsOn(tasks.compileJava)
