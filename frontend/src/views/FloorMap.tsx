@@ -12,13 +12,6 @@ export type Transform = { scale: number; tx: number; ty: number }
 
 const DESK_R = 27.5
 
-function lineContrastColor(hex: string): string {
-  const r = parseInt(hex.slice(1, 3), 16)
-  const g = parseInt(hex.slice(3, 5), 16)
-  const b = parseInt(hex.slice(5, 7), 16)
-  return (0.299 * r + 0.587 * g + 0.114 * b) > 128 ? '#18181b' : '#ffffff'
-}
-
 
 function neighbourhoodLabels(desks: Desk[]): { name: string; x: number; y: number }[] {
   const groups: Record<string, { sumX: number; sumY: number; count: number }> = {}
@@ -84,17 +77,18 @@ export default function FloorMap({
 
   const labels = useMemo(() => neighbourhoodLabels(desks), [desks])
 
-  // Spiderweb connections for clicked employee
+  // Spiderweb connections — prefer hovered employee, fall back to clicked
   const connections = useMemo(() => {
-    if (!clickedEmpId) return null
-    const clickedDeskId = assignments.deskByEmployeeId[clickedEmpId]
-    const clickedDesk = clickedDeskId ? desks.find(d => d.id === clickedDeskId) : null
-    if (!clickedDesk) return null
-    const org = orgById[clickedEmpId]
+    const activeEmpId = hoveredEmpId ?? clickedEmpId
+    if (!activeEmpId) return null
+    const activeDeskId = assignments.deskByEmployeeId[activeEmpId]
+    const activeDesk = activeDeskId ? desks.find(d => d.id === activeDeskId) : null
+    if (!activeDesk) return null
+    const org = orgById[activeEmpId]
     if (!org) return null
 
-    const color = nodeColors.get(clickedEmpId) ?? '#873DAD'
-    const relatedEmpIds = new Set<string>([clickedEmpId])
+    const color = nodeColors.get(activeEmpId) ?? '#873DAD'
+    const relatedEmpIds = new Set<string>([activeEmpId])
 
     const pos = (empId: string): { x: number; y: number } | null => {
       const dId = assignments.deskByEmployeeId[empId]
@@ -103,7 +97,7 @@ export default function FloorMap({
       return d ? { x: d.x, y: d.y } : null
     }
 
-    const from = { x: clickedDesk.x, y: clickedDesk.y }
+    const from = { x: activeDesk.x, y: activeDesk.y }
 
     let manager: Seg | null = null
     if (org.parentId) {
@@ -116,7 +110,7 @@ export default function FloorMap({
       const parentOrg = orgById[org.parentId]
       if (parentOrg) {
         for (const sibId of parentOrg.childrenIds) {
-          if (sibId === clickedEmpId) continue
+          if (sibId === activeEmpId) continue
           const to = pos(sibId)
           if (to) { siblings.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y }); relatedEmpIds.add(sibId) }
         }
@@ -130,7 +124,7 @@ export default function FloorMap({
     }
 
     return { color, manager, siblings, children, relatedEmpIds }
-  }, [clickedEmpId, orgById, assignments, desks, nodeColors])
+  }, [hoveredEmpId, clickedEmpId, orgById, assignments, desks, nodeColors])
 
   useEffect(() => { transformRef.current = transform }, [transform])
 
@@ -283,25 +277,25 @@ export default function FloorMap({
 
             {/* Spiderweb overlay — rendered above desks */}
             {connections && (() => {
-              const lc = lineContrastColor(connections.color)
+              const c = connections.color
               return (
                 <g style={{ pointerEvents: 'none' }}>
                   {connections.siblings.map((s, i) => (
                     <g key={i}>
                       <line x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2} stroke="#18181b" strokeWidth={sw(4)} strokeOpacity={0.25} strokeDasharray={da(10, 7)} strokeLinecap="round" />
-                      <line x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2} stroke={lc} strokeWidth={sw(2)} strokeOpacity={0.8} strokeDasharray={da(10, 7)} strokeLinecap="round" />
+                      <line x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2} stroke={c} strokeWidth={sw(2)} strokeOpacity={0.8} strokeDasharray={da(10, 7)} strokeLinecap="round" />
                     </g>
                   ))}
-                  {connections.children.map((c, i) => (
+                  {connections.children.map((ch, i) => (
                     <g key={i}>
-                      <line x1={c.x1} y1={c.y1} x2={c.x2} y2={c.y2} stroke="#18181b" strokeWidth={sw(5)} strokeOpacity={0.25} strokeLinecap="round" />
-                      <line x1={c.x1} y1={c.y1} x2={c.x2} y2={c.y2} stroke={lc} strokeWidth={sw(3)} strokeOpacity={0.9} strokeLinecap="round" />
+                      <line x1={ch.x1} y1={ch.y1} x2={ch.x2} y2={ch.y2} stroke="#18181b" strokeWidth={sw(5)} strokeOpacity={0.25} strokeLinecap="round" />
+                      <line x1={ch.x1} y1={ch.y1} x2={ch.x2} y2={ch.y2} stroke={c} strokeWidth={sw(3)} strokeOpacity={0.9} strokeLinecap="round" />
                     </g>
                   ))}
                   {connections.manager && (
                     <g>
                       <line x1={connections.manager.x1} y1={connections.manager.y1} x2={connections.manager.x2} y2={connections.manager.y2} stroke="#18181b" strokeWidth={sw(7)} strokeOpacity={0.25} strokeLinecap="round" />
-                      <line x1={connections.manager.x1} y1={connections.manager.y1} x2={connections.manager.x2} y2={connections.manager.y2} stroke={lc} strokeWidth={sw(5)} strokeOpacity={0.95} strokeLinecap="round" />
+                      <line x1={connections.manager.x1} y1={connections.manager.y1} x2={connections.manager.x2} y2={connections.manager.y2} stroke={c} strokeWidth={sw(5)} strokeOpacity={0.95} strokeLinecap="round" />
                     </g>
                   )}
                 </g>
