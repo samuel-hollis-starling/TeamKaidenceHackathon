@@ -2,6 +2,7 @@ package com.starlingbank;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.starlingbank.service.FloorMapService;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -22,11 +23,13 @@ public class Main {
         config.register(com.starlingbank.api.EmployeeResource.class);
         config.register(com.starlingbank.api.BookingResource.class);
         config.register(com.starlingbank.api.AssignmentResource.class);
+        config.register(com.starlingbank.api.FloorMapResource.class);
         // Bridge Guice-managed services into HK2 (Jersey's DI)
         config.register(new AbstractBinder() {
             @Override
             protected void configure() {
                 bind(injector.getInstance(HelloService.class)).to(HelloService.class);
+                bind(injector.getInstance(FloorMapService.class)).to(FloorMapService.class);
             }
         });
 
