@@ -47,5 +47,4 @@ export interface AssignmentScore {
   teamCohesion: number
   managerProximity: number
   socialSatisfaction: number
-  windowHitRate: number
 }

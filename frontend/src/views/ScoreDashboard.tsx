@@ -8,7 +8,6 @@ const METRICS: Metric[] = [
   { label: 'Team Cohesion',       key: 'teamCohesion',       description: 'How closely teammates sit together' },
   { label: 'Manager Proximity',   key: 'managerProximity',   description: 'How close reports sit to their manager' },
   { label: 'Social Satisfaction', key: 'socialSatisfaction', description: 'Social preferences honoured' },
-  { label: 'Window Hit Rate',     key: 'windowHitRate',      description: 'Window-seat requests satisfied' },
   { label: 'QAP Cost',            key: 'totalQapCost',       invert: true, description: 'Overall assignment cost — lower is better' },
 ]
 

@@ -21,7 +21,7 @@ public class ScoringServiceImpl implements ScoringService {
     public AssignmentScore score(AssignmentCollection assignment, List<BookingRequest> bookings, List<Desk> desks) {
         Map<String, String> deskByEmployee = assignment.getDeskByEmployeeId();
         if (deskByEmployee.isEmpty() || bookings.isEmpty()) {
-            return new AssignmentScore(0.0, 0.0, 0.0, 100.0, 100.0);
+            return new AssignmentScore(0.0, 0.0, 0.0, 100.0);
         }
 
         Map<String, Desk> deskById = desks.stream().collect(Collectors.toMap(Desk::getId, d -> d));
@@ -47,8 +47,7 @@ public class ScoringServiceImpl implements ScoringService {
                 computeQapCost(assigned, dist, orgNodes, meanDist),
                 computeTeamCohesion(assigned, dist, orgNodes, meanDist),
                 computeManagerProximity(assigned, dist, orgNodes, meanDist),
-                computeSocialSatisfaction(assigned, dist),
-                100.0
+                computeSocialSatisfaction(assigned, dist)
         );
     }
 
